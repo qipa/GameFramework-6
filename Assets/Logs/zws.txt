@@ -1,0 +1,10 @@
+2016-06-14 15:32:25  Info   :  CtrlManager.InitCtrlList
+2016-06-14 15:32:25  Info   :  TestCtrl.New
+2016-06-14 15:32:25  Info   :  CreatePanel === > TestPanel  TestPanel (UnityEngine.GameObject)
+2016-06-14 15:32:25  Info   :  正在加载配置表 : Config/Entity
+2016-06-14 15:32:25  Info   :  正在加载配置表 : Config/Skill
+2016-06-14 15:32:25  Info   :  正在加载配置表 : Config/Buff
+2016-06-14 15:32:25  Info   :  配置表加载完成
+2016-06-14 15:32:25  Info   :  切换武器成功 : am_Sword
+2016-06-14 15:32:49  Info   :  切换武器成功 : am_Bow
+2016-06-14 15:32:58  Info   :  application quit.

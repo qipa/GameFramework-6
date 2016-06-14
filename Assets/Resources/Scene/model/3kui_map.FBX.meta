@@ -1,0 +1,590 @@
+fileFormatVersion: 2
+guid: fd8b6abd9927c6342b7b1383673a302f
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: 3kui_map_bigflag
+    100004: 3kui_map_bush
+    100006: 3kui_map_bush 1
+    100008: 3kui_map_bush 10
+    100010: 3kui_map_bush 11
+    100012: 3kui_map_bush 2
+    100014: 3kui_map_bush 3
+    100016: 3kui_map_bush 4
+    100018: 3kui_map_bush 5
+    100020: 3kui_map_bush 6
+    100022: 3kui_map_bush 7
+    100024: 3kui_map_bush 8
+    100026: 3kui_map_bush 9
+    100028: 3kui_map_flags
+    100030: 3kui_map_flags 1
+    100032: 3kui_map_flags 2
+    100034: 3kui_map_flags 3
+    100036: 3kui_map_grass1
+    100038: 3kui_map_grass2
+    100040: 3kui_map_grass3
+    100042: 3kui_map_ground00
+    100044: 3kui_map_ground01
+    100046: 3kui_map_ground02
+    100048: 3kui_map_ground03
+    100050: 3kui_map_ground04
+    100052: 3kui_map_ground05
+    100054: 3kui_map_ground06
+    100056: 3kui_map_ground07
+    100058: 3kui_map_ground08
+    100060: 3kui_map_ground09
+    100062: 3kui_map_pt1
+    100064: 3kui_map_pt21
+    100066: 3kui_map_pt26
+    100068: 3kui_map_pt35
+    100070: 3kui_map_pt37
+    100072: 3kui_map_pt40
+    100074: 3kui_map_pt42
+    100076: 3kui_map_pt47
+    100078: 3kui_map_pt58
+    100080: 3kui_map_sky1
+    100082: 3kui_map_sky2
+    100084: 3kui_map_sky4
+    100086: 3kui_map_smallflags
+    100088: 3kui_map_tree1
+    100090: 3kui_map_tree1 1
+    100092: 3kui_map_tree1 2
+    100094: 3kui_map_tree1 3
+    100096: 3kui_map_tree1 4
+    100098: 3kui_map_tree1 5
+    100100: 3kui_map_tree2
+    100102: 3kui_map_tree2 1
+    100104: 3kui_map_tree2 2
+    100106: 3kui_map_tree2 3
+    100108: 3kui_map_trunks
+    100110: 3kui_map_trunks 1
+    100112: 3kui_map_trunks 2
+    100114: 3kui_map_trunks 3
+    100116: 3kui_map_trunks 4
+    100118: 3kui_map_trunks 5
+    100120: 3kui_map_trunks 6
+    100122: 3kui_map_trunks 7
+    100124: 3kui_map_trunks 8
+    100126: 3kui_map_trunks 9
+    100128: 3kui_map_water
+    100130: 3kui_map_flags 10
+    100132: 3kui_map_flags 11
+    100134: 3kui_map_flags 12
+    100136: 3kui_map_flags 13
+    100138: 3kui_map_flags 14
+    100140: 3kui_map_flags 15
+    100142: 3kui_map_flags 4
+    100144: 3kui_map_flags 5
+    100146: 3kui_map_flags 6
+    100148: 3kui_map_flags 7
+    100150: 3kui_map_flags 8
+    100152: 3kui_map_flags 9
+    100154: 3kUImap_bush
+    100156: 3kUImap_bush 1
+    100158: 3kUImap_bush 10
+    100160: 3kUImap_bush 11
+    100162: 3kUImap_bush 2
+    100164: 3kUImap_bush 3
+    100166: 3kUImap_bush 4
+    100168: 3kUImap_bush 5
+    100170: 3kUImap_bush 6
+    100172: 3kUImap_bush 7
+    100174: 3kUImap_bush 8
+    100176: 3kUImap_bush 9
+    100178: 3kUImap_bush 12
+    100180: 3kUImap_bush 13
+    100182: 3kUImap_bush 14
+    100184: 3kui_map_flagstick00
+    100186: 3kui_map_flagstick01
+    100188: 3kui_map_maildoor
+    100190: 3kui_map_maildoor1
+    100192: 3kui_map_maildoor2
+    100194: 3kui_map_cloud1
+    100196: 3kui_map_cloud2
+    100198: 3kui_map_cloud4
+    100200: 3kui_map_ground015
+    100202: 3kui_map_pt123
+    100204: 3kui_map_drumtorches
+    100206: 3kui_map_flagstick002
+    100208: 3kui_map_resflags
+    100210: 3kui_map_stadiumflags
+    100212: 3kui_map_stadiumin
+    400000: //RootNode
+    400002: 3kui_map_bigflag
+    400004: 3kui_map_bush
+    400006: 3kui_map_bush 1
+    400008: 3kui_map_bush 10
+    400010: 3kui_map_bush 11
+    400012: 3kui_map_bush 2
+    400014: 3kui_map_bush 3
+    400016: 3kui_map_bush 4
+    400018: 3kui_map_bush 5
+    400020: 3kui_map_bush 6
+    400022: 3kui_map_bush 7
+    400024: 3kui_map_bush 8
+    400026: 3kui_map_bush 9
+    400028: 3kui_map_flags
+    400030: 3kui_map_flags 1
+    400032: 3kui_map_flags 2
+    400034: 3kui_map_flags 3
+    400036: 3kui_map_grass1
+    400038: 3kui_map_grass2
+    400040: 3kui_map_grass3
+    400042: 3kui_map_ground00
+    400044: 3kui_map_ground01
+    400046: 3kui_map_ground02
+    400048: 3kui_map_ground03
+    400050: 3kui_map_ground04
+    400052: 3kui_map_ground05
+    400054: 3kui_map_ground06
+    400056: 3kui_map_ground07
+    400058: 3kui_map_ground08
+    400060: 3kui_map_ground09
+    400062: 3kui_map_pt1
+    400064: 3kui_map_pt21
+    400066: 3kui_map_pt26
+    400068: 3kui_map_pt35
+    400070: 3kui_map_pt37
+    400072: 3kui_map_pt40
+    400074: 3kui_map_pt42
+    400076: 3kui_map_pt47
+    400078: 3kui_map_pt58
+    400080: 3kui_map_sky1
+    400082: 3kui_map_sky2
+    400084: 3kui_map_sky4
+    400086: 3kui_map_smallflags
+    400088: 3kui_map_tree1
+    400090: 3kui_map_tree1 1
+    400092: 3kui_map_tree1 2
+    400094: 3kui_map_tree1 3
+    400096: 3kui_map_tree1 4
+    400098: 3kui_map_tree1 5
+    400100: 3kui_map_tree2
+    400102: 3kui_map_tree2 1
+    400104: 3kui_map_tree2 2
+    400106: 3kui_map_tree2 3
+    400108: 3kui_map_trunks
+    400110: 3kui_map_trunks 1
+    400112: 3kui_map_trunks 2
+    400114: 3kui_map_trunks 3
+    400116: 3kui_map_trunks 4
+    400118: 3kui_map_trunks 5
+    400120: 3kui_map_trunks 6
+    400122: 3kui_map_trunks 7
+    400124: 3kui_map_trunks 8
+    400126: 3kui_map_trunks 9
+    400128: 3kui_map_water
+    400130: 3kui_map_flags 10
+    400132: 3kui_map_flags 11
+    400134: 3kui_map_flags 12
+    400136: 3kui_map_flags 13
+    400138: 3kui_map_flags 14
+    400140: 3kui_map_flags 15
+    400142: 3kui_map_flags 4
+    400144: 3kui_map_flags 5
+    400146: 3kui_map_flags 6
+    400148: 3kui_map_flags 7
+    400150: 3kui_map_flags 8
+    400152: 3kui_map_flags 9
+    400154: 3kUImap_bush
+    400156: 3kUImap_bush 1
+    400158: 3kUImap_bush 10
+    400160: 3kUImap_bush 11
+    400162: 3kUImap_bush 2
+    400164: 3kUImap_bush 3
+    400166: 3kUImap_bush 4
+    400168: 3kUImap_bush 5
+    400170: 3kUImap_bush 6
+    400172: 3kUImap_bush 7
+    400174: 3kUImap_bush 8
+    400176: 3kUImap_bush 9
+    400178: 3kUImap_bush 12
+    400180: 3kUImap_bush 13
+    400182: 3kUImap_bush 14
+    400184: 3kui_map_flagstick00
+    400186: 3kui_map_flagstick01
+    400188: 3kui_map_maildoor
+    400190: 3kui_map_maildoor1
+    400192: 3kui_map_maildoor2
+    400194: 3kui_map_cloud1
+    400196: 3kui_map_cloud2
+    400198: 3kui_map_cloud4
+    400200: 3kui_map_ground015
+    400202: 3kui_map_pt123
+    400204: 3kui_map_drumtorches
+    400206: 3kui_map_flagstick002
+    400208: 3kui_map_resflags
+    400210: 3kui_map_stadiumflags
+    400212: 3kui_map_stadiumin
+    2300000: 3kui_map_bigflag
+    2300002: 3kui_map_bush
+    2300004: 3kui_map_bush 1
+    2300006: 3kui_map_bush 10
+    2300008: 3kui_map_bush 11
+    2300010: 3kui_map_bush 2
+    2300012: 3kui_map_bush 3
+    2300014: 3kui_map_bush 4
+    2300016: 3kui_map_bush 5
+    2300018: 3kui_map_bush 6
+    2300020: 3kui_map_bush 7
+    2300022: 3kui_map_bush 8
+    2300024: 3kui_map_bush 9
+    2300026: 3kui_map_flags
+    2300028: 3kui_map_flags 1
+    2300030: 3kui_map_flags 2
+    2300032: 3kui_map_flags 3
+    2300034: 3kui_map_grass1
+    2300036: 3kui_map_grass2
+    2300038: 3kui_map_grass3
+    2300040: 3kui_map_ground00
+    2300042: 3kui_map_ground01
+    2300044: 3kui_map_ground02
+    2300046: 3kui_map_ground03
+    2300048: 3kui_map_ground04
+    2300050: 3kui_map_ground05
+    2300052: 3kui_map_ground06
+    2300054: 3kui_map_ground07
+    2300056: 3kui_map_ground08
+    2300058: 3kui_map_ground09
+    2300060: 3kui_map_pt1
+    2300062: 3kui_map_pt21
+    2300064: 3kui_map_pt26
+    2300066: 3kui_map_pt35
+    2300068: 3kui_map_pt37
+    2300070: 3kui_map_pt40
+    2300072: 3kui_map_pt42
+    2300074: 3kui_map_pt47
+    2300076: 3kui_map_pt58
+    2300078: 3kui_map_sky1
+    2300080: 3kui_map_sky2
+    2300082: 3kui_map_sky4
+    2300084: 3kui_map_smallflags
+    2300086: 3kui_map_tree1
+    2300088: 3kui_map_tree1 1
+    2300090: 3kui_map_tree1 2
+    2300092: 3kui_map_tree1 3
+    2300094: 3kui_map_tree1 4
+    2300096: 3kui_map_tree1 5
+    2300098: 3kui_map_tree2
+    2300100: 3kui_map_tree2 1
+    2300102: 3kui_map_tree2 2
+    2300104: 3kui_map_tree2 3
+    2300106: 3kui_map_trunks
+    2300108: 3kui_map_trunks 1
+    2300110: 3kui_map_trunks 2
+    2300112: 3kui_map_trunks 3
+    2300114: 3kui_map_trunks 4
+    2300116: 3kui_map_trunks 5
+    2300118: 3kui_map_trunks 6
+    2300120: 3kui_map_trunks 7
+    2300122: 3kui_map_trunks 8
+    2300124: 3kui_map_trunks 9
+    2300126: 3kui_map_water
+    2300128: 3kui_map_flags 10
+    2300130: 3kui_map_flags 11
+    2300132: 3kui_map_flags 12
+    2300134: 3kui_map_flags 13
+    2300136: 3kui_map_flags 14
+    2300138: 3kui_map_flags 15
+    2300140: 3kui_map_flags 4
+    2300142: 3kui_map_flags 5
+    2300144: 3kui_map_flags 6
+    2300146: 3kui_map_flags 7
+    2300148: 3kui_map_flags 8
+    2300150: 3kui_map_flags 9
+    2300152: 3kUImap_bush
+    2300154: 3kUImap_bush 1
+    2300156: 3kUImap_bush 10
+    2300158: 3kUImap_bush 11
+    2300160: 3kUImap_bush 2
+    2300162: 3kUImap_bush 3
+    2300164: 3kUImap_bush 4
+    2300166: 3kUImap_bush 5
+    2300168: 3kUImap_bush 6
+    2300170: 3kUImap_bush 7
+    2300172: 3kUImap_bush 8
+    2300174: 3kUImap_bush 9
+    2300176: 3kUImap_bush 12
+    2300178: 3kUImap_bush 13
+    2300180: 3kUImap_bush 14
+    2300182: 3kui_map_flagstick00
+    2300184: 3kui_map_flagstick01
+    2300186: 3kui_map_maildoor1
+    2300188: 3kui_map_maildoor2
+    2300190: 3kui_map_cloud1
+    2300192: 3kui_map_cloud2
+    2300194: 3kui_map_cloud4
+    2300196: 3kui_map_ground015
+    2300198: 3kui_map_pt123
+    2300200: 3kui_map_drumtorches
+    2300202: 3kui_map_flagstick002
+    2300204: 3kui_map_resflags
+    2300206: 3kui_map_stadiumflags
+    2300208: 3kui_map_stadiumin
+    3300000: 3kui_map_bigflag
+    3300002: 3kui_map_bush
+    3300004: 3kui_map_bush 1
+    3300006: 3kui_map_bush 10
+    3300008: 3kui_map_bush 11
+    3300010: 3kui_map_bush 2
+    3300012: 3kui_map_bush 3
+    3300014: 3kui_map_bush 4
+    3300016: 3kui_map_bush 5
+    3300018: 3kui_map_bush 6
+    3300020: 3kui_map_bush 7
+    3300022: 3kui_map_bush 8
+    3300024: 3kui_map_bush 9
+    3300026: 3kui_map_flags
+    3300028: 3kui_map_flags 1
+    3300030: 3kui_map_flags 2
+    3300032: 3kui_map_flags 3
+    3300034: 3kui_map_grass1
+    3300036: 3kui_map_grass2
+    3300038: 3kui_map_grass3
+    3300040: 3kui_map_ground00
+    3300042: 3kui_map_ground01
+    3300044: 3kui_map_ground02
+    3300046: 3kui_map_ground03
+    3300048: 3kui_map_ground04
+    3300050: 3kui_map_ground05
+    3300052: 3kui_map_ground06
+    3300054: 3kui_map_ground07
+    3300056: 3kui_map_ground08
+    3300058: 3kui_map_ground09
+    3300060: 3kui_map_pt1
+    3300062: 3kui_map_pt21
+    3300064: 3kui_map_pt26
+    3300066: 3kui_map_pt35
+    3300068: 3kui_map_pt37
+    3300070: 3kui_map_pt40
+    3300072: 3kui_map_pt42
+    3300074: 3kui_map_pt47
+    3300076: 3kui_map_pt58
+    3300078: 3kui_map_sky1
+    3300080: 3kui_map_sky2
+    3300082: 3kui_map_sky4
+    3300084: 3kui_map_smallflags
+    3300086: 3kui_map_tree1
+    3300088: 3kui_map_tree1 1
+    3300090: 3kui_map_tree1 2
+    3300092: 3kui_map_tree1 3
+    3300094: 3kui_map_tree1 4
+    3300096: 3kui_map_tree1 5
+    3300098: 3kui_map_tree2
+    3300100: 3kui_map_tree2 1
+    3300102: 3kui_map_tree2 2
+    3300104: 3kui_map_tree2 3
+    3300106: 3kui_map_trunks
+    3300108: 3kui_map_trunks 1
+    3300110: 3kui_map_trunks 2
+    3300112: 3kui_map_trunks 3
+    3300114: 3kui_map_trunks 4
+    3300116: 3kui_map_trunks 5
+    3300118: 3kui_map_trunks 6
+    3300120: 3kui_map_trunks 7
+    3300122: 3kui_map_trunks 8
+    3300124: 3kui_map_trunks 9
+    3300126: 3kui_map_water
+    3300128: 3kui_map_flags 10
+    3300130: 3kui_map_flags 11
+    3300132: 3kui_map_flags 12
+    3300134: 3kui_map_flags 13
+    3300136: 3kui_map_flags 14
+    3300138: 3kui_map_flags 15
+    3300140: 3kui_map_flags 4
+    3300142: 3kui_map_flags 5
+    3300144: 3kui_map_flags 6
+    3300146: 3kui_map_flags 7
+    3300148: 3kui_map_flags 8
+    3300150: 3kui_map_flags 9
+    3300152: 3kUImap_bush
+    3300154: 3kUImap_bush 1
+    3300156: 3kUImap_bush 10
+    3300158: 3kUImap_bush 11
+    3300160: 3kUImap_bush 2
+    3300162: 3kUImap_bush 3
+    3300164: 3kUImap_bush 4
+    3300166: 3kUImap_bush 5
+    3300168: 3kUImap_bush 6
+    3300170: 3kUImap_bush 7
+    3300172: 3kUImap_bush 8
+    3300174: 3kUImap_bush 9
+    3300176: 3kUImap_bush 12
+    3300178: 3kUImap_bush 13
+    3300180: 3kUImap_bush 14
+    3300182: 3kui_map_flagstick00
+    3300184: 3kui_map_flagstick01
+    3300186: 3kui_map_maildoor1
+    3300188: 3kui_map_maildoor2
+    3300190: 3kui_map_cloud1
+    3300192: 3kui_map_cloud2
+    3300194: 3kui_map_cloud4
+    3300196: 3kui_map_ground015
+    3300198: 3kui_map_pt123
+    3300200: 3kui_map_drumtorches
+    3300202: 3kui_map_flagstick002
+    3300204: 3kui_map_resflags
+    3300206: 3kui_map_stadiumflags
+    3300208: 3kui_map_stadiumin
+    4300000: 3kui_map_pt1
+    4300002: 3kui_map_flags
+    4300004: 3kui_map_flags
+    4300006: 3kui_map_flags
+    4300008: 3kui_map_tree2
+    4300010: 3kui_map_trunks
+    4300012: 3kui_map_flags
+    4300014: 3kui_map_tree2
+    4300016: 3kui_map_trunks
+    4300018: 3kui_map_tree1
+    4300020: 3kui_map_trunks
+    4300022: 3kui_map_tree1
+    4300024: 3kui_map_trunks
+    4300026: 3kui_map_tree2
+    4300028: 3kui_map_trunks
+    4300030: 3kui_map_tree1
+    4300032: 3kui_map_trunks
+    4300034: 3kui_map_tree2
+    4300036: 3kui_map_trunks
+    4300038: 3kui_map_tree1
+    4300040: 3kui_map_trunks
+    4300042: 3kui_map_tree1
+    4300044: 3kui_map_trunks
+    4300046: 3kui_map_tree1
+    4300048: 3kui_map_trunks
+    4300050: 3kui_map_bush
+    4300052: 3kui_map_bush
+    4300054: 3kui_map_bush
+    4300056: 3kui_map_bush
+    4300058: 3kui_map_bush
+    4300060: 3kui_map_bush
+    4300062: 3kui_map_bush
+    4300064: 3kui_map_bush
+    4300066: 3kui_map_bush
+    4300068: 3kui_map_bush
+    4300070: 3kui_map_bush
+    4300072: 3kui_map_bush
+    4300074: 3kui_map_water
+    4300076: 3kui_map_pt47
+    4300078: 3kui_map_ground09
+    4300080: 3kui_map_ground00
+    4300082: 3kui_map_ground01
+    4300084: 3kui_map_ground02
+    4300086: 3kui_map_ground04
+    4300088: 3kui_map_ground07
+    4300090: 3kui_map_ground03
+    4300092: 3kui_map_ground05
+    4300094: 3kui_map_ground08
+    4300096: 3kui_map_ground06
+    4300098: 3kui_map_pt21
+    4300100: 3kui_map_pt35
+    4300102: 3kui_map_pt26
+    4300104: 3kui_map_pt37
+    4300106: 3kui_map_pt58
+    4300108: 3kui_map_bigflag
+    4300110: 3kui_map_pt40
+    4300112: 3kui_map_pt42
+    4300114: 3kui_map_grass1
+    4300116: 3kui_map_grass2
+    4300118: 3kui_map_grass3
+    4300120: 3kui_map_smallflags
+    4300122: 3kui_map_sky1
+    4300124: 3kui_map_sky2
+    4300126: 3kui_map_sky4
+    4300128: 3kui_map_flags
+    4300130: 3kui_map_flags
+    4300132: 3kui_map_flags
+    4300134: 3kui_map_flags
+    4300136: 3kui_map_flags
+    4300138: 3kui_map_flags
+    4300140: 3kui_map_flags
+    4300142: 3kui_map_flags
+    4300144: 3kui_map_flags
+    4300146: 3kui_map_flags
+    4300148: 3kui_map_flags
+    4300150: 3kui_map_flags
+    4300152: 3kUImap_bush
+    4300154: 3kUImap_bush
+    4300156: 3kUImap_bush
+    4300158: 3kUImap_bush
+    4300160: 3kUImap_bush
+    4300162: 3kUImap_bush
+    4300164: 3kUImap_bush
+    4300166: 3kUImap_bush
+    4300168: 3kUImap_bush
+    4300170: 3kUImap_bush
+    4300172: 3kUImap_bush
+    4300174: 3kUImap_bush
+    4300176: 3kUImap_bush
+    4300178: 3kUImap_bush
+    4300180: 3kUImap_bush
+    4300182: 3kui_map_flagstick01
+    4300184: 3kui_map_flagstick00
+    4300186: 3kui_map_maildoor2
+    4300188: 3kui_map_maildoor1
+    4300190: 3kui_map_cloud2
+    4300192: 3kui_map_cloud1
+    4300194: 3kui_map_cloud4
+    4300196: 3kui_map_ground015
+    4300198: 3kui_map_pt123
+    4300200: 3kui_map_resflags
+    4300202: 3kui_map_stadiumin
+    4300204: 3kui_map_flagstick002
+    4300206: 3kui_map_stadiumflags
+    4300208: 3kui_map_drumtorches
+    7400000: Take 001
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 0
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  additionalBone: 0
+  userData: 
