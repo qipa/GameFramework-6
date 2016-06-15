@@ -1,0 +1,107 @@
+fileFormatVersion: 2
+guid: 70ea0bb69b21d6140ab4888c70b8b104
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: 3k_map_bj
+    100002: 3k_map_dm
+    100004: 3k_map_grass
+    100006: 3k_map_screed
+    100008: 3k_map_screed003
+    100010: 3k_map_tree00
+    100012: 3k_map_tree01
+    100014: 3k_map_tw
+    100016: 3k_map_wl
+    100018: //RootNode
+    400000: 3k_map_bj
+    400002: 3k_map_dm
+    400004: 3k_map_grass
+    400006: 3k_map_screed
+    400008: 3k_map_screed003
+    400010: 3k_map_tree00
+    400012: 3k_map_tree01
+    400014: 3k_map_tw
+    400016: 3k_map_wl
+    400018: //RootNode
+    2300000: 3k_map_bj
+    2300002: 3k_map_dm
+    2300004: 3k_map_grass
+    2300006: 3k_map_screed
+    2300008: 3k_map_screed003
+    2300010: 3k_map_tree00
+    2300012: 3k_map_tree01
+    2300014: 3k_map_tw
+    2300016: 3k_map_wl
+    3300000: 3k_map_bj
+    3300002: 3k_map_dm
+    3300004: 3k_map_grass
+    3300006: 3k_map_screed
+    3300008: 3k_map_screed003
+    3300010: 3k_map_tree00
+    3300012: 3k_map_tree01
+    3300014: 3k_map_tw
+    3300016: 3k_map_wl
+    4300000: 3k_map_tree00
+    4300002: 3k_map_tree01
+    4300004: 3k_map_bj
+    4300006: 3k_map_tw
+    4300008: 3k_map_grass
+    4300010: 3k_map_screed
+    4300012: 3k_map_dm
+    4300014: 3k_map_wl
+    4300016: 3k_map_screed003
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  additionalBone: 0
+  userData: 
