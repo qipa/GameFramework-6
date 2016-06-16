@@ -3,22 +3,29 @@ using System.Collections;
 
 public class CameraController : MonoBehaviour {
 
+    public static CameraController Instance;
     public float m_dist = 15;
     public float m_pitchAngle = 45;
     public float m_yawAngle = 0;
     public float m_height = 1;
 
+    public Entity LookTarget = null;
 	// Use this for initialization
+    void Awake()
+    {
+        Instance = this;
+    }
 	void Start () {
 	
 	}
 
     void Update()
     {
-        if(GameManager.MainPlayer != null && InputUtil.has_touch_down())
-        {
-            CheckClickMove();
-        }
+        //if (GameManager.MainPlayer != null && InputUtil.has_touch_down())
+        //{
+        //    CheckClickMove();
+        //}
+
     }
 
     //检测点击移动角色
@@ -35,6 +42,8 @@ public class CameraController : MonoBehaviour {
 
     void LateUpdate()
     {
+        if (LookTarget == null)
+            return;
 #if UNITY_EDITOR
         float scroll_wheel = Input.GetAxis("Mouse ScrollWheel");
         m_dist += scroll_wheel * -6.0f;
@@ -44,7 +53,7 @@ public class CameraController : MonoBehaviour {
         }
 #endif
 
-        Vector3 targetPos = transform.position;
+        Vector3 targetPos = LookTarget.Pos;
         targetPos.y += m_height;
 
         Vector3 cameraPos = targetPos;
@@ -59,6 +68,6 @@ public class CameraController : MonoBehaviour {
         if (null == Camera.main) return;
 
         Camera.main.transform.position = cameraPos;
-        Camera.main.transform.LookAt(transform.position);
+        Camera.main.transform.LookAt(LookTarget.Pos);
     }
 }

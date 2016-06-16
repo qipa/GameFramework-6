@@ -13,7 +13,7 @@ public class AStar
         if (nodes != null)
             nodes = null;
 
-        TextAsset asset = ResManager.Instance.Load(path) as TextAsset;
+        TextAsset asset = ResManager.Load(path) as TextAsset;
         if(asset == null)
         {
             CStream s = new CStream(asset.bytes);

@@ -1,5 +1,5 @@
 //此代码根据 Skill.csv 自动生成，不要手动修改！！！！
-//工具菜单：Export/CSV_TO_C#    生成时间 ： 6/14/2016 2:19:54 PM
+//工具菜单：Export/CSV_TO_C#    生成时间 ： 6/16/2016 2:42:16 PM
 using System;
 public class CSVSkill
 {
@@ -13,7 +13,7 @@ public class CSVSkill
 	public uint level;    //技能等级 
 	public uint targetTpye;    //选择目标类型 1.指定目标 2.自己 3.所有友方 4.血量最少友方
 	public uint attackType;    //施法方式 1.绑定技能(近战)2.范围技能 3.子弹(无目标) 4.子弹(有目标)
-	public uint miagcType;    //施法范围类型 1.点 2.线形(以人为起点 打向鼠标位置)3.扇形(以自身为起点 默认120°)4.圆形(鼠标为原点或自身为原点)
+	public uint magicType;    //施法范围类型 1.点 2.线形(以人为起点 打向鼠标位置)3.扇形(以自身为起点 默认120°)4.圆形(鼠标为原点或自身为原点)
 	public float attackDistance;    //施法距离(单位厘米)
 	public float guideTime;    //引导时间
 	public float hitTime;    //击中时间(闪避技能战士、弩手不能有击中时间否则模型会消失)
@@ -32,8 +32,10 @@ public class CSVSkill
 	public float castEffectBeginTime;    //释放特效开始时间
 	public float castEffectDuration;    //释放特效持续时间
 	public string castEffectBindBone;    //释放特效绑定骨骼
-	public string flyEffect;    //子弹特效
-	public uint beattackEffect;    //受击特效(buff)
+	public string BulletEffect;    //子弹特效
+	public float BulletBeginTime;    //子弹开始时间
+	public string BulletBindBone;    //子弹绑定骨骼
+	public string beattackEffect;    //受击特效
 	public string guideAction;    //指引动作
 	public float guideActionBeginTime;    //指引动作开始时间
 	public float guideActionDuration;    //指引动作持续时间

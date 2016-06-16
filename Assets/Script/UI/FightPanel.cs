@@ -22,6 +22,7 @@ public class FightPanel : MonoBehaviour {
 
     void ChangeWeapon()
     {
-        GameManager.MainPlayer.Render.RandomChangeWeapon();
+        if(GameManager.MainPlayer != null)
+            GameManager.MainPlayer.Render.RandomChangeWeapon();
     }
 }

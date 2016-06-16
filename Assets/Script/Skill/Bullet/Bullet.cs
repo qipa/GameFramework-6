@@ -29,18 +29,24 @@ public class Bullet
 
     public void Init(Entity caster, CSVSkill skillInfo, BulletHitCallback notify = null, Entity target = null)
     {
-        m_effect = EffectManager.Instance.GetEffect(skillInfo.flyEffect);
+        m_effect = EffectManager.Instance.GetEffect(skillInfo.BulletEffect);
         if (m_effect == null)
         {
-            Log.Error("不存在特效 " + skillInfo.flyEffect);
+            Log.Error("不存在特效 " + skillInfo.BulletEffect);
             return;
         }
         m_caster = caster;
         m_target = target;
         if (target == null)
+        {
             bulletType = eBulletType.Dir;
+            m_dir = m_caster.Forward;
+        }
         else
+        {
             bulletType = eBulletType.Target;
+            m_dir = (m_target.Pos - m_caster.Pos).normalized;
+        }
 
         m_skillInfo = skillInfo;
         m_hitNotify = notify;
@@ -48,7 +54,12 @@ public class Bullet
         duration = m_skillInfo.attackDistance / m_skillInfo.flySpeed;
         m_effect.Init(eDestroyType.Time, duration);
         m_fSpeed = m_skillInfo.flySpeed;
-        m_effect.Pos = GetBonePos(caster,m_skillInfo.castEffectBindBone);
+
+        if (!string.IsNullOrEmpty(m_skillInfo.BulletBindBone))
+            m_effect.Pos = GetBonePos(m_caster, m_skillInfo.BulletBindBone);
+        else
+            m_effect.Pos = new Vector3(m_caster.Pos.x,m_caster.Pos.y+0.5f,m_caster.Pos.z);
+        
         IsUsing = true;
         
     }
@@ -69,10 +80,7 @@ public class Bullet
         {
             m_dir = (m_target.Pos - m_caster.Pos).normalized;
         }
-        else
-        {
-            m_dir = m_caster.Forward;
-        }
+        
 
         m_effect.Pos += m_dir * m_fSpeed * Time.deltaTime;
         m_effect.Forward = m_dir;
@@ -99,7 +107,8 @@ public class Bullet
         bool result = false;
         if (bulletType == eBulletType.Target)
         {
-            if ((m_effect.Pos - m_target.Pos).sqrMagnitude < 0.5f)
+            float dis = (m_effect.Pos - m_target.Pos).sqrMagnitude;
+            if ( dis <= 10f)
                 result = true;
         }
         else

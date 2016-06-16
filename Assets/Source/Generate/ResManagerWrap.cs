@@ -10,7 +10,6 @@ public class ResManagerWrap
 		L.RegFunction("Load", Load);
 		L.RegFunction("__eq", op_Equality);
 		L.RegFunction("__tostring", Lua_ToString);
-		L.RegVar("Instance", get_Instance, null);
 		L.EndClass();
 	}
 
@@ -19,10 +18,9 @@ public class ResManagerWrap
 	{
 		try
 		{
-			ToLua.CheckArgsCount(L, 2);
-			ResManager obj = (ResManager)ToLua.CheckObject(L, 1, typeof(ResManager));
-			string arg0 = ToLua.CheckString(L, 2);
-			UnityEngine.Object o = obj.Load(arg0);
+			ToLua.CheckArgsCount(L, 1);
+			string arg0 = ToLua.CheckString(L, 1);
+			UnityEngine.Object o = ResManager.Load(arg0);
 			ToLua.Push(L, o);
 			return 1;
 		}
@@ -65,20 +63,6 @@ public class ResManagerWrap
 		}
 
 		return 1;
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int get_Instance(IntPtr L)
-	{
-		try
-		{
-			ToLua.Push(L, ResManager.Instance);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
 	}
 }
 

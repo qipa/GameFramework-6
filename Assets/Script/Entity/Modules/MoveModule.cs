@@ -16,11 +16,17 @@ public class MoveModule : ModuleBase {
 
 	public MoveModule(Entity entity) : base(entity)
     {
-        m_navAgent = m_object.AddComponent<NavMeshAgent>();
+        
+        
     }
 
     public void MoveTo(Vector3 des)
     {
+        if(m_navAgent == null)
+        {
+            m_navAgent = m_object.AddComponent<NavMeshAgent>();
+        }
+
         if ((m_object.transform.position - des).sqrMagnitude < 0.1f)
             return;
         
@@ -84,15 +90,16 @@ public class MoveModule : ModuleBase {
         if(m_isMoving)
         {
             UpdateMoving();
+            UpdateRotation();
         }
-        UpdateRotation();
+        
     }
 
-    public void StopMove(bool isIdle = true)
+    public void StopMove(bool PlayIdle = true)
     {
         m_curStep = 0;
         m_isMoving = false;
-        if (isIdle)
+        if (PlayIdle)
             m_entity.Anim.SyncAction("Idle_Sword");
     }
     

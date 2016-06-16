@@ -14,6 +14,8 @@ public class GameManagerWrap
 		L.RegVar("netMgr", get_netMgr, set_netMgr);
 		L.RegVar("resMgr", get_resMgr, set_resMgr);
 		L.RegVar("uiMgr", get_uiMgr, set_uiMgr);
+		L.RegVar("MainPlayer", get_MainPlayer, set_MainPlayer);
+		L.RegVar("HeroConfigID", get_HeroConfigID, set_HeroConfigID);
 		L.EndClass();
 	}
 
@@ -143,6 +145,39 @@ public class GameManagerWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_MainPlayer(IntPtr L)
+	{
+		try
+		{
+			ToLua.PushObject(L, GameManager.MainPlayer);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_HeroConfigID(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			GameManager obj = (GameManager)o;
+			uint ret = obj.HeroConfigID;
+			LuaDLL.lua_pushnumber(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index HeroConfigID on a nil value" : e.Message);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int set_Instance(IntPtr L)
 	{
 		try
@@ -230,6 +265,40 @@ public class GameManagerWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index uiMgr on a nil value" : e.Message);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_MainPlayer(IntPtr L)
+	{
+		try
+		{
+			Entity arg0 = (Entity)ToLua.CheckObject(L, 2, typeof(Entity));
+			GameManager.MainPlayer = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_HeroConfigID(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			GameManager obj = (GameManager)o;
+			uint arg0 = (uint)LuaDLL.luaL_checknumber(L, 2);
+			obj.HeroConfigID = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index HeroConfigID on a nil value" : e.Message);
 		}
 	}
 }

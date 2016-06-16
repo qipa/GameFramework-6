@@ -1,0 +1,7 @@
+*.mdb
+*.ldb
+*.sln
+*.svn
+Library
+Temp
+Assets/UnityVS

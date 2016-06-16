@@ -49,11 +49,10 @@ public class Entity : EntityBase
         EntityCfg = CSVManager.GetEntityCfg(configID);
         if(EntityCfg == null)
         {
-            Log.Error("找不到 configID = " + configID + " 的配置");
-            return;
+            throw new Exception ("找不到 configID = " + configID + " 的配置");
         }
 
-        m_object = GameObject.Instantiate(ResManager.Instance.Load(EntityCfg.ResPath)) as GameObject;
+        m_object = GameObject.Instantiate(ResManager.Load(EntityCfg.ResPath)) as GameObject;
         m_object.transform.SetParent(EntityManager.Instance.EntityRoot);
         this.Camp = camp;
         UID = uID;
@@ -125,10 +124,6 @@ public class Entity : EntityBase
             _moduleList[i].OnEvent(eventID, args);
     }
     
-    public void AttachCamera()
-    {
-        if (m_object.GetComponent<CameraController>() == null)
-            m_object.AddComponent<CameraController>();
-    }
+
 }
 

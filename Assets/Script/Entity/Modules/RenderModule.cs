@@ -5,12 +5,14 @@ public class RenderModule : ModuleBase {
 
     SkinnedMeshRenderer[] m_renders = null;
     GameObject m_weapon = null;
+    public int m_index = 0;
     string weapon_path = "Model/Weapon/Prefab/";
 
     public static Dictionary<string, string> m_sDicWeaponSkill = new Dictionary<string, string>()
     {
         {"am_Sword","6|7|8"},{"am_Spear","2|3|4"},{"am_Bow","10|11|12"},{"am_Broadsword","14|15|16"}
     };
+    public static string[] m_sWeaponName = new string[]{ "am_Sword", "am_Spear", "am_Bow", "am_Broadsword" };
 
 	public RenderModule(Entity entity) : base(entity)
     {
@@ -38,7 +40,7 @@ public class RenderModule : ModuleBase {
 
     public void ChangeWeapon(string weapon)
     {
-        Object obj = ResManager.Instance.Load(weapon_path + weapon);
+        Object obj = ResManager.Load(weapon_path + weapon);
         if(obj == null)
         {
             Log.Error("不存在武器 " + weapon);
@@ -54,18 +56,15 @@ public class RenderModule : ModuleBase {
         m_weapon.transform.localRotation = Quaternion.identity;
         Log.Info("切换武器成功 : " + weapon);
         if (m_sDicWeaponSkill[weapon] != null)
+        {
             m_entity.Skill.SetNormalSkills(m_sDicWeaponSkill[weapon]);
+        }
     }
 
     public void RandomChangeWeapon()
     {
-        int index = Random.Range(0, m_sDicWeaponSkill.Count + 1);
-        int i = 0;
-        var e = m_sDicWeaponSkill.GetEnumerator();
-        while(i < index && e.MoveNext())
-        {
-            i++;
-        }
-        ChangeWeapon(e.Current.Key);
+        m_index++;
+        string name = m_sWeaponName[m_index % m_sWeaponName.Length];
+        ChangeWeapon(name);
     }
 }

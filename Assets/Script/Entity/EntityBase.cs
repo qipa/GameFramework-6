@@ -38,7 +38,10 @@ public abstract class EntityBase  {
 
     public Vector3 Forward
     {
-        set { m_object.transform.forward = value; }
+        set 
+        { 
+            m_object.transform.rotation = Quaternion.LookRotation(value); 
+        }
         get { return m_object.transform.forward.normalized; }
     }
 

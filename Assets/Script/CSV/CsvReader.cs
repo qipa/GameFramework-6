@@ -14,7 +14,9 @@ public static class CSVReader
         {
             TextAsset CSVAsset = Resources.Load(fileName, typeof(TextAsset)) as TextAsset;
 
-            byte[] Bytes = Encoding.UTF8.GetBytes(CSVAsset.text);
+            Encoding gb2312 = Encoding.GetEncoding("gb2312");
+            byte[] Bytes = Encoding.Convert(gb2312, Encoding.UTF8, CSVAsset.bytes);
+
             MemoryStream ByteStream = new MemoryStream(Bytes);
             
             StreamReader reader = new StreamReader(ByteStream);
@@ -109,9 +111,10 @@ public static class CSVReader
         try
         {
             TextAsset CSVAsset = Resources.Load(fileName, typeof(TextAsset)) as TextAsset;
-           
 
-            byte[] Bytes = Encoding.UTF8.GetBytes(CSVAsset.text);
+            Encoding gb2312 = Encoding.GetEncoding("gb2312");
+            byte[] Bytes = Encoding.Convert(gb2312, Encoding.UTF8, CSVAsset.bytes);
+
             MemoryStream ByteStream = new MemoryStream(Bytes);
             StreamReader reader = new StreamReader(ByteStream);
 

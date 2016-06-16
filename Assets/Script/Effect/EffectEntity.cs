@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using System;
 //特效消失的类型
 public enum eDestroyType
 {
@@ -15,11 +15,11 @@ public class EffectEntity : EntityBase {
     ParticleSystem[] m_particleSystems = null;
     public EffectEntity(string path)
     {
-        Object o = ResManager.Instance.Load(path);
+        UnityEngine.Object o = ResManager.Load(path);
         if( o == null)
         {
-            Log.Error("不存在的特效 ： " + path);
-            return;
+            throw new Exception ("不存在的特效 ： " + path);
+            
         }
 
         
@@ -27,8 +27,7 @@ public class EffectEntity : EntityBase {
         SetParent(EffectManager.Instance.EffectRoot);
         if (m_object == null)
         {
-            Log.Error("加载U3D对象失败  " + path);
-            return;
+            throw new Exception ("加载U3D对象失败  " + path);
         }
 
         m_particleSystems = m_object.GetComponentsInChildren<ParticleSystem>(true);

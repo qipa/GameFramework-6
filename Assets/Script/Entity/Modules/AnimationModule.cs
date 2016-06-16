@@ -33,12 +33,12 @@ public class AnimationModule : ModuleBase
             if (!stateInfo.IsName(animName))   //动作不一样，触发之
             {
                 m_animator.SetTrigger(animName);
-                Debug.Log(animName);
+                //Debug.Log(animName);
             }
             else if (!stateInfo.loop)   //动作一样，但此动作不是循环动作，再次触发之
             {
                 m_animator.Play(animName, 0, 0f);
-                Debug.Log(animName);
+                //Debug.Log(animName);
             }
         }
         else

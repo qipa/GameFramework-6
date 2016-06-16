@@ -26,9 +26,10 @@ public class OnCastSkill
 
 class SKillEvent
 {
-   public float fTriggerTime = 0f;    //事件触发时间
-   public System.Action func = null;
-   public bool isActive = false;
+    public float fTriggerTime = 0f;    //事件触发时间
+    public System.Action<CSVSkill> func = null;
+    public bool isActive = false;
+    public CSVSkill skillInfo = null;
 }
 
 public class SkillModule : ModuleBase {
@@ -105,7 +106,7 @@ public class SkillModule : ModuleBase {
             SKillEvent evt = m_skillEventList[i];
             if (Time.time >= evt.fTriggerTime && evt.isActive)   //触发时间到了
             {
-                evt.func();
+                evt.func(evt.skillInfo);
                 evt.isActive = false;
             }
         }
@@ -143,11 +144,7 @@ public class SkillModule : ModuleBase {
 
     public  bool CastSkill(int index)
     {
-        if (m_bIsCasting)
-            return false;
-
-       m_entity.Move.StopMove(false);
-        m_entity.Anim.Stop();
+        SkillBase skill = null;
         if (index == 0)  //普攻
         {           
             if (Time.time - LastNormalAttackTime > 1f)
@@ -158,47 +155,87 @@ public class SkillModule : ModuleBase {
             {
                 normalAttackStep++;
             }
-            CurSkill = normalAttacks[normalAttackStep % normalAttacks.Count];
+            skill = normalAttacks[normalAttackStep % normalAttacks.Count];
             LastNormalAttackTime = Time.time;       //上一次普通攻击的时间
-
-            
+           
         }
         else     //技能
         {
-            CurSkill = Skills[index];
+            skill = Skills[index];
+        }
+        return CastSkill(skill);       
+    }
+
+    public bool CastSkill(SkillBase skill)
+    {
+        if (skill == null || m_bIsCasting)
+            return false;
+        m_entity.Move.StopMove(false);
+        m_entity.Anim.Stop();
+        GetTargets();
+
+        CurSkill = skill;
+        if (CurSkill.skillInfo.type == 1)        //普攻
+        {
+            if (m_entity.SelectTarget == null)
+                m_entity.SelectTarget = FindTarget(CurSkill.skillInfo);
+            if (m_entity.SelectTarget != null)
+            {
+                targets.Add(m_entity.SelectTarget);
+                m_entity.Forward = (m_entity.SelectTarget.Pos - m_entity.Pos).normalized;
+            }
+        }
+        else
+        {
             CurSkill.BeginCD();
         }
+        RegSkillEvent(CurSkill);
+        return true;
+    }
 
-        GetTargets();
+    void RegSkillEvent(SkillBase skill)
+    {
 
         SKillEvent evt = null;
         //播放特效
-        if (!string.IsNullOrEmpty(CurSkill.skillInfo.castEffect))  
+        if (!string.IsNullOrEmpty(skill.skillInfo.castEffect))  
         {
             evt = GetSkillEvent();
-            evt.fTriggerTime = CurSkill.skillInfo.castEffectBeginTime / m_entity.Property.AttackSpeed + Time.time;
+            evt.fTriggerTime = skill.skillInfo.castEffectBeginTime / m_entity.Property.AttackSpeed + Time.time;
             evt.func = PlayEffect;
             evt.isActive = true;
+            evt.skillInfo = skill.skillInfo;
             AddSkillEvent(evt);
         }
 
         //播放动作
-        if (!string.IsNullOrEmpty(CurSkill.skillInfo.castAction))
+        if (!string.IsNullOrEmpty(skill.skillInfo.castAction))
         {
             evt = GetSkillEvent();
-            evt.fTriggerTime = CurSkill.skillInfo.castActionBeginTime / m_entity.Property.AttackSpeed + Time.time;
+            evt.fTriggerTime = skill.skillInfo.castActionBeginTime / m_entity.Property.AttackSpeed + Time.time;
             evt.func = PlayAction;
             evt.isActive = true;
+            evt.skillInfo = skill.skillInfo;
             AddSkillEvent(evt);
         }
 
-        //击中处理
-        if (CurSkill.skillInfo.hitTime.Equals(0f) == false)
+        if (!string.IsNullOrEmpty(skill.skillInfo.BulletEffect))
         {
             evt = GetSkillEvent();
-            evt.fTriggerTime = (CurSkill.skillInfo.castActionBeginTime + CurSkill.skillInfo.hitTime) / m_entity.Property.AttackSpeed + Time.time;
+            evt.fTriggerTime = skill.skillInfo.BulletBeginTime + Time.time;
+            evt.skillInfo = skill.skillInfo;
+            evt.func = CastBullet;
+            evt.isActive = true;
+            AddSkillEvent(evt);
+        }
+        //击中处理
+        if (skill.skillInfo.hitTime.Equals(0f) == false)
+        {
+            evt = GetSkillEvent();
+            evt.fTriggerTime = (skill.skillInfo.castActionBeginTime + skill.skillInfo.hitTime) / m_entity.Property.AttackSpeed + Time.time;
             evt.func = SkillHit;
             evt.isActive = true;
+            evt.skillInfo = skill.skillInfo;
             AddSkillEvent(evt);
         }
 
@@ -225,30 +262,51 @@ public class SkillModule : ModuleBase {
 //         }
 
         evt = GetSkillEvent();
-        evt.fTriggerTime = (CurSkill.skillInfo.castActionBeginTime + CurSkill.skillInfo.castActionDuration) / m_entity.Property.AttackSpeed + Time.time;
+        evt.fTriggerTime = (skill.skillInfo.castActionBeginTime + skill.skillInfo.castActionDuration) / m_entity.Property.AttackSpeed + Time.time;
         evt.func = SkillEnd;
         evt.isActive = true;
+        evt.skillInfo = skill.skillInfo;
         AddSkillEvent(evt);
-        return true;
     }
 
-    public void SkillHit()
-    {
 
+    //由时间控制的击中事件，一般是近战类攻击击中目标
+    public void SkillHit(CSVSkill skillInfo)
+    {
+        for (int i = 0; i < targets.Count; i++)
+        {
+            Entity target = targets[i];
+            //受击动作
+            if (!string.IsNullOrEmpty(skillInfo.beattackAction))
+            {
+                target.Anim.SyncAction(skillInfo.beattackAction);
+            }
+            //受击特效
+
+            if (!string.IsNullOrEmpty(skillInfo.beattackEffect))
+            {
+                EffectEntity effect = EffectManager.Instance.GetEffect(skillInfo.beattackEffect);
+                effect.Init(eDestroyType.Time, skillInfo.beattackActionDuration);
+
+                effect.Pos = target.Pos;
+                effect.Forward = target.Forward;
+            }
+        }
     }
 
-    void PlayEffect()
+    void PlayEffect(CSVSkill skillInfo)
     {
-        if (string.IsNullOrEmpty(CurSkill.skillInfo.castEffect))
+        
+        if (string.IsNullOrEmpty(skillInfo.castEffect))
             return;
 
-        EffectEntity effect = EffectManager.Instance.GetEffect(CurSkill.skillInfo.castEffect);
-        effect.Init(eDestroyType.Time, CurSkill.skillInfo.castEffectDuration);
+        EffectEntity effect = EffectManager.Instance.GetEffect(skillInfo.castEffect);
+        effect.Init(eDestroyType.Time, skillInfo.castEffectDuration);
         //特效绑定的骨骼
 
-        if (!string.IsNullOrEmpty(CurSkill.skillInfo.castEffectBindBone))
+        if (!string.IsNullOrEmpty(skillInfo.castEffectBindBone))
         {
-            Transform bone = m_entity.GetBone(CurSkill.skillInfo.castEffectBindBone);
+            Transform bone = m_entity.GetBone(skillInfo.castEffectBindBone);
             if (bone != null)
             {
                 effect.Bind(bone);
@@ -262,23 +320,33 @@ public class SkillModule : ModuleBase {
         }
     }
 
-    void PlayAction()
+    void CastBullet(CSVSkill skillInfo)
     {
-        if(!string.IsNullOrEmpty(CurSkill.skillInfo.castAction))
-        {
-            m_entity.Anim.SyncAction(CurSkill.skillInfo.castAction);
-        }
         //子弹型普攻  即远程普攻
-        if (CurSkill.skillInfo.attackType == 3 || CurSkill.skillInfo.attackType == 4)
+        if (skillInfo.attackType == 3 || skillInfo.attackType == 4)
         {
             Bullet bu = BulletManager.Instance.Get();
             if (bu != null)
-                bu.Init(m_entity, CurSkill.skillInfo);
+            {
+                if (m_entity.SelectTarget == null)
+                    m_entity.SelectTarget = FindTarget(skillInfo);
+                bu.Init(m_entity, skillInfo, BulletManager.BulletHit, m_entity.SelectTarget);
+            }
         }
     }
 
-    void SkillEnd()
+    void PlayAction(CSVSkill skillInfo)
     {
+        if(!string.IsNullOrEmpty(skillInfo.castAction))
+        {
+            m_entity.Anim.SyncAction(skillInfo.castAction);
+        }
+       
+    }
+
+    void SkillEnd(CSVSkill skillInfo)
+    {
+        
         //m_entity.Anim.SyncAction("Idle_Sword");
     }
 
@@ -288,6 +356,24 @@ public class SkillModule : ModuleBase {
         {
 
         }
+    }
+    
+
+    public Entity FindTarget(CSVSkill skillInfo)
+    {
+        Entity ent = null;
+        var e = EntityManager.Instance.m_dicObject.GetEnumerator();
+        while(e.MoveNext())
+        {
+            ent = e.Current.Value;
+            if (ent.Camp == eCamp.Hero || ent.Camp == eCamp.Friend)
+                continue;
+            if ((ent.Pos - m_entity.Pos).sqrMagnitude <= skillInfo.attackDistance * skillInfo.attackDistance)
+            {
+                return ent;
+            }
+        }
+        return null;
     }
 }
 

@@ -34,8 +34,14 @@ public class GameManager : MonoBehaviour {
 
         CSVManager.LoadAllCsv();
         MainPlayer = EntityManager.Instance.Get(HeroConfigID, 1);
-        MainPlayer.Pos = new Vector3(40f, 0, 50f);
-        MainPlayer.AttachCamera();
+
+        Entity enemy = EntityManager.Instance.Get(10, 2);
+        enemy.Pos = new Vector3(25f, 4.6f, 42f);
+        enemy.Camp = eCamp.Enemy;
+
+        MainPlayer.Pos = new Vector3(28.5f, 4.6f, 45f);
+        CameraController.Instance.LookTarget = MainPlayer;
+        //MainPlayer.AttachCamera();
 
         //UIManager.Instance.CreatePanel("FightPanel");
 	}
@@ -62,7 +68,5 @@ public class GameManager : MonoBehaviour {
         Log.Info("application quit.");
         Log.Stop();
     }
-
-   
 
 }

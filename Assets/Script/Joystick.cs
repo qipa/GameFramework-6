@@ -69,9 +69,64 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
 
     private void Update()
     {
+        int keyDownCount = 0;
+        if (Input.GetKey(KeyCode.W))
+        {
+            keyDownCount++;
+            handle.anchoredPosition += new Vector2(0, radius);
+            if(handle.anchoredPosition.sqrMagnitude > radius * radius)
+            {
+                handle.anchoredPosition = handle.anchoredPosition.normalized * radius;
+            }
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            keyDownCount++;
+            handle.anchoredPosition += new Vector2(-radius, 0);
+            if (handle.anchoredPosition.sqrMagnitude > radius * radius)
+            {
+                handle.anchoredPosition = handle.anchoredPosition.normalized * radius;
+            }
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            keyDownCount++;
+            handle.anchoredPosition += new Vector2(0, -radius);
+            if (handle.anchoredPosition.sqrMagnitude > radius * radius)
+            {
+                handle.anchoredPosition = handle.anchoredPosition.normalized * radius;
+            }
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            keyDownCount++;
+            handle.anchoredPosition += new Vector2(radius, 0);
+            if (handle.anchoredPosition.sqrMagnitude > radius * radius)
+            {
+                handle.anchoredPosition = handle.anchoredPosition.normalized * radius;
+            }
+        }
+
+        //键盘模式
+       if(keyDownCount > 0)
+       {
+           if (OnJoystickMovement != null)
+               OnJoystickMovement(Coordinates);
+           _isReturn = false;
+       }
+       else if (!_isReturn)
+       {
+           if (handle.anchoredPosition.magnitude > Mathf.Epsilon)
+               handle.anchoredPosition -= new Vector2(handle.anchoredPosition.x * autoReturnSpeed.x, handle.anchoredPosition.y * autoReturnSpeed.y) * Time.deltaTime;
+           else
+               _isReturn = true;
+       }
+
+          
+        //摇杆模式
         if (_isDraging)
-        {           
-            handle.anchoredPosition = _handleOffset;
+        {
+                handle.anchoredPosition = _handleOffset;
             if (OnJoystickMovement != null)
                 OnJoystickMovement(Coordinates);
             _isReturn = false;
@@ -82,8 +137,9 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
                 handle.anchoredPosition -= new Vector2(handle.anchoredPosition.x * autoReturnSpeed.x, handle.anchoredPosition.y * autoReturnSpeed.y) * Time.deltaTime;
             else
                 _isReturn = true;
-
         }
+
+        
     }
 
 
@@ -112,7 +168,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         Quaternion q = Camera.main.transform.rotation;
 
         dir = q * dir;
-        dir *= 2f;      //摇杆控制的角色行走距离为2
+        dir *= 3f;      //摇杆控制的角色行走距离为3
 
         Vector3 targetPos = new Vector3(GameManager.MainPlayer.Pos.x + dir.x, GameManager.MainPlayer.Pos.y, GameManager.MainPlayer.Pos.z + dir.z);
         GameManager.MainPlayer.Move.MoveTo(targetPos);

@@ -1,5 +1,5 @@
 //此代码根据 Entity.csv 自动生成，不要手动修改！！！！
-//工具菜单：Export/CSV_TO_C#    生成时间 ： 6/14/2016 2:19:54 PM
+//工具菜单：Export/CSV_TO_C#    生成时间 ： 6/16/2016 2:42:16 PM
 using System;
 public class CSVEntity
 {
