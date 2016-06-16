@@ -22,12 +22,12 @@ public static class CSVReader
             StreamReader reader = new StreamReader(ByteStream);
 
             string desc = reader.ReadLine();    //跳过第1行   第1行是说明
-            string header = reader.ReadLine();  //第2行是字段名
+            string fieldNames = reader.ReadLine();  //第2行是字段名
             
-            string skip = reader.ReadLine();    //跳过第3行    
+            string fieldTypes = reader.ReadLine();    //跳过第3行，第三行是字段类型    
             
             char[] sp = { ',' };
-            string[] fields = header.Split(sp, System.StringSplitOptions.RemoveEmptyEntries);
+            string[] fields = fieldNames.Split(sp, System.StringSplitOptions.RemoveEmptyEntries);
             if (0 == fields.Length)
             {
                 ret = fileName + ".csv  没有字段";

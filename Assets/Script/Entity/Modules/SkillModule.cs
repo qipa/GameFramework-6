@@ -168,7 +168,7 @@ public class SkillModule : ModuleBase {
 
     public bool CastSkill(SkillBase skill)
     {
-        if (skill == null || m_bIsCasting)
+        if (skill == null || m_bIsCasting || skill.IsInCD)
             return false;
         m_entity.Move.StopMove(false);
         m_entity.Anim.Stop();
@@ -177,17 +177,19 @@ public class SkillModule : ModuleBase {
         CurSkill = skill;
         if (CurSkill.skillInfo.type == 1)        //普攻
         {
-            if (m_entity.SelectTarget == null)
-                m_entity.SelectTarget = FindTarget(CurSkill.skillInfo);
+            
+            m_entity.SelectTarget = FindTarget(CurSkill.skillInfo);
             if (m_entity.SelectTarget != null)
             {
                 targets.Add(m_entity.SelectTarget);
                 m_entity.Forward = (m_entity.SelectTarget.Pos - m_entity.Pos).normalized;
             }
+            m_bIsCasting = false;       //普攻不算技能释放
         }
         else
         {
             CurSkill.BeginCD();
+            m_bIsCasting = true;
         }
         RegSkillEvent(CurSkill);
         return true;
@@ -328,8 +330,6 @@ public class SkillModule : ModuleBase {
             Bullet bu = BulletManager.Instance.Get();
             if (bu != null)
             {
-                if (m_entity.SelectTarget == null)
-                    m_entity.SelectTarget = FindTarget(skillInfo);
                 bu.Init(m_entity, skillInfo, BulletManager.BulletHit, m_entity.SelectTarget);
             }
         }
@@ -346,7 +346,7 @@ public class SkillModule : ModuleBase {
 
     void SkillEnd(CSVSkill skillInfo)
     {
-        
+        m_bIsCasting = false;
         //m_entity.Anim.SyncAction("Idle_Sword");
     }
 

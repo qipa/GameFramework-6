@@ -71,7 +71,12 @@ public class SkillEditor : MonoBehaviour
 
         transform.FindChild("CurSkill").GetComponent<Button>().onClick.AddListener(
             ()=>
-            {
+            {                
+                if(m_SkillInfo == null)
+                {
+                    Debug.LogError("还没加载技能呢 ！！！");
+                    return;
+                }
                 //每次都new新的技能，以确保技能配置是修改过后的
                 MainPlayer.Skill.CastSkill(new SkillBase(m_SkillInfo));
             }
@@ -83,6 +88,11 @@ public class SkillEditor : MonoBehaviour
     {
         HeroConfigID = Convert.ToUInt32(HeroConfig.text);
         MainPlayer = EntityManager.Instance.Get(HeroConfigID, 1);
+        if(MainPlayer == null)
+        {
+            Debug.LogError("加载英雄失败！ configID = " + HeroConfigID);
+            return;
+        }
         MainPlayer.Pos = new Vector3(28.5f, 4.6f, 45f);
         CameraController.Instance.LookTarget = MainPlayer;
         GameManager.MainPlayer = MainPlayer;

@@ -6,6 +6,7 @@ public class MoveModule : ModuleBase {
     bool m_isMoving = false;
     NavMeshAgent m_navAgent = null;
     NavMeshPath m_navPath = null;
+    NavMeshObstacle m_obstacle = null;
     Vector3[] m_path = null;
     int m_curStep = 0;
     Vector3 m_MoveDir = Vector3.zero;
@@ -17,15 +18,30 @@ public class MoveModule : ModuleBase {
 	public MoveModule(Entity entity) : base(entity)
     {
         
-        
+    }
+
+    bool _isInit = false;
+    void InitNavMeshComponent()
+    {
+        if(!_isInit)
+        {
+//             if (m_obstacle == null)
+//             {
+//                 m_obstacle = m_object.AddComponent<NavMeshObstacle>();
+//                 m_obstacle.shape = NavMeshObstacleShape.Capsule;
+//                 m_obstacle.center = new Vector3(0f, 1f, 0f);
+//                 m_obstacle.radius = 1f;
+//             }
+            if (m_navAgent == null)
+            {
+                m_navAgent = m_object.AddComponent<NavMeshAgent>();
+            }
+            _isInit = true;
+        }
     }
 
     public void MoveTo(Vector3 des)
     {
-        if(m_navAgent == null)
-        {
-            m_navAgent = m_object.AddComponent<NavMeshAgent>();
-        }
 
         if ((m_object.transform.position - des).sqrMagnitude < 0.1f)
             return;
@@ -87,6 +103,7 @@ public class MoveModule : ModuleBase {
 
     public override void Update()
     {
+        InitNavMeshComponent();
         if(m_isMoving)
         {
             UpdateMoving();

@@ -17,7 +17,8 @@ public class SkillBase
     public SkillBase(CSVSkill si)
     {
         this.skillInfo = si;
-        fCDTotalTime = fCDLeftTime = si.coolTime;
+        fCDTotalTime = si.coolTime;
+        fCDLeftTime = 0;
     }
 
     public void BeginCD()
@@ -28,7 +29,8 @@ public class SkillBase
     public virtual void Reset(CSVSkill si)
     {
         this.skillInfo = si;
-        fCDTotalTime = fCDLeftTime = si.coolTime;
+        fCDTotalTime = si.coolTime;
+        fCDLeftTime = 0;
     }
 
     public virtual void Update()
