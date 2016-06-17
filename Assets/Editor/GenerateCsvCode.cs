@@ -29,7 +29,7 @@ public class GenerateCsvCode
             if (!file.Name.EndsWith(".csv"))
                 continue;
             
-            using(StreamReader sr = new StreamReader(new FileStream(file.FullName,FileMode.Open),Encoding.Default))
+            using(StreamReader sr = new StreamReader(new FileStream(file.FullName,FileMode.Open,FileAccess.Read),Encoding.Default))
             {
                 string desc = sr.ReadLine();        //字段注释
                 string field = sr.ReadLine();       //字段名               

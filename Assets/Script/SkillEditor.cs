@@ -9,7 +9,6 @@ public class SkillEditor : MonoBehaviour
     public InputField SkillID;         
     public InputField SkillType;     
     public InputField AttackType;
-    public InputField MagicType;
     public InputField AttackDistance;
     public InputField HitTime;
     public InputField FlySpeed;
@@ -33,7 +32,7 @@ public class SkillEditor : MonoBehaviour
 
     static string[] ItemName = new string[]
     {
-        "HeroConfig","SkillID","SkillType","AttackType","MagicType","AttackDistance","HitTime",
+        "HeroConfig","SkillID","SkillType","AttackType","AttackDistance","HitTime",
         "FlySpeed","CastEffect","CastEffectBeginTime","CastEffectDuration","CastEffectBindBone",
         "BulletEffect","BulletEffectBeginTime","BulletEffectBindBone","BeAttackEffect","CastAction",
         "CastActionBeginTime","BeAttackAction"
@@ -47,7 +46,6 @@ public class SkillEditor : MonoBehaviour
             LoadSkillConfig,
             ()=>{m_SkillInfo.type = Convert.ToUInt32( SkillType.text); },
             ()=>{m_SkillInfo.attackType = Convert.ToUInt32(AttackType.text);},
-            ()=>{m_SkillInfo.magicType = Convert.ToUInt32(MagicType.text);},
             ()=>{m_SkillInfo.attackDistance = Convert.ToUInt32(AttackDistance.text);},
             ()=>{m_SkillInfo.hitTime = Convert.ToSingle(HitTime.text);},
             ()=>{m_SkillInfo.flySpeed = Convert.ToSingle(FlySpeed.text);},
@@ -78,7 +76,7 @@ public class SkillEditor : MonoBehaviour
                     return;
                 }
                 //每次都new新的技能，以确保技能配置是修改过后的
-                MainPlayer.Skill.CastSkill(new SkillBase(m_SkillInfo));
+                MainPlayer.Skill.CastSkill(new SkillBase(m_SkillInfo,MainPlayer));
             }
             );
 
@@ -119,7 +117,7 @@ public class SkillEditor : MonoBehaviour
 
         SkillType.text = m_SkillInfo.type.ToString();   
         AttackType.text = m_SkillInfo.attackType.ToString(); 
-        MagicType.text = m_SkillInfo.magicType.ToString(); 
+        //MagicType.text = m_SkillInfo.magicType.ToString(); 
         AttackDistance.text = m_SkillInfo.attackDistance.ToString(); 
         HitTime.text = m_SkillInfo.hitTime.ToString(); 
         FlySpeed.text = m_SkillInfo.flySpeed.ToString();

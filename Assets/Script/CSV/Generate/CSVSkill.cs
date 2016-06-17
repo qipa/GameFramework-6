@@ -1,5 +1,5 @@
 //此代码根据 Skill.csv 自动生成，不要手动修改！！！！
-//工具菜单：Export/CSV_TO_C#    生成时间 ： 6/16/2016 2:42:16 PM
+//工具菜单：Export/CSV_TO_C#    生成时间 ： 6/17/2016 3:00:31 PM
 using System;
 public class CSVSkill
 {
@@ -11,10 +11,8 @@ public class CSVSkill
 	public string skillIntro;    //技能描述
 	public uint damageCoefficient;    //技能系数(伤害 / 召唤物ID)
 	public uint level;    //技能等级 
-	public uint targetTpye;    //选择目标类型 1.指定目标 2.自己 3.所有友方 4.血量最少友方
-	public uint attackType;    //施法方式 1.绑定技能(近战)2.范围技能 3.子弹(无目标) 4.子弹(有目标)
-	public uint magicType;    //施法范围类型 1.点 2.线形(以人为起点 打向鼠标位置)3.扇形(以自身为起点 默认120°)4.圆形(鼠标为原点或自身为原点)
-	public float attackDistance;    //施法距离(单位厘米)
+	public uint attackType;    //施法范围类型 1.单个敌人  2.自己  3.线形(以人为起点 打向鼠标位置) 4.扇形(以自身为起点 默认120°) 5.圆形(鼠标为原点或自身为原点)
+	public float attackDistance;    //施法距离(单位米)
 	public float guideTime;    //引导时间
 	public float hitTime;    //击中时间(闪避技能战士、弩手不能有击中时间否则模型会消失)
 	public float coolTime;    //冷却时间
@@ -45,8 +43,5 @@ public class CSVSkill
 	public string beattackAction;    //受击动作
 	public float beattackActionBeginTime;    //受击动作开始时间
 	public float beattackActionDuration;    //受击动作持续时间
-	public float comboBeginTime;    //连击命令接收开始时间
-	public float comboEndTime;    //连击命令接收持续时间
 	public uint sound;    //声音
-	public int isCD;    //是否CD 初始状态处在CD状态:1.不进入CD状态 2.进入CD状态
 }

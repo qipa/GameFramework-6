@@ -41,23 +41,5 @@ public class BulletManager : Singleton<BulletManager>
         m_bulletPool.Clear();
     }
 
-    public static void BulletHit(Entity caster, Entity target, CSVSkill skillInfo)
-    {
-        //受击动作
-        if (!string.IsNullOrEmpty(skillInfo.beattackAction))
-        {
-            target.Anim.SyncAction(skillInfo.beattackAction);
-        }
-        //受击特效
-
-        if (!string.IsNullOrEmpty(skillInfo.beattackEffect))
-        {
-            EffectEntity effect = EffectManager.Instance.GetEffect(skillInfo.beattackEffect);
-            effect.Init(eDestroyType.Time, skillInfo.beattackActionDuration);
-
-            effect.Pos = target.Pos;
-            effect.Forward = target.Forward;
-        }
-
-    }
+   
 }

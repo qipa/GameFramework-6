@@ -27,34 +27,35 @@ public class OnCastSkill
 class SKillEvent
 {
     public float fTriggerTime = 0f;    //事件触发时间
-    public System.Action<CSVSkill> func = null;
+    public System.Action<uint,List<Entity>> func = null;
     public bool isActive = false;
-    public CSVSkill skillInfo = null;
+    public uint skillID = 0;
+    public List<Entity> targets = null;
 }
 
 public class SkillModule : ModuleBase {
     public int normalAttackStep = 0;
  
-    private List<SkillBase> normalAttacks = new List<SkillBase>();
-    private List<SkillBase> Skills = new List<SkillBase>();
-    List<Entity> targets = new List<Entity>();
+    private List<SkillBase> m_normalAttackList = new List<SkillBase>();
+    private List<SkillBase> m_skillList = new List<SkillBase>();
 
-    SkillBase CurSkill = null;
-    bool m_bIsCasting = false;
+
+    SkillBase m_curSkill = null;
+    public bool m_bIsCasting = false;
     List<SKillEvent> m_skillEventList = new List<SKillEvent>();
 
-    public float LastNormalAttackTime = 0f;
+    public float m_LastNormalAttackTime = 0f;
 
 	public SkillModule(Entity entity) : base(entity)
     {
-        
-        
+
+        SetSpecialSkills(entity.EntityCfg.Skill);
     }
 
     public void SetNormalSkills(string str)
     {
         string[] s = str.Split(new char[]{'|'});
-        normalAttacks.Clear();
+        m_normalAttackList.Clear();
         for(int i = 0; i < s.Length;i++)
         {
             uint SkillID =  System.Convert.ToUInt32(s[i]);
@@ -64,18 +65,34 @@ public class SkillModule : ModuleBase {
                 Log.Error("不存在技能id " + SkillID);
                 continue;
             }
-            normalAttacks.Add(new SkillBase(sk));
+            m_normalAttackList.Add(new SkillBase(sk, m_entity));
+        }
+    }
+    public void SetSpecialSkills(string str)
+    {
+        string[] s = str.Split(new char[] { '|' });
+        m_skillList.Clear();
+        for (int i = 0; i < s.Length; i++)
+        {
+            uint SkillID = System.Convert.ToUInt32(s[i]);
+            CSVSkill sk = CSVManager.GetSkillCfg(SkillID);
+            if (sk == null)
+            {
+                Log.Error("不存在技能id " + SkillID);
+                continue;
+            }
+            m_skillList.Add(new SkillBase(sk, m_entity));
         }
     }
 
     public override void Update()
     {
         CheckSkillEvent();
-        for(int i = 0; i < Skills.Count;i++)
+        for (int i = 0; i < m_skillList.Count; i++)
         {
-            if(Skills[i] != null)
+            if (m_skillList[i] != null)
             {
-                Skills[i].Update();
+                m_skillList[i].Update();
             }
         }
        
@@ -106,36 +123,12 @@ public class SkillModule : ModuleBase {
             SKillEvent evt = m_skillEventList[i];
             if (Time.time >= evt.fTriggerTime && evt.isActive)   //触发时间到了
             {
-                evt.func(evt.skillInfo);
+                evt.func(evt.skillID,evt.targets);
                 evt.isActive = false;
             }
         }
     }
 
-    public virtual void GetTargets()   //得到技能的释放对象
-    {
-        // 1:普通攻击  2：直线   3：扇形   4：范围
-        targets.Clear();
-//         if (CurSkill.skillInfo.uSkillType == 1)
-//         {
-//             if (m_entity.SelectTarget != null)
-//             {
-//                 targets.Add(m_entity.SelectTarget);
-//             }
-//         }
-//         else if (CurSkill.skillInfo.uSkillType == 2)
-//         {
-// 
-//         }
-//         else if (CurSkill.skillInfo.uSkillType == 3)
-//         {
-// 
-//         }
-//         else if (CurSkill.skillInfo.uSkillType == 4)
-//         {
-// 
-//         }
-    }
 
     public void ReqCastSkill()
     {
@@ -147,7 +140,7 @@ public class SkillModule : ModuleBase {
         SkillBase skill = null;
         if (index == 0)  //普攻
         {           
-            if (Time.time - LastNormalAttackTime > 1f)
+            if (Time.time - m_LastNormalAttackTime > 1f)
             {
                 normalAttackStep = 0;
             }
@@ -155,13 +148,13 @@ public class SkillModule : ModuleBase {
             {
                 normalAttackStep++;
             }
-            skill = normalAttacks[normalAttackStep % normalAttacks.Count];
-            LastNormalAttackTime = Time.time;       //上一次普通攻击的时间
+            skill = m_normalAttackList[normalAttackStep % m_normalAttackList.Count];
+            m_LastNormalAttackTime = Time.time;       //上一次普通攻击的时间
            
         }
         else     //技能
         {
-            skill = Skills[index];
+            skill = m_skillList[index - 1];
         }
         return CastSkill(skill);       
     }
@@ -172,133 +165,133 @@ public class SkillModule : ModuleBase {
             return false;
         m_entity.Move.StopMove(false);
         m_entity.Anim.Stop();
-        GetTargets();
+      
 
-        CurSkill = skill;
-        if (CurSkill.skillInfo.type == 1)        //普攻
+        m_curSkill = skill;
+        if (m_curSkill.m_skillInfo.type == 1)        //普攻
         {
-            
-            m_entity.SelectTarget = FindTarget(CurSkill.skillInfo);
-            if (m_entity.SelectTarget != null)
-            {
-                targets.Add(m_entity.SelectTarget);
-                m_entity.Forward = (m_entity.SelectTarget.Pos - m_entity.Pos).normalized;
-            }
             m_bIsCasting = false;       //普攻不算技能释放
         }
         else
         {
-            CurSkill.BeginCD();
+            m_curSkill.BeginCD();
             m_bIsCasting = true;
         }
-        RegSkillEvent(CurSkill);
+        RegSkillEvent(m_curSkill);
         return true;
     }
 
     void RegSkillEvent(SkillBase skill)
     {
 
+        List<Entity> targets =  skill.GetSkillTargets();
+
         SKillEvent evt = null;
         //播放特效
-        if (!string.IsNullOrEmpty(skill.skillInfo.castEffect))  
+        if (!string.IsNullOrEmpty(skill.m_skillInfo.castEffect))  
         {
             evt = GetSkillEvent();
-            evt.fTriggerTime = skill.skillInfo.castEffectBeginTime / m_entity.Property.AttackSpeed + Time.time;
+            evt.fTriggerTime = skill.m_skillInfo.castEffectBeginTime / m_entity.Property.AttackSpeed + Time.time;
             evt.func = PlayEffect;
             evt.isActive = true;
-            evt.skillInfo = skill.skillInfo;
+            evt.skillID = skill.m_skillInfo.ID;
             AddSkillEvent(evt);
         }
 
         //播放动作
-        if (!string.IsNullOrEmpty(skill.skillInfo.castAction))
+        if (!string.IsNullOrEmpty(skill.m_skillInfo.castAction))
         {
             evt = GetSkillEvent();
-            evt.fTriggerTime = skill.skillInfo.castActionBeginTime / m_entity.Property.AttackSpeed + Time.time;
+            evt.fTriggerTime = skill.m_skillInfo.castActionBeginTime / m_entity.Property.AttackSpeed + Time.time;
             evt.func = PlayAction;
             evt.isActive = true;
-            evt.skillInfo = skill.skillInfo;
+            evt.skillID = skill.m_skillInfo.ID;
             AddSkillEvent(evt);
         }
 
-        if (!string.IsNullOrEmpty(skill.skillInfo.BulletEffect))
+        //释放子弹
+        if (!string.IsNullOrEmpty(skill.m_skillInfo.BulletEffect))
         {
             evt = GetSkillEvent();
-            evt.fTriggerTime = skill.skillInfo.BulletBeginTime + Time.time;
-            evt.skillInfo = skill.skillInfo;
+            evt.fTriggerTime = skill.m_skillInfo.BulletBeginTime + Time.time;
+            evt.skillID = skill.m_skillInfo.ID;
             evt.func = CastBullet;
             evt.isActive = true;
             AddSkillEvent(evt);
         }
+
+        /*技能击中一般分为2种：
+        * 1、可配置型：    由时间控制、即hitTime，在技能编辑器中可以调好适当的值， 非子弹型技能一般都可以这样
+        * 2、不可配置型：  如子弹型技能，因为与怪距离有远有近，无法配置hitTime，  这种由代码控制
+       */
+
         //击中处理
-        if (skill.skillInfo.hitTime.Equals(0f) == false)
+        if (skill.m_skillInfo.hitTime.Equals(0f) == false)
         {
             evt = GetSkillEvent();
-            evt.fTriggerTime = (skill.skillInfo.castActionBeginTime + skill.skillInfo.hitTime) / m_entity.Property.AttackSpeed + Time.time;
+            evt.fTriggerTime = (skill.m_skillInfo.castActionBeginTime + skill.m_skillInfo.hitTime) / m_entity.Property.AttackSpeed + Time.time;
             evt.func = SkillHit;
             evt.isActive = true;
-            evt.skillInfo = skill.skillInfo;
+            evt.skillID = skill.m_skillInfo.ID;
+            evt.targets = targets;   //只有击中才需要得到技能的作用目标
             AddSkillEvent(evt);
         }
 
-//         //combo时机开始
-//         if (CurSkill.skillInfo.comboBeginTime != 0)                      
-//         {
-//             evt = GetSkillEvent();
-//             evt.func = ComboBegin;
-//             evt.fTriggerTime = CurSkill.skillInfo.comboBeginTime / m_entity.Property.AttackSpeed + Time.time;
-//             evt.isActive = true;
-//             AddSkillEvent(evt);
-//             
-//         }
-// 
-//         //combo时机结束
-//         if (CurSkill.skillInfo.comboEndTime != 0)                       
-//         {
-//             evt = GetSkillEvent();
-//             evt.func = ComboEnd;
-//             evt.fTriggerTime = (CurSkill.skillInfo.comboBeginTime + CurSkill.skillInfo.comboEndTime) / m_entity.Property.AttackSpeed + Time.time;
-//             evt.isActive = true;
-//             AddSkillEvent(evt);
-//             
-//         }
-
         evt = GetSkillEvent();
-        evt.fTriggerTime = (skill.skillInfo.castActionBeginTime + skill.skillInfo.castActionDuration) / m_entity.Property.AttackSpeed + Time.time;
+        evt.fTriggerTime = (skill.m_skillInfo.castActionBeginTime + skill.m_skillInfo.castActionDuration) / m_entity.Property.AttackSpeed + Time.time;
         evt.func = SkillEnd;
         evt.isActive = true;
-        evt.skillInfo = skill.skillInfo;
+        evt.skillID = skill.m_skillInfo.ID;
         AddSkillEvent(evt);
     }
 
 
     //由时间控制的击中事件，一般是近战类攻击击中目标
-    public void SkillHit(CSVSkill skillInfo)
+    public void SkillHit(uint skillID, List<Entity> targets = null)
     {
-        for (int i = 0; i < targets.Count; i++)
+        if(targets == null)
         {
-            Entity target = targets[i];
-            //受击动作
-            if (!string.IsNullOrEmpty(skillInfo.beattackAction))
+            Log.Info("技能id = " + skillID + " 没有目标");
+            return;
+        }
+
+        CSVSkill skillInfo = CSVManager.GetSkillCfg(skillID);
+
+        //技能类型(1.普攻 2.物理 3.法术 4.保护 5.治疗 6.辅助 7.召唤 8.被动)
+        if (skillInfo.type <= 3)
+        {
+            for (int i = 0; i < targets.Count; i++)
             {
-                target.Anim.SyncAction(skillInfo.beattackAction);
+                Entity target = targets[i];
+                //受击动作
+                if (!string.IsNullOrEmpty(skillInfo.beattackAction))
+                {
+                    target.Anim.SyncAction(skillInfo.beattackAction);
+                }
+                //受击特效
+
+                if (!string.IsNullOrEmpty(skillInfo.beattackEffect))
+                {
+                    EffectEntity effect = EffectManager.Instance.GetEffect(skillInfo.beattackEffect);
+                    effect.Init(eDestroyType.Time, skillInfo.beattackActionDuration);
+
+                    effect.Pos = target.Pos;
+                    effect.Forward = target.Forward;
+                }
             }
-            //受击特效
-
-            if (!string.IsNullOrEmpty(skillInfo.beattackEffect))
+        }
+        else if(skillInfo.type <= 6)
+        {
+            //添加增益buff
+            for (int i = 0; i < targets.Count; i++)
             {
-                EffectEntity effect = EffectManager.Instance.GetEffect(skillInfo.beattackEffect);
-                effect.Init(eDestroyType.Time, skillInfo.beattackActionDuration);
-
-                effect.Pos = target.Pos;
-                effect.Forward = target.Forward;
             }
         }
     }
 
-    void PlayEffect(CSVSkill skillInfo)
+    void PlayEffect(uint skillID,List<Entity> targets = null)
     {
-        
+        CSVSkill skillInfo = CSVManager.GetSkillCfg(skillID);
         if (string.IsNullOrEmpty(skillInfo.castEffect))
             return;
 
@@ -308,7 +301,13 @@ public class SkillModule : ModuleBase {
 
         if (!string.IsNullOrEmpty(skillInfo.castEffectBindBone))
         {
-            Transform bone = m_entity.GetBone(skillInfo.castEffectBindBone);
+            Transform bone = null;
+
+            if (skillInfo.castEffectBindBone.CompareTo("self") == 0)
+                bone = m_object.transform;
+            else
+                bone = m_entity.GetBone(skillInfo.castEffectBindBone);
+
             if (bone != null)
             {
                 effect.Bind(bone);
@@ -322,21 +321,19 @@ public class SkillModule : ModuleBase {
         }
     }
 
-    void CastBullet(CSVSkill skillInfo)
+    void CastBullet(uint skillID, List<Entity> targets = null)
     {
-        //子弹型普攻  即远程普攻
-        if (skillInfo.attackType == 3 || skillInfo.attackType == 4)
+        CSVSkill skillInfo = CSVManager.GetSkillCfg(skillID);
+        Bullet bu = BulletManager.Instance.Get();
+        if (bu != null)
         {
-            Bullet bu = BulletManager.Instance.Get();
-            if (bu != null)
-            {
-                bu.Init(m_entity, skillInfo, BulletManager.BulletHit, m_entity.SelectTarget);
-            }
+            bu.Init(m_entity, skillInfo, SkillProcesser.BulletHit, m_entity.SelectTarget);
         }
     }
 
-    void PlayAction(CSVSkill skillInfo)
+    void PlayAction(uint skillID, List<Entity> targets = null)
     {
+        CSVSkill skillInfo = CSVManager.GetSkillCfg(skillID);
         if(!string.IsNullOrEmpty(skillInfo.castAction))
         {
             m_entity.Anim.SyncAction(skillInfo.castAction);
@@ -344,7 +341,7 @@ public class SkillModule : ModuleBase {
        
     }
 
-    void SkillEnd(CSVSkill skillInfo)
+    void SkillEnd(uint skillID, List<Entity> targets = null)
     {
         m_bIsCasting = false;
         //m_entity.Anim.SyncAction("Idle_Sword");
@@ -358,23 +355,6 @@ public class SkillModule : ModuleBase {
         }
     }
     
-
-    public Entity FindTarget(CSVSkill skillInfo)
-    {
-        Entity ent = null;
-        var e = EntityManager.Instance.m_dicObject.GetEnumerator();
-        while(e.MoveNext())
-        {
-            ent = e.Current.Value;
-            if (ent.Camp == eCamp.Hero || ent.Camp == eCamp.Friend)
-                continue;
-            if ((ent.Pos - m_entity.Pos).sqrMagnitude <= skillInfo.attackDistance * skillInfo.attackDistance)
-            {
-                return ent;
-            }
-        }
-        return null;
-    }
 }
 
 

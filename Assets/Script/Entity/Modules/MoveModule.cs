@@ -45,7 +45,10 @@ public class MoveModule : ModuleBase {
 
         if ((m_object.transform.position - des).sqrMagnitude < 0.1f)
             return;
-        
+
+        //正在释放技能
+        if (m_entity.Skill.m_bIsCasting)
+            return;
 
         //计算路径
         if (m_navPath == null)

@@ -25,7 +25,8 @@ public class Log
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
 
-                ms_sw = File.CreateText(path + "zws.txt");
+                //ms_sw = File.CreateText(path + "zws.txt");
+                ms_sw = new StreamWriter(path + "zws.txt");
                 ms_sw.AutoFlush = true;
             }
             catch (Exception e)

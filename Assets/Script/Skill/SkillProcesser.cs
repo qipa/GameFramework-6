@@ -68,6 +68,40 @@ public class SkillProcesser
         }
         return targets;
     }
+    public static Entity GetTargetInSkillDistance(Entity caster, CSVSkill skillInfo)
+    {
+        Entity ent = null;
+        var e = EntityManager.Instance.m_dicObject.GetEnumerator();
+        while (e.MoveNext())
+        {
+            ent = e.Current.Value;
+            if (ent.Camp == eCamp.Hero || ent.Camp == eCamp.Friend)
+                continue;
+            if ((ent.Pos - caster.Pos).sqrMagnitude <= skillInfo.attackDistance * skillInfo.attackDistance)
+            {
+                return ent;
+            }
+        }
+        return null;
+    }
 
+    public static void BulletHit(Entity caster, Entity target, CSVSkill skillInfo)
+    {
+        //受击动作
+        if (!string.IsNullOrEmpty(skillInfo.beattackAction))
+        {
+            target.Anim.SyncAction(skillInfo.beattackAction);
+        }
+        //受击特效
 
+        if (!string.IsNullOrEmpty(skillInfo.beattackEffect))
+        {
+            EffectEntity effect = EffectManager.Instance.GetEffect(skillInfo.beattackEffect);
+            effect.Init(eDestroyType.Time, skillInfo.beattackActionDuration);
+
+            effect.Pos = target.Pos;
+            effect.Forward = target.Forward;
+        }
+
+    }
 }

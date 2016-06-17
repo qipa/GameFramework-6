@@ -14,7 +14,6 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
     public Action<Vector2> OnJoystickMovement;
     public Action OnEndJoystickMovement;
 
-    private bool _returnHandle;
     private RectTransform _canvas;
     bool _isDraging = false;
     bool _isReturn = false;
