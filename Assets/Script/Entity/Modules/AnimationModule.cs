@@ -6,7 +6,6 @@ using System;
 public class AnimationModule : ModuleBase
 {
     Animator m_animator = null;
-    string m_curAnimName = string.Empty;
 	public AnimationModule(Entity entity) : base(entity)
     {
         m_animator = m_object.GetComponent<Animator>();

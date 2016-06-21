@@ -167,7 +167,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         Quaternion q = Camera.main.transform.rotation;
 
         dir = q * dir;
-        dir *= 3f;      //摇杆控制的角色行走距离为3
+        dir *= 4f;      //摇杆控制的角色行走距离为3
 
         Vector3 targetPos = new Vector3(GameManager.MainPlayer.Pos.x + dir.x, GameManager.MainPlayer.Pos.y, GameManager.MainPlayer.Pos.z + dir.z);
         GameManager.MainPlayer.Move.MoveTo(targetPos);

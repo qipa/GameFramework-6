@@ -45,7 +45,8 @@ public class SkillModule : ModuleBase {
     List<SKillEvent> m_skillEventList = new List<SKillEvent>();
 
     public float m_LastNormalAttackTime = 0f;
-
+    SnapShot m_snapShot = null;
+    public uint ComboCount = 0;
 	public SkillModule(Entity entity) : base(entity)
     {
 
@@ -95,7 +96,13 @@ public class SkillModule : ModuleBase {
                 m_skillList[i].Update();
             }
         }
-       
+
+     
+        if (m_snapShot == null)
+        {
+            m_snapShot = m_object.AddComponent<SnapShot>();
+        }
+        m_snapShot.m_CanBirth = (Time.time - m_LastNormalAttackTime < 1f && normalAttackStep > 0);
     }
 
     void AddSkillEvent(SKillEvent evt)
@@ -140,13 +147,19 @@ public class SkillModule : ModuleBase {
         SkillBase skill = null;
         if (index == 0)  //普攻
         {           
-            if (Time.time - m_LastNormalAttackTime > 1f)
+            float delta = Time.time - m_LastNormalAttackTime;
+
+            if (delta <= 0.5f)   //普攻释放频率太高也不行
             {
-                normalAttackStep = 0;
+                return false;
+            }
+            else if (delta <= 1f)
+            {
+                normalAttackStep++;              
             }
             else
             {
-                normalAttackStep++;
+                normalAttackStep = 0;
             }
             skill = m_normalAttackList[normalAttackStep % m_normalAttackList.Count];
             m_LastNormalAttackTime = Time.time;       //上一次普通攻击的时间
@@ -168,7 +181,7 @@ public class SkillModule : ModuleBase {
       
 
         m_curSkill = skill;
-        if (m_curSkill.m_skillInfo.type == 1)        //普攻
+        if (m_curSkill.IsNormalAttackSkill)     //普攻
         {
             m_bIsCasting = false;       //普攻不算技能释放
         }

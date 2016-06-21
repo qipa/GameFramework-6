@@ -39,11 +39,16 @@ public class Entity : EntityBase
 
     public CSVEntity EntityCfg { get; private set; }
 
-    public eCamp Camp = eCamp.Hero;
+    public eCamp Camp = eCamp.Enemy;
+
+    public bool IsMainPlayer
+    {
+        get { return Camp == eCamp.Hero; }
+    }
 
     //此构造函数主要用于加载角色
     //param : 角色配置表的key值
-    public Entity(uint configID,ulong uID,eCamp camp) 
+    public Entity(uint configID,ulong uID) 
     {
         //注意顺序，首先应该加载 gameobject，然后实例化其他模块，因为其他模块的构造会依赖于这个gameobject
         EntityCfg = CSVManager.GetEntityCfg(configID);
@@ -54,7 +59,6 @@ public class Entity : EntityBase
 
         m_object = GameObject.Instantiate(ResManager.Load(EntityCfg.ResPath)) as GameObject;
         m_object.transform.SetParent(EntityManager.Instance.EntityRoot);
-        this.Camp = camp;
         UID = uID;
         FillMapBones(); //映射骨骼信息
         InitModules();

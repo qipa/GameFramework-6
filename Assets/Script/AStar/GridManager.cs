@@ -27,6 +27,7 @@ public class GridManager : MonoBehaviour
     public bool showObstacle = true;
     public bool CheckSlope = false;     //是否检测坡度
     public float maxSlope = 45f;        //坡度最大默认为45度
+    public string fileName = "";        //保存路径的文件名
     private Vector3 origin = Vector3.zero;
     public Node[,] nodes = null;
     public Vector3 Origin
@@ -48,7 +49,8 @@ public class GridManager : MonoBehaviour
             Foreach_Node((i,j,node) =>
                 {
                     Vector3 cellPos = GetGridCenterPos(i, j);
-                    nodes[i,j] = new Node(cellPos);
+                    nodes[i,j] = new Node();
+                    nodes[i, j].position = cellPos;
                 }
                 );
         }
@@ -123,11 +125,14 @@ public class GridManager : MonoBehaviour
         //绘制障碍
         if (showObstacle && nodes != null)
         {
-            Vector3 cellSize = new Vector3(GridCellSize, 1.0f, GridCellSize);
             Foreach_Node((i,j,node)=>
                 {
                     if (node.bWalkable == false)
-                        Gizmos.DrawCube(node.position, cellSize);
+                    {
+                        Vector3 pos = node.position;
+                        pos.y += GridCellSize / 2;
+                        Gizmos.DrawSphere(pos, GridCellSize / 2);
+                    }
                 }
                 );
         }
@@ -227,12 +232,14 @@ public class GridManager : MonoBehaviour
 
     void Save()
     {
-        using(FileStream fs = new FileStream(Application.dataPath + "/Resources/PathInfo/test.bytes", FileMode.OpenOrCreate, FileAccess.ReadWrite))
+        string filePath = Application.dataPath + "/Resources/PathInfo/" + fileName + ".bytes";
+        using (FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
         {
             CStream s = new CStream(fs);
             s.WriteInt(rows);
             s.WriteInt(columns);
             s.WriteFloat(GridCellSize);
+            s.WriteVector3(ref origin);
 
             Foreach_Node((i,j,node)=>
                 {
@@ -242,18 +249,19 @@ public class GridManager : MonoBehaviour
                 );
             s.Close();
         }
-        Debug.Log("保存地图信息成功!");
+        Debug.Log("保存成功 ===> " + filePath);
     }
 
     void Load()
     {
-        
-        using (FileStream fs = new FileStream(Application.dataPath + "/Resources/PathInfo/test.bytes", FileMode.OpenOrCreate, FileAccess.ReadWrite))
+        string filePath = Application.dataPath + "/Resources/PathInfo/" + fileName + ".bytes";
+        using (FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
         {
             CStream s = new CStream(fs);
             rows = s.ReadInt();
             columns = s.ReadInt();
             s.ReadFloat(ref GridCellSize);
+            s.ReadVector3(ref origin);
 
             nodes = null;
             InitNodes();

@@ -16,9 +16,34 @@ public class SkillBase
         get { return m_fCDLeftTime > 0f; }
     }
 
-    public bool IsNormalAttack
+    //是否为普攻
+    public bool IsNormalAttackSkill
     {
         get { return m_skillInfo.type == 1; }
+    }
+
+    //是否为攻击性技能
+    public bool IsAttackSkill
+    {
+        get { return m_skillInfo.type == 2 || m_skillInfo.type == 3; }
+    }
+
+    //是否为辅助性技能
+    public bool IsAssistSkill
+    {
+        get { return m_skillInfo.type >= 4 && m_skillInfo.type <= 6; }
+    }
+
+    //是否为召唤技能
+    public bool IsCallSkill
+    {
+        get { return m_skillInfo.type == 7; }
+    }
+
+    //是否为被动技能
+    public bool IsPassiveSkill
+    {
+        get { return m_skillInfo.type == 8; }
     }
 
     public SkillBase(CSVSkill si,Entity caster)
@@ -48,7 +73,7 @@ public class SkillBase
     public List<Entity> GetSkillTargets()
     {
         m_targets.Clear();
-        if(IsNormalAttack)      //普攻
+        if(IsNormalAttackSkill)      //普攻
         {
             m_caster.SelectTarget = SkillProcesser.GetTargetInSkillDistance(m_caster, m_skillInfo);
             if (m_caster.SelectTarget != null)
@@ -127,24 +152,21 @@ public class SkillBase
                      }
                  }
             }
-            else if (m_skillInfo.attackType == 5)     //圆形
+            else if (m_skillInfo.attackType == 5)        //圆形
             {
-                
-                //技能类型(1.普攻 2.物理 3.法术 4.保护 5.治疗 6.辅助 7.召唤 8.被动)
-
-                bool toEnemy = m_skillInfo.type <= 3;
+                //圆形范围技能，一般还要判断作用对象是敌人还是自己人
 
                 var e = EntityManager.Instance.m_dicObject.GetEnumerator();
                 while (e.MoveNext())
                 {
                     Entity ent = e.Current.Value;
 
-                    if (toEnemy)   //作用对象是敌人
+                    if (IsAttackSkill)   //如果是攻击性技能，作用对象是敌人
                     {
                         if (ent.Camp == eCamp.Hero || ent.Camp == eCamp.Friend)
                             continue;
                     }
-                    else
+                    else if(IsAssistSkill)  //如果是辅助性技能
                     { //作用对象是自己人
                         if (ent.Camp == eCamp.Enemy || ent.Camp == eCamp.Boss)
                             continue;

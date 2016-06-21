@@ -2,39 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Node : IComparable
+public class Node : IComparer<Node>
 {
-    public float G; //实际代价
-    public float H; //估计代价
+    public float G; //实际代价，起点到当前点的代价
+    public float H; //估计代价，当前点到终点的代价
+
     public bool bWalkable;  //是否可走
     public Node parent;
     public Vector3 position;
-
+    public List<Node> neighborList = null;
     public Node()
     {
-        G = 1.0f;
+        G = 0f;
         H = 0f;
         bWalkable = true;
         parent = null;
-    }
-
-    public Node(Vector3 pos)
-    {
-        G = 1.0f;
-        H = 0f;
-        bWalkable = true;
-        parent = null;
-        position = pos;
+        neighborList = new List<Node>();
     }
 
 
-    public int CompareTo(object obj)
+    public int Compare(Node x, Node y)
     {
-        Node node = (Node)obj;
-        if (G < node.G)
-            return -1;
-        if (G > node.G)
-            return 1;
-        return 0;
+        return x.G.CompareTo(y.G);
     }
 }

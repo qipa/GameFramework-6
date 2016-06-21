@@ -262,4 +262,13 @@ public class Util {
     }
 
     
+    public static void DrawPathLine(List<Vector3> pathList)
+    {
+        if (pathList == null)
+            return;
+        for (int i = 0; i < pathList.Count - 1; i++)
+        {
+            Debug.DrawLine(pathList[i], pathList[i + 1], Color.red);
+        }
+    }
 }

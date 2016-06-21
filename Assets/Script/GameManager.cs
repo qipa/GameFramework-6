@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using System.Diagnostics;
 //游戏的入口，不可销毁
 public class GameManager : MonoBehaviour {
 
@@ -18,8 +18,12 @@ public class GameManager : MonoBehaviour {
     public static Entity MainPlayer = null;
 
     public uint HeroConfigID = 10;
+
+    public static Process Proc;
     void Awake()
     {
+        Proc = Process.GetCurrentProcess();
+        Application.targetFrameRate = 45;
         Instance = this;
         DontDestroyOnLoad(gameObject);   
         luaMgr = gameObject.AddComponent<LuaManager>();
@@ -30,10 +34,12 @@ public class GameManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
+        AStar.LoadPathInfo("PathInfo/main");
         luaMgr.InitStart();
 
         CSVManager.LoadAllCsv();
         MainPlayer = EntityManager.Instance.Get(HeroConfigID, 1);
+        MainPlayer.Camp = eCamp.Hero;
 
         Entity enemy = EntityManager.Instance.Get(10, 2);
         enemy.Pos = new Vector3(25f, 4.6f, 42f);
@@ -69,4 +75,8 @@ public class GameManager : MonoBehaviour {
         Log.Stop();
     }
 
+    void OnGUI()
+    {
+        GUI.Label(new Rect(0, 0, 100, 30), "当前内存 : " + Proc.PrivateMemorySize64);
+    }
 }

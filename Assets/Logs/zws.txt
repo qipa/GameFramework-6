@@ -1,16 +1,9 @@
-2016-06-17 17:00:10  Info   :  CtrlManager.InitCtrlList
-2016-06-17 17:00:10  Info   :  TestCtrl.New
-2016-06-17 17:00:10  Info   :  CreatePanel === > TestPanel  TestPanel (UnityEngine.GameObject)
-2016-06-17 17:00:10  Info   :  正在加载配置表 : Config/Entity
-2016-06-17 17:00:10  Info   :  正在加载配置表 : Config/Skill
-2016-06-17 17:00:10  Info   :  正在加载配置表 : Config/Buff
-2016-06-17 17:00:10  Info   :  配置表加载完成
-2016-06-17 17:00:10  Info   :  切换武器成功 : am_Sword
-2016-06-17 17:00:10  Info   :  切换武器成功 : am_Sword
-2016-06-17 17:00:30  Info   :  切换武器成功 : am_Spear
-2016-06-17 17:00:35  Info   :  切换武器成功 : am_Bow
-2016-06-17 17:00:42  Info   :  切换武器成功 : am_Broadsword
-2016-06-17 17:00:53  Info   :  切换武器成功 : am_Sword
-2016-06-17 17:01:05  Info   :  切换武器成功 : am_Spear
-2016-06-17 17:01:12  Info   :  切换武器成功 : am_Bow
-2016-06-17 17:01:15  Info   :  application quit.
+2016-06-21 15:51:47  Info   :  正在加载配置表 : Config/Entity
+2016-06-21 15:51:47  Info   :  正在加载配置表 : Config/Skill
+2016-06-21 15:51:47  Info   :  正在加载配置表 : Config/Buff
+2016-06-21 15:51:47  Info   :  配置表加载完成
+2016-06-21 15:51:49  Info   :  切换武器成功 : am_Sword
+2016-06-21 15:51:49  Info   :  切换武器成功 : am_Sword
+2016-06-21 15:51:53  Info   :  切换武器成功 : am_Spear
+2016-06-21 15:52:09  Info   :  切换武器成功 : am_Bow
+2016-06-21 15:53:01  Info   :  application quit.

@@ -2,27 +2,28 @@
 using System.Collections;
 using UnityEngine.UI;
 using System;
+using System.Reflection;
 public class SkillEditor : MonoBehaviour
 {
 
-    public InputField HeroConfig;     
-    public InputField SkillID;         
-    public InputField SkillType;     
-    public InputField AttackType;
-    public InputField AttackDistance;
-    public InputField HitTime;
-    public InputField FlySpeed;
-    public InputField CastEffect;
-    public InputField CastEffectBeginTime;
-    public InputField CastEffectDuration;
-    public InputField CastEffectBindBone;
-    public InputField BulletEffect;
-    public InputField BulletEffectBeginTime;
-    public InputField BulletEffectBindBone;
-    public InputField BeAttackEffect;
-    public InputField CastAction;
-    public InputField CastActionBeginTime;
-    public InputField BeAttackAction;
+    InputField HeroConfig;     
+    InputField SkillID;         
+    InputField SkillType;     
+    InputField AttackType;
+    InputField AttackDistance;
+    InputField HitTime;
+    InputField FlySpeed;
+    InputField CastEffect;
+    InputField CastEffectBeginTime;
+    InputField CastEffectDuration;
+    InputField CastEffectBindBone;
+    InputField BulletEffect;
+    InputField BulletEffectBeginTime;
+    InputField BulletEffectBindBone;
+    InputField BeAttackEffect;
+    InputField CastAction;
+    InputField CastActionBeginTime;
+    InputField BeAttackAction;
 
 
     public static Entity MainPlayer = null;
@@ -37,6 +38,18 @@ public class SkillEditor : MonoBehaviour
         "BulletEffect","BulletEffectBeginTime","BulletEffectBindBone","BeAttackEffect","CastAction",
         "CastActionBeginTime","BeAttackAction"
     };
+
+    void FindGameObjects()
+    {
+        Type type = this.GetType();
+        for(int i = 0;i < ItemName.Length;i++)
+        {
+            InputField tmp = transform.FindChild(ItemName[i] + "/InputField").GetComponent<InputField>();
+            //通过反射 给那几个InputField成员变量赋值
+            FieldInfo pi = type.GetField(ItemName[i],BindingFlags.NonPublic | BindingFlags.Instance);
+            pi.SetValue(this, tmp);
+        }
+    }
 
     void BindEvent()
     {
@@ -91,6 +104,7 @@ public class SkillEditor : MonoBehaviour
             Debug.LogError("加载英雄失败！ configID = " + HeroConfigID);
             return;
         }
+        MainPlayer.Camp = eCamp.Hero;
         MainPlayer.Pos = new Vector3(28.5f, 4.6f, 45f);
         CameraController.Instance.LookTarget = MainPlayer;
         GameManager.MainPlayer = MainPlayer;
@@ -137,9 +151,12 @@ public class SkillEditor : MonoBehaviour
 
     void Start()
     {
-       
-        CSVManager.LoadAllCsv();
+        GameDefine.UseAstar = false;
+        FindGameObjects();
         BindEvent();
+        CSVManager.LoadAllCsv();
+        
+        
     }
 
     // Update is called once per frame

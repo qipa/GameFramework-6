@@ -50,7 +50,7 @@ public class EntityManager : Singleton<EntityManager>
         }
         else
         {
-            ent = new Entity(configID, uID,eCamp.Hero);
+            ent = new Entity(configID, uID);
         }
         return ent;
     }
