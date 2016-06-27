@@ -7,27 +7,9 @@ public class ResManagerWrap
 	public static void Register(LuaState L)
 	{
 		L.BeginClass(typeof(ResManager), typeof(UnityEngine.MonoBehaviour));
-		L.RegFunction("Load", Load);
 		L.RegFunction("__eq", op_Equality);
 		L.RegFunction("__tostring", Lua_ToString);
 		L.EndClass();
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int Load(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			string arg0 = ToLua.CheckString(L, 1);
-			UnityEngine.Object o = ResManager.Load(arg0);
-			ToLua.Push(L, o);
-			return 1;
-		}
-		catch(Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]

@@ -1,0 +1,32 @@
+ManifestFileVersion: 0
+CRC: 323811981
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 623c4609d7c04b192f6a63601cc83e3f
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 287cbdb1d49e6e2fd2868b47fb5ef284
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 64
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/Scene/Main/Prefabs/mo_3k_map_dx.prefab
+Dependencies: []

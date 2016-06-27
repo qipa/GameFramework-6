@@ -51,6 +51,7 @@ public class SkillModule : ModuleBase {
     {
 
         SetSpecialSkills(entity.EntityCfg.Skill);
+       
     }
 
     public void SetNormalSkills(string str)
@@ -96,13 +97,14 @@ public class SkillModule : ModuleBase {
                 m_skillList[i].Update();
             }
         }
-
-     
-        if (m_snapShot == null)
+        if (m_entity.IsMainPlayer)
         {
-            m_snapShot = m_object.AddComponent<SnapShot>();
+            if (m_snapShot == null)
+            {
+                m_snapShot = m_object.AddComponent<SnapShot>();
+            }
+            m_snapShot.m_CanBirth = (Time.time - m_LastNormalAttackTime < 1f && normalAttackStep > 0);
         }
-        m_snapShot.m_CanBirth = (Time.time - m_LastNormalAttackTime < 1f && normalAttackStep > 0);
     }
 
     void AddSkillEvent(SKillEvent evt)

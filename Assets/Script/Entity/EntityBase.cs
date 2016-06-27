@@ -4,7 +4,7 @@ using System.Collections;
 
 public abstract class EntityBase  {
 
-    protected GameObject m_object = null;     //U3D对象
+    public GameObject m_object = null;     //U3D对象
     private bool _isActive = false;
     public bool IsActive    //是否正在使用
     {
@@ -45,6 +45,10 @@ public abstract class EntityBase  {
         get { return m_object.transform.forward.normalized; }
     }
 
+    public void SetRot(float angle)
+    {
+        m_object.transform.rotation = Quaternion.EulerAngles(0f, angle, 0f);
+    }
 
     public GameObject GetGameObject() { return m_object; }
     void EntityLoadEnd(Object obj)
@@ -59,6 +63,7 @@ public abstract class EntityBase  {
     
     public virtual void Dispose()
     {
+        Log.Info(m_object.name + " 被销毁");
         GameObject.Destroy(m_object);
     }
 

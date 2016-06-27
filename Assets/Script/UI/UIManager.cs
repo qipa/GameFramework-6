@@ -32,13 +32,13 @@ public class UIManager : MonoBehaviour
             Log.Error("UIRoot下已经存在面板 : " + name);
             return;
         }
-        Object prefab = ResManager.Load("UIPrefab/" + name);
+        GameObject prefab = ResManager.Load < GameObject>("UIPrefab/" + name);
         if(prefab == null)
         {
             Log.Error("加载预设失败 : " + name);
             return;
         }
-        GameObject go = GameObject.Instantiate(prefab) as GameObject;
+        GameObject go = GameObject.Instantiate(prefab);
         go.name = name;
         go.layer = LayerMask.NameToLayer("UI");
         go.transform.SetParent(UIRoot);

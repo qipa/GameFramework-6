@@ -21,11 +21,10 @@ public class CameraController : MonoBehaviour {
 
     void Update()
     {
-        //if (GameManager.MainPlayer != null && InputUtil.has_touch_down())
-        //{
-        //    CheckClickMove();
-        //}
-
+//         if (GameManager.MainPlayer != null && InputUtil.has_touch_down())
+//         {
+//             CheckClickMove();
+//        
     }
 
     //检测点击移动角色
@@ -33,7 +32,7 @@ public class CameraController : MonoBehaviour {
     {
         Ray r = Camera.main.ScreenPointToRay(InputUtil.get_touch_pos());
         RaycastHit hitInfo;
-        if (!Physics.Raycast(r, out hitInfo, 100, LayerMask.NameToLayer("Ground")))
+        if (!Physics.Raycast(r, out hitInfo, 100f, ~LayerMask.NameToLayer("Ground")))
             return;
 
         GameManager.MainPlayer.Move.MoveTo(hitInfo.point);

@@ -9,8 +9,8 @@ public struct SnapShotRecord
 }
 public class SnapShot : MonoBehaviour {
 
-    public float m_LiveTime = 0.3f;
-    public float m_BirthInterval = 0.3f;
+    public float m_LiveTime = 0.5f;
+    public float m_BirthInterval = 0.5f;
 
     private List<SnapShotRecord> m_SnapShotList = new List<SnapShotRecord>();
     private SkinnedMeshRenderer [] m_SkinnedRenders;

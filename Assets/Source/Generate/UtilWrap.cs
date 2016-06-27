@@ -17,6 +17,7 @@ public class UtilWrap
 		L.RegFunction("GetFileText", GetFileText);
 		L.RegFunction("AppContentPath", AppContentPath);
 		L.RegFunction("CallMethod", CallMethod);
+		L.RegFunction("DrawPathLine", DrawPathLine);
 		L.RegFunction("New", _CreateUtil);
 		L.RegFunction("__tostring", Lua_ToString);
 		L.RegVar("DataPath", get_DataPath, null);
@@ -243,6 +244,22 @@ public class UtilWrap
 			object[] o = Util.CallMethod(arg0, arg1, arg2);
 			ToLua.Push(L, o);
 			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int DrawPathLine(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			System.Collections.Generic.List<UnityEngine.Vector3> arg0 = (System.Collections.Generic.List<UnityEngine.Vector3>)ToLua.CheckObject(L, 1, typeof(System.Collections.Generic.List<UnityEngine.Vector3>));
+			Util.DrawPathLine(arg0);
+			return 0;
 		}
 		catch(Exception e)
 		{

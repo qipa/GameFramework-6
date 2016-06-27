@@ -14,6 +14,7 @@ public class GameManagerWrap
 		L.RegVar("netMgr", get_netMgr, set_netMgr);
 		L.RegVar("resMgr", get_resMgr, set_resMgr);
 		L.RegVar("uiMgr", get_uiMgr, set_uiMgr);
+		L.RegVar("sceneMgr", get_sceneMgr, set_sceneMgr);
 		L.RegVar("MainPlayer", get_MainPlayer, set_MainPlayer);
 		L.RegVar("HeroConfigID", get_HeroConfigID, set_HeroConfigID);
 		L.EndClass();
@@ -145,6 +146,25 @@ public class GameManagerWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_sceneMgr(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			GameManager obj = (GameManager)o;
+			SceneManager ret = obj.sceneMgr;
+			ToLua.Push(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index sceneMgr on a nil value" : e.Message);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
 	static int get_MainPlayer(IntPtr L)
 	{
 		try
@@ -265,6 +285,25 @@ public class GameManagerWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index uiMgr on a nil value" : e.Message);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_sceneMgr(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			GameManager obj = (GameManager)o;
+			SceneManager arg0 = (SceneManager)ToLua.CheckUnityObject(L, 2, typeof(SceneManager));
+			obj.sceneMgr = arg0;
+			return 0;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o == null ? "attempt to index sceneMgr on a nil value" : e.Message);
 		}
 	}
 

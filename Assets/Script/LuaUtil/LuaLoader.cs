@@ -30,7 +30,7 @@ using LuaInterface;
                 AssetBundle bundle = AssetBundle.CreateFromFile(url);
                 if (bundle != null)
                 {
-                    bundleName = bundleName.Replace("Lua/", "");
+                    bundleName = bundleName.Replace("lua/", "");
                     bundleName = bundleName.Replace(".unity3d", "");
                     base.AddSearchBundle(bundleName.ToLower(), bundle);
                 }

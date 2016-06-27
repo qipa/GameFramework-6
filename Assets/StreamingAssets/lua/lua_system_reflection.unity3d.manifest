@@ -1,0 +1,16 @@
+ManifestFileVersion: 0
+CRC: 1380641204
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 02c8b24e46dec6da37721bd770f7b9c8
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 1033bf7ddfd4c6d43e7a6382c0a0a61a
+HashAppended: 0
+ClassTypes:
+- Class: 49
+  Script: {instanceID: 0}
+Assets:
+- Assets/TmpLua/System/Reflection/BindingFlags.lua.bytes
+Dependencies: []

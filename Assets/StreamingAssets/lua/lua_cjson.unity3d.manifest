@@ -1,0 +1,16 @@
+ManifestFileVersion: 0
+CRC: 3549010027
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 4dd6b62aaa5d42996bcbab6eb49c4ada
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 1033bf7ddfd4c6d43e7a6382c0a0a61a
+HashAppended: 0
+ClassTypes:
+- Class: 49
+  Script: {instanceID: 0}
+Assets:
+- Assets/TmpLua/cjson/util.lua.bytes
+Dependencies: []

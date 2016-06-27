@@ -1,0 +1,159 @@
+ManifestFileVersion: 0
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: lua/lua_cjson.unity3d
+      Dependencies: {}
+    Info_1:
+      Name: lua/lua_controller.unity3d
+      Dependencies: {}
+    Info_2:
+      Name: lua/lua_lpeg.unity3d
+      Dependencies: {}
+    Info_3:
+      Name: lua/lua_misc.unity3d
+      Dependencies: {}
+    Info_4:
+      Name: lua/lua_protobuf.unity3d
+      Dependencies: {}
+    Info_5:
+      Name: lua/lua_socket.unity3d
+      Dependencies: {}
+    Info_6:
+      Name: lua/lua_system.unity3d
+      Dependencies: {}
+    Info_7:
+      Name: lua/lua_unityengine.unity3d
+      Dependencies: {}
+    Info_8:
+      Name: lua/lua_view.unity3d
+      Dependencies: {}
+    Info_9:
+      Name: lua/lua_system_reflection.unity3d
+      Dependencies: {}
+    Info_10:
+      Name: lua/lua.unity3d
+      Dependencies: {}
+    Info_11:
+      Name: effect/prefabs/fx_arrow01.unity3d
+      Dependencies: {}
+    Info_12:
+      Name: effect/prefabs/fx_attack_boardsword_a.unity3d
+      Dependencies: {}
+    Info_13:
+      Name: effect/prefabs/fx_attack_boardsword_b.unity3d
+      Dependencies: {}
+    Info_14:
+      Name: effect/prefabs/fx_attack_boardsword_c.unity3d
+      Dependencies: {}
+    Info_15:
+      Name: effect/prefabs/fx_attack_bowarrow_a.unity3d
+      Dependencies: {}
+    Info_16:
+      Name: effect/prefabs/fx_attack_bowarrow_c.unity3d
+      Dependencies: {}
+    Info_17:
+      Name: effect/prefabs/fx_attack_bow_a.unity3d
+      Dependencies: {}
+    Info_18:
+      Name: effect/prefabs/fx_attack_bow_c.unity3d
+      Dependencies: {}
+    Info_19:
+      Name: effect/prefabs/fx_attack_spear_a.unity3d
+      Dependencies: {}
+    Info_20:
+      Name: effect/prefabs/fx_attack_spear_b.unity3d
+      Dependencies: {}
+    Info_21:
+      Name: effect/prefabs/fx_attack_spear_c.unity3d
+      Dependencies: {}
+    Info_22:
+      Name: effect/prefabs/fx_attack_sword_a.unity3d
+      Dependencies: {}
+    Info_23:
+      Name: effect/prefabs/fx_attack_sword_b.unity3d
+      Dependencies: {}
+    Info_24:
+      Name: effect/prefabs/fx_attack_sword_c.unity3d
+      Dependencies: {}
+    Info_25:
+      Name: effect/prefabs/fx_hitted.unity3d
+      Dependencies: {}
+    Info_26:
+      Name: effect/prefabs/fx_skill01.unity3d
+      Dependencies: {}
+    Info_27:
+      Name: effect/prefabs/fx_skill02.unity3d
+      Dependencies: {}
+    Info_28:
+      Name: effect/prefabs/fx_skill03.unity3d
+      Dependencies: {}
+    Info_29:
+      Name: model/character/tg0001/bo_tg0001.unity3d
+      Dependencies: {}
+    Info_30:
+      Name: model/character/tg0002/bo_tg0002.unity3d
+      Dependencies: {}
+    Info_31:
+      Name: model/character/tg0005/bo_tg0005.unity3d
+      Dependencies: {}
+    Info_32:
+      Name: model/character/tg0006/bo_tg0006.unity3d
+      Dependencies: {}
+    Info_33:
+      Name: model/weapon/prefab/am_bow.unity3d
+      Dependencies: {}
+    Info_34:
+      Name: model/weapon/prefab/am_broadsword.unity3d
+      Dependencies: {}
+    Info_35:
+      Name: model/weapon/prefab/am_knife.unity3d
+      Dependencies: {}
+    Info_36:
+      Name: model/weapon/prefab/am_spear.unity3d
+      Dependencies: {}
+    Info_37:
+      Name: model/weapon/prefab/am_sword.unity3d
+      Dependencies: {}
+    Info_38:
+      Name: scene/101/prefabs/lightshaft.unity3d
+      Dependencies: {}
+    Info_39:
+      Name: scene/101/prefabs/mo_zws_map.unity3d
+      Dependencies: {}
+    Info_40:
+      Name: scene/main/prefabs/mo_3k_map_drum.unity3d
+      Dependencies: {}
+    Info_41:
+      Name: scene/main/prefabs/mo_3k_map_dx.unity3d
+      Dependencies: {}
+    Info_42:
+      Name: scene/main/prefabs/mo_3k_map_guild.unity3d
+      Dependencies: {}
+    Info_43:
+      Name: scene/main/prefabs/mo_3k_map_restuarant.unity3d
+      Dependencies: {}
+    Info_44:
+      Name: scene/main/prefabs/mo_3k_map_shop.unity3d
+      Dependencies: {}
+    Info_45:
+      Name: scene/main/prefabs/mo_3k_map_stadium.unity3d
+      Dependencies: {}
+    Info_46:
+      Name: scene/main/prefabs/mo_3k_map_statue.unity3d
+      Dependencies: {}
+    Info_47:
+      Name: scene/main/prefabs/mo_3k_map_zws.unity3d
+      Dependencies: {}
+    Info_48:
+      Name: uiprefab/fightpanel.unity3d
+      Dependencies: {}
+    Info_49:
+      Name: uiprefab/testpanel.unity3d
+      Dependencies: {}
+    Info_50:
+      Name: config/config.unity3d
+      Dependencies: {}
+    Info_51:
+      Name: pathinfo/pathinfo.unity3d
+      Dependencies: {}

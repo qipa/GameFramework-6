@@ -1,9 +1,120 @@
-2016-06-21 15:51:47  Info   :  正在加载配置表 : Config/Entity
-2016-06-21 15:51:47  Info   :  正在加载配置表 : Config/Skill
-2016-06-21 15:51:47  Info   :  正在加载配置表 : Config/Buff
-2016-06-21 15:51:47  Info   :  配置表加载完成
-2016-06-21 15:51:49  Info   :  切换武器成功 : am_Sword
-2016-06-21 15:51:49  Info   :  切换武器成功 : am_Sword
-2016-06-21 15:51:53  Info   :  切换武器成功 : am_Spear
-2016-06-21 15:52:09  Info   :  切换武器成功 : am_Bow
-2016-06-21 15:53:01  Info   :  application quit.
+2016-06-27 15:20:13  Info   :  <color=#00ff00ff>资源加载模式为 AssetBundle</color>
+2016-06-27 15:20:13  Info   :  正在解包文件 : files.txt
+2016-06-27 15:20:13  Info   :  正在解包文件: StreamingAssets
+2016-06-27 15:20:13  Info   :  正在解包文件: StreamingAssets.manifest
+2016-06-27 15:20:13  Info   :  正在解包文件: config/config.unity3d
+2016-06-27 15:20:13  Info   :  正在解包文件: config/config.unity3d.manifest
+2016-06-27 15:20:13  Info   :  正在解包文件: effect/prefabs/fx_arrow01.unity3d
+2016-06-27 15:20:13  Info   :  正在解包文件: effect/prefabs/fx_arrow01.unity3d.manifest
+2016-06-27 15:20:13  Info   :  正在解包文件: effect/prefabs/fx_attack_boardsword_a.unity3d
+2016-06-27 15:20:13  Info   :  正在解包文件: effect/prefabs/fx_attack_boardsword_a.unity3d.manifest
+2016-06-27 15:20:13  Info   :  正在解包文件: effect/prefabs/fx_attack_boardsword_b.unity3d
+2016-06-27 15:20:13  Info   :  正在解包文件: effect/prefabs/fx_attack_boardsword_b.unity3d.manifest
+2016-06-27 15:20:13  Info   :  正在解包文件: effect/prefabs/fx_attack_boardsword_c.unity3d
+2016-06-27 15:20:13  Info   :  正在解包文件: effect/prefabs/fx_attack_boardsword_c.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_attack_bowarrow_a.unity3d
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_attack_bowarrow_a.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_attack_bowarrow_c.unity3d
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_attack_bowarrow_c.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_attack_bow_a.unity3d
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_attack_bow_a.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_attack_bow_c.unity3d
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_attack_bow_c.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_attack_spear_a.unity3d
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_attack_spear_a.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_attack_spear_b.unity3d
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_attack_spear_b.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_attack_spear_c.unity3d
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_attack_spear_c.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_attack_sword_a.unity3d
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_attack_sword_a.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_attack_sword_b.unity3d
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_attack_sword_b.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_attack_sword_c.unity3d
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_attack_sword_c.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_hitted.unity3d
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_hitted.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_skill01.unity3d
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_skill01.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_skill02.unity3d
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_skill02.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_skill03.unity3d
+2016-06-27 15:20:14  Info   :  正在解包文件: effect/prefabs/fx_skill03.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: lua/lua.unity3d
+2016-06-27 15:20:14  Info   :  正在解包文件: lua/lua.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: lua/lua_cjson.unity3d
+2016-06-27 15:20:14  Info   :  正在解包文件: lua/lua_cjson.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: lua/lua_controller.unity3d
+2016-06-27 15:20:14  Info   :  正在解包文件: lua/lua_controller.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: lua/lua_lpeg.unity3d
+2016-06-27 15:20:14  Info   :  正在解包文件: lua/lua_lpeg.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: lua/lua_misc.unity3d
+2016-06-27 15:20:14  Info   :  正在解包文件: lua/lua_misc.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: lua/lua_protobuf.unity3d
+2016-06-27 15:20:14  Info   :  正在解包文件: lua/lua_protobuf.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: lua/lua_socket.unity3d
+2016-06-27 15:20:14  Info   :  正在解包文件: lua/lua_socket.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: lua/lua_system.unity3d
+2016-06-27 15:20:14  Info   :  正在解包文件: lua/lua_system.unity3d.manifest
+2016-06-27 15:20:14  Info   :  正在解包文件: lua/lua_system_reflection.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: lua/lua_system_reflection.unity3d.manifest
+2016-06-27 15:20:15  Info   :  正在解包文件: lua/lua_unityengine.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: lua/lua_unityengine.unity3d.manifest
+2016-06-27 15:20:15  Info   :  正在解包文件: lua/lua_view.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: lua/lua_view.unity3d.manifest
+2016-06-27 15:20:15  Info   :  正在解包文件: model/character/tg0001/bo_tg0001.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: model/character/tg0001/bo_tg0001.unity3d.manifest
+2016-06-27 15:20:15  Info   :  正在解包文件: model/character/tg0002/bo_tg0002.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: model/character/tg0002/bo_tg0002.unity3d.manifest
+2016-06-27 15:20:15  Info   :  正在解包文件: model/character/tg0005/bo_tg0005.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: model/character/tg0005/bo_tg0005.unity3d.manifest
+2016-06-27 15:20:15  Info   :  正在解包文件: model/character/tg0006/bo_tg0006.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: model/character/tg0006/bo_tg0006.unity3d.manifest
+2016-06-27 15:20:15  Info   :  正在解包文件: model/weapon/prefab/am_bow.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: model/weapon/prefab/am_bow.unity3d.manifest
+2016-06-27 15:20:15  Info   :  正在解包文件: model/weapon/prefab/am_broadsword.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: model/weapon/prefab/am_broadsword.unity3d.manifest
+2016-06-27 15:20:15  Info   :  正在解包文件: model/weapon/prefab/am_knife.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: model/weapon/prefab/am_knife.unity3d.manifest
+2016-06-27 15:20:15  Info   :  正在解包文件: model/weapon/prefab/am_spear.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: model/weapon/prefab/am_spear.unity3d.manifest
+2016-06-27 15:20:15  Info   :  正在解包文件: model/weapon/prefab/am_sword.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: model/weapon/prefab/am_sword.unity3d.manifest
+2016-06-27 15:20:15  Info   :  正在解包文件: pathinfo/pathinfo.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: pathinfo/pathinfo.unity3d.manifest
+2016-06-27 15:20:15  Info   :  正在解包文件: scene/101/prefabs/lightshaft.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: scene/101/prefabs/lightshaft.unity3d.manifest
+2016-06-27 15:20:15  Info   :  正在解包文件: scene/101/prefabs/mo_zws_map.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: scene/101/prefabs/mo_zws_map.unity3d.manifest
+2016-06-27 15:20:15  Info   :  正在解包文件: scene/main/prefabs/mo_3k_map_drum.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: scene/main/prefabs/mo_3k_map_drum.unity3d.manifest
+2016-06-27 15:20:15  Info   :  正在解包文件: scene/main/prefabs/mo_3k_map_dx.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: scene/main/prefabs/mo_3k_map_dx.unity3d.manifest
+2016-06-27 15:20:15  Info   :  正在解包文件: scene/main/prefabs/mo_3k_map_guild.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: scene/main/prefabs/mo_3k_map_guild.unity3d.manifest
+2016-06-27 15:20:15  Info   :  正在解包文件: scene/main/prefabs/mo_3k_map_restuarant.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: scene/main/prefabs/mo_3k_map_restuarant.unity3d.manifest
+2016-06-27 15:20:15  Info   :  正在解包文件: scene/main/prefabs/mo_3k_map_shop.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: scene/main/prefabs/mo_3k_map_shop.unity3d.manifest
+2016-06-27 15:20:15  Info   :  正在解包文件: scene/main/prefabs/mo_3k_map_stadium.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: scene/main/prefabs/mo_3k_map_stadium.unity3d.manifest
+2016-06-27 15:20:15  Info   :  正在解包文件: scene/main/prefabs/mo_3k_map_statue.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: scene/main/prefabs/mo_3k_map_statue.unity3d.manifest
+2016-06-27 15:20:15  Info   :  正在解包文件: scene/main/prefabs/mo_3k_map_zws.unity3d
+2016-06-27 15:20:15  Info   :  正在解包文件: scene/main/prefabs/mo_3k_map_zws.unity3d.manifest
+2016-06-27 15:20:16  Info   :  正在解包文件: uiprefab/fightpanel.unity3d
+2016-06-27 15:20:16  Info   :  正在解包文件: uiprefab/fightpanel.unity3d.manifest
+2016-06-27 15:20:16  Info   :  正在解包文件: uiprefab/testpanel.unity3d
+2016-06-27 15:20:16  Info   :  正在解包文件: uiprefab/testpanel.unity3d.manifest
+2016-06-27 15:20:16  Info   :  解包完成!
+2016-06-27 15:20:16  Info   :  正在加载配置表 : Config/Entity
+2016-06-27 15:20:16  Info   :  正在加载配置表 : Config/Skill
+2016-06-27 15:20:16  Info   :  正在加载配置表 : Config/Buff
+2016-06-27 15:20:16  Info   :  正在加载配置表 : Config/Map
+2016-06-27 15:20:16  Info   :  配置表加载完成
+2016-06-27 15:20:16  Info   :  切换武器成功 : am_Sword
+2016-06-27 15:20:16  Info   :  CtrlManager.InitCtrlList
+2016-06-27 15:20:16  Info   :  TestCtrl.New
+2016-06-27 15:20:16  Info   :  CreatePanel === > TestPanel  TestPanel (UnityEngine.GameObject)
+2016-06-27 15:28:12  Info   :  bo_TG0005(Clone) 被销毁
+2016-06-27 15:28:12  Info   :  application quit.

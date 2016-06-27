@@ -57,7 +57,12 @@ public class Entity : EntityBase
             throw new Exception ("找不到 configID = " + configID + " 的配置");
         }
 
-        m_object = GameObject.Instantiate(ResManager.Load(EntityCfg.ResPath)) as GameObject;
+        GameObject o = ResManager.Load<GameObject>(EntityCfg.ResPath);
+        if(o == null)
+        {
+            throw new Exception("不存在的entity ： " + EntityCfg.ResPath);
+        }
+        m_object = GameObject.Instantiate(o);
         m_object.transform.SetParent(EntityManager.Instance.EntityRoot);
         UID = uID;
         FillMapBones(); //映射骨骼信息

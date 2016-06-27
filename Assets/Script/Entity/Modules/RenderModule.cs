@@ -40,7 +40,7 @@ public class RenderModule : ModuleBase {
 
     public void ChangeWeapon(string weapon)
     {
-        Object obj = ResManager.Load(weapon_path + weapon);
+        GameObject obj = ResManager.Load<GameObject>(weapon_path + weapon);
         if(obj == null)
         {
             Log.Error("不存在武器 " + weapon);
@@ -49,7 +49,7 @@ public class RenderModule : ModuleBase {
         if (m_weapon != null)
             GameObject.Destroy(m_weapon);
 
-        m_weapon = GameObject.Instantiate(obj) as GameObject;
+        m_weapon = GameObject.Instantiate(obj);
         m_weapon.transform.SetParent(m_entity.GetBone("Bip001_Weapon Point R"));
         m_weapon.transform.localPosition = Vector3.zero;
         m_weapon.transform.localScale = Vector3.one;

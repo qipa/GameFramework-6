@@ -1,0 +1,30 @@
+ManifestFileVersion: 0
+CRC: 2897432611
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 19987ac9e4546f9fa0bf50d0df4c631e
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: b475ff1f7baa88c6eb071febd663b49a
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/Scene/101/Prefabs/Lightshaft.prefab
+Dependencies: []

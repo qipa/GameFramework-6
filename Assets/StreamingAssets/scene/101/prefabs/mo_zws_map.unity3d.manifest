@@ -1,0 +1,40 @@
+ManifestFileVersion: 0
+CRC: 3689511746
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 51bc6720b2f4cc875993b04eeea9e548
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 4efda730b967eda88adc03b00411cac7
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 64
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 111
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/Scene/101/Prefabs/mo_zws_map.prefab
+Dependencies: []

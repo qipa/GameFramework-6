@@ -1,0 +1,30 @@
+ManifestFileVersion: 0
+CRC: 2773244244
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: ffa1f17572412a39033e6dea5f38c18d
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: b475ff1f7baa88c6eb071febd663b49a
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/Effect/Prefabs/fx_Attack_Bow_c.prefab
+Dependencies: []

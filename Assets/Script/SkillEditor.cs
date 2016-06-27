@@ -151,6 +151,7 @@ public class SkillEditor : MonoBehaviour
 
     void Start()
     {
+        GameDefine.UseBundle = false;
         GameDefine.UseAstar = false;
         FindGameObjects();
         BindEvent();

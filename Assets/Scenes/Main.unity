@@ -216,7 +216,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 123506, guid: 993054dbaa39a5742ac1af1380f01c6d, type: 2}
       propertyPath: m_Layer
-      value: 0
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 123498, guid: 993054dbaa39a5742ac1af1380f01c6d, type: 2}
       propertyPath: m_Layer
@@ -1026,50 +1026,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1208759428}
   m_Mesh: {fileID: 4300000, guid: 1bcabd85cfee62c4f949d29aa1436f65, type: 3}
---- !u!1 &1231173023
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1231173025}
-  - 114: {fileID: 1231173024}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1231173024
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1231173023}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52510b813edf03642bc3851b7b3bae99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  luaMgr: {fileID: 0}
-  netMgr: {fileID: 0}
-  resMgr: {fileID: 0}
-  uiMgr: {fileID: 0}
-  HeroConfigID: 10
---- !u!4 &1231173025
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1231173023}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -30.8458652, y: -70.0912781, z: 75.3234863}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
 --- !u!4 &1277682277 stripped
 Transform:
   m_PrefabParentObject: {fileID: 498936, guid: f1a8e69b935c5fb4c93c2636e3b42d44, type: 2}
@@ -1399,10 +1355,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fcb59d39b1527f438208adfbc204ea1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rows: 107
-  columns: 214
-  showGrid: 1
-  showObstacle: 1
+  rows: 128
+  columns: 256
+  showGrid: 0
+  showObstacle: 0
   CheckSlope: 0
   maxSlope: 45
   fileName: main
@@ -1413,11 +1369,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1513592314}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -47, y: 31.0371475, z: 7.5999999}
+  m_LocalPosition: {x: -63.9000015, y: 0, z: -.200000003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
 --- !u!4 &1545902112 stripped
 Transform:
   m_PrefabParentObject: {fileID: 423502, guid: 993054dbaa39a5742ac1af1380f01c6d, type: 2}

@@ -167,7 +167,7 @@ public class GridManager : MonoBehaviour
 
     void CheckWalkable(Node node)
     {
-        node.bWalkable = true;
+        node.bWalkable = false;
 
         RaycastHit hitInfo = new RaycastHit();
         RaycastHit[] hits = Physics.RaycastAll(node.position + Vector3.up * 100, -Vector3.up, 100.005f);
@@ -191,6 +191,8 @@ public class GridManager : MonoBehaviour
 
                 if (hits[index].collider.gameObject.layer == LayerMask.NameToLayer("NoWalk"))
                     node.bWalkable = false;
+                else if(hits[index].collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+                    node.bWalkable = true;
                     
             }
             hitInfo.point = hits[iMax].point;
@@ -204,6 +206,8 @@ public class GridManager : MonoBehaviour
             hitInfo = hits[0];
             if (hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("NoWalk"))
                 node.bWalkable = false;
+            else if (hitInfo.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+                node.bWalkable = true;
 
             node.position = hitInfo.point;
         }

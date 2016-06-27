@@ -21,8 +21,8 @@ public class AStar
     {
         if (nodes != null)
             nodes = null;
-        UnityEngine.Object o = ResManager.Load(path);
-        TextAsset asset = o as TextAsset;
+
+        TextAsset asset = ResManager.Load<TextAsset>(path, ".bytes", "PathInfo/PathInfo.unity3d");
         if(asset != null)
         {
             CStream s = new CStream(asset.bytes);

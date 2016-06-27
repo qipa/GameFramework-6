@@ -12,7 +12,12 @@ public static class CSVReader
         string ret = "";
         try
         {
-            TextAsset CSVAsset = Resources.Load(fileName, typeof(TextAsset)) as TextAsset;
+            TextAsset CSVAsset = ResManager.Load<TextAsset>(fileName, ".csv", "Config/Config.unity3d");
+            if(CSVAsset == null)
+            {
+                Log.Error("找不到配置表 : " + fileName);
+                return ret;
+            }
 
             Encoding gb2312 = Encoding.GetEncoding("gb2312");
             byte[] Bytes = Encoding.Convert(gb2312, Encoding.UTF8, CSVAsset.bytes);
@@ -110,8 +115,12 @@ public static class CSVReader
         string ret = "";
         try
         {
-            TextAsset CSVAsset = Resources.Load(fileName, typeof(TextAsset)) as TextAsset;
-
+            TextAsset CSVAsset = ResManager.Load<TextAsset>(fileName,".csv");
+            if (CSVAsset == null)
+            {
+                Log.Error("找不到配置表 : " + fileName);
+                return ret;
+            }
             Encoding gb2312 = Encoding.GetEncoding("gb2312");
             byte[] Bytes = Encoding.Convert(gb2312, Encoding.UTF8, CSVAsset.bytes);
 

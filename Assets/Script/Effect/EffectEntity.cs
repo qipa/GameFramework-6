@@ -15,7 +15,7 @@ public class EffectEntity : EntityBase {
     ParticleSystem[] m_particleSystems = null;
     public EffectEntity(string path)
     {
-        UnityEngine.Object o = ResManager.Load(path);
+        GameObject o = ResManager.Load<GameObject>(path);
         if( o == null)
         {
             throw new Exception ("不存在的特效 ： " + path);
@@ -23,7 +23,7 @@ public class EffectEntity : EntityBase {
         }
 
         
-        m_object = GameObject.Instantiate<GameObject>(o as GameObject);
+        m_object = GameObject.Instantiate<GameObject>(o);
         SetParent(EffectManager.Instance.EffectRoot);
         if (m_object == null)
         {
