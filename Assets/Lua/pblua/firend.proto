@@ -1,0 +1,64 @@
+package CSoft.Proto;
+
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+///////////////////////////////////////////////////////////////////////////////
+// 一条好友DB数据
+message OneFriendDBData {
+	optional int32		PlayerId = 1;			//玩家ID
+	repeated int32		FriendList = 2;			//好友列表
+	repeated int32		ApplyList = 3;			//玩家申请列表
+	repeated int32		BlackList = 4;			//黑名单
+}
+
+// 好友模块数据
+message FriendSvrDBData {
+	repeated OneFriendDBData	Friends = 1;		// 玩家列表
+}
+
+// 一个好友信息
+message OneFriendInfo {
+	optional int32		PlayerId = 1;			//玩家ID
+	optional string 	Name = 2;				//玩家名字
+	optional int32		Level = 3;				//玩家等级
+	optional int32		VipLevel = 4;			//玩家Vip等级
+}
+
+// 请求好友和黑名单信息 C -> S
+message FriendInfoCS {
+}
+
+// 请求好友和黑名单信息 S -> C
+message FriendInfoSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	repeated OneFriendInfo	FriendInfo = 2;
+	repeated OneFriendInfo	BlackInfo = 3;
+}
+
+// 请求好友申请信息 C -> S
+message FriendApplyListCS {
+}
+
+// 请求好友申请信息 S -> C
+message FriendApplyListSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	repeated OneFriendInfo	ApplyList = 2;
+}
+
+// 好友操作
+message FriendOpCS {
+	optional EFriendOpType Type = 1[default=NoOpFriend];
+	optional int32		   PlayerId = 2;	//玩家ID
+}
+
+// 好友操作
+message FriendOpSC {
+	optional ERetCode	   RetCode	= 1	[default=OK];
+	optional int32		   PlayerId = 2;	//玩家ID
+}

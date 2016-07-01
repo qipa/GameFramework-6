@@ -1,0 +1,750 @@
+package CSoft.Proto;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 客户端与服务器通信的action操作代码
+enum EAction {
+	Action_Unknown				= 0;
+	
+	// 账户相关
+	Account_Begin				= 1000;	
+	Account_Guest				= 1001;		// 请求游客账号
+	Account_Bind				= 1002;		// 绑定账户
+	Account_Login				= 1003;		// 登录账户
+	Account_Create				= 1004;		// 创建账户
+	Player_Create				= 1005;		// 创建角色
+	Player_Login				= 1006;		// 登录角色
+	Player_Rename				= 1007;		// 重命名角色
+	Player_Logout				= 1008;		// 登出角色
+	Player_Del					= 1009;		// 删除角色
+	Account_Logout				= 1010;		// 登出账户
+	Region_Syn					= 1011;		// 同步服务器区列表
+	Identify_Fail				= 1013;		// 客户端发包没有身份验证失败，请重新登陆
+	Reconnect					= 1014;		// 断线重连
+	Account_BuyCoin				= 1015;		// 购买金币
+	Account_BuyEnergy 			= 1016;		// 购买体力
+	Account_BuyCoupons 			= 1017;		// 购买点券
+	Marquee						= 1018;		// 跑马灯
+	Account_MainHero			= 1019;		// 请求账户在某区的主将信息
+	Player_PreLogin				= 1020;		// 客户端发登陆服准备登录游戏服
+	Account_BuyCard 			= 1021;		// 购买月卡
+	Account_FindPlayerByName	= 1022;		// 通过角色名查找角色
+	ServerBusy					= 1023;		// 通知客户端，服务器忙
+	Server_Close				= 1097;		// 服务器需要关闭
+	KeepAlive					= 1098;		// 心跳包
+	Account_End					= 1099;	
+	
+	// 游戏角色逻辑相关
+	Syn_Player_Data		= 2001;		// 同步角色数据
+	Syn_Backpack_Data 	= 2002;		// 同步背包数据
+	Syn_Inn_Data 		= 2003;		// 同步客栈数据
+	Syn_Features_Data 	= 2004;		// 同步功能开放数据
+	Syn_Sign_Data 		= 2005; 	// 同步签到数据
+	Syn_Task_Data 		= 2006; 	// 同步任务数据
+	Syn_Ins_Data 		= 2007; 	// 同步副本数据
+	Syn_Guild_Data 		= 2008; 	// 同步公会数据
+	Syn_Mail_Data 		= 2009; 	// 同步邮箱数据
+	Syn_Prop			= 2050; 	// 同步角色单个属性
+	Syn_Hero_Prop		= 2051; 	// 同步武将属性
+	Syn_Hero_Equip		= 2052; 	// 同步武将装备栏
+	
+	Instance_Begin			= 2100;
+	Instance_Enter			= 2101;	// 进入副本
+	Instance_Exit			= 2102;	// 离开副本
+	Instance_Finish			= 2103;	// 完成副本
+	Instance_Clean			= 2104;	// 扫荡副本
+	Instance_CleanTen		= 2105;	// 扫荡副本十次
+	Instance_Embattle		= 2106;	// 副本布阵
+	Instance_Chapter		= 2107;	// 领取章节奖励
+	Instance_Retry			= 2108;	// 副本再来一次
+	Instance_TeamMembers	= 2109;	// 请求团队副本助阵成员列表
+	Instance_TeamEmbattle	= 2110;	// 请求助阵成员阵容
+	Instance_TeamEnter		= 2111;	// 挑战团队副本
+	Instance_TeamExit		= 2112;	// 离开团队副本
+	Instance_TeamFinish		= 2113;	// 完成团队副本
+	Instance_End			= 2199;
+	
+	Task_Begin		= 2200;
+	Task_Accept		= 2201;		// 接受任务
+	Task_Reward		= 2202;		// 获取任务奖励
+	Task_Update		= 2203;		// 更新一个任务状态
+	Task_End		= 2299;
+	
+	Item_Begin		= 2300;
+	Item_Sell		= 2301;		// 物品出售
+	Item_Strengthen	= 2302;		// 物品强化
+	Item_Compose	= 2303;		// 物品合成
+	Item_Inlay		= 2304;		// 物品镶嵌
+	Item_Use		= 2305;		// 物品使用
+	Item_UpLevel	= 2306;		// 物品升级
+	Item_Add		= 2307;		// 增加物品
+	Item_Del		= 2308;		// 删除物品
+	Item_PutOn		= 2309;		// 穿上装备
+	Item_PutOff		= 2310;		// 脱下装备
+	Item_Decompose	= 2311;		// 物品分解
+	Item_End		= 2399;
+	
+	Inn_Begin		= 2400;
+	Inn_Recruit		= 2401;		// 客栈招募一次
+	Inn_RecruitTen	= 2402;		// 客栈招募十次
+	Inn_HeroUpStar	= 2403;		// 英雄升星
+	Inn_SynSoul		= 2404;		// 同步将魂数据
+	Inn_End			= 2499;
+
+	Chat_Begin		= 2500;
+	Chat_Talk		= 2501;		// 聊天
+	Chat_TalkRecv	= 2502;		// 收到聊天信息
+	Chat_End		= 2599;
+
+	Hero_Begin		= 2600;
+	Hero_New		= 2601;		// 得到一个新将领
+	Hero_UpLevel	= 2602;		// 将领升级
+	Hero_LearnSkill	= 2603;		// 学习技能
+	Hero_ForgetSkill= 2604;		// 遗忘技能
+	Hero_End		= 2699;
+
+	Mail_Begin		= 2700;
+	Mail_New		= 2701;		// 收到新信件
+	Mail_Read		= 2702;		// 查看未看过的信件
+	Mail_Receive	= 2703;		// 领取信件附件
+	Mail_Del		= 2704;		// 删除信件
+	Mail_End		= 2799;
+	
+	Guild_Begin			= 2800;
+	//Guild_Syn			= 2801;	// 同步角色帮会数据
+	Guild_Create		= 2802;	// 创建帮会
+	Guild_Apply			= 2803;	// 申请加入帮会
+	Guild_List			= 2804;	// 请求帮会列表
+	Guild_Search		= 2805;	// 帮会查找
+	Guild_Edit			= 2806;	// 编辑帮会信息
+	Guild_ApplyList		= 2807;	// 显示帮会入帮申请列表
+	Guild_MemberList	= 2808;	// 显示帮会成员列表
+	Guild_Transfer		= 2809;	// 转让帮主职位
+	Guild_Dismiss		= 2810;	// 撤职
+	Guild_Promote		= 2811;	// 升职
+	Guild_Remove		= 2812;	// 移除
+	Guild_Quit			= 2813;	// 退出
+	Guild_Agree			= 2814;	// 同意入帮申请
+	Guild_Refuse		= 2815;	// 拒绝入帮申请
+	Guild_Require		= 2816;	// 修改入帮要求
+	Guild_OptResult		= 2817;	// 通知客户端帮会操作结果
+	Guild_Info			= 2818;	// 请求帮会基本信息
+	Guild_Donate		= 2819;	// 帮会捐献
+	Guild_BuyRes		= 2820;	// 帮会资源购买
+	Guild_ShopExchange	= 2821;	// 帮会商店兑换
+	Guild_MysteryInsight= 2822;	// 帮会神机殿领悟
+	Guild_AnimalTrain	= 2823;	// 帮会神兽培养
+	Guild_BuildRes		= 2824;	// 请求帮会某建筑当前资源
+	Guild_End			= 2899;
+	
+	Features_Begin		= 2900;
+	Features_Open		= 2901;	// 开启功能
+	Features_Close		= 2902;	// 关闭功能
+	Features_End		= 2999;
+	
+	Rank_Begin			= 3000;
+	Rank_Arena			= 3001;	// 查看武斗会排行榜
+	Rank_Guild			= 3002;	// 查看帮会排行榜
+	Rank_Hero			= 3003;	// 查看英雄排行榜
+	Rank_End			= 3099;
+	
+	Arena_Begin			= 3100;
+	Arena_Syn			= 3101;	// 武斗会数据同步
+	Arena_Embattle		= 3102;	// 武斗会布阵
+	Arena_RapeReward	= 3103;	// 领取抢夺奖励
+	Arena_WarReport		= 3104;	// 同步一条战报
+	Arena_Challenge		= 3105;	// 对一个对手发起挑战
+	Arena_EndFight		= 3106;	// 武斗会战斗结束
+	Arena_End			= 3199;
+	
+	Passguard_Begin		= 3200;
+	Passguard_Syn		= 3201;	// 关卡守护信息同步
+	Passguard_Fight		= 3202;	// 发起抢夺守护
+	Passguard_EndFight	= 3203;	// 抢夺战斗结束
+	Passguard_End		= 3299;
+	
+	Peerless_Begin		= 3300;
+	Peerless_Syn		= 3301;	// 无双战信息同步
+	Peerless_Fight		= 3302;	// 无双战战斗开始
+	Peerless_EndFight	= 3303;	// 无双战战斗结束
+	Peerless_Embattle	= 3304;	// 无双战布阵
+	Peerless_End		= 3399;
+	
+	Sign_Begin			= 3400;
+	Sign_CheckIn		= 3401;	// 签到
+	Sign_End			= 3499;
+	
+	OnlineGift_Begin	= 3500;
+	OnlineGift_Receive	= 3501;	// 领取礼包
+	OnlineGift_End		= 3599;
+	
+	Shop_Begin			= 3600;
+	Shop_Buy			= 3601;	// 购买商品
+	Shop_Refresh		= 3602;	// 刷新商品
+	Shop_End			= 3699;
+	
+	City_Begin			= 3700;
+	City_Syn			= 3701;	// 帮派城战信息同步
+	City_Syn_City		= 3702;	// 帮派城战同步一条城池数据
+	City_Join			= 3703;	// 加入攻城
+	City_Report			= 3704;	// 查看某城池战报
+	City_Report_Detail	= 3705;	// 查看某条详细城池战报
+	City_Enter			= 3706;	// 进攻某个英雄
+	City_Finish			= 3707;	// 结束与某个英雄的战斗
+	City_WarField		= 3708;	// 查看战场
+	City_ChkDefender	= 3709;	// 查看防守方英雄数据
+	City_WarEnd			= 3710;	// 广播帮会成员攻城战结束
+	City_End			= 3799;
+	
+	Practice_Begin		= 3800;
+	Practice_Enter		= 3801;	// 进入练功房
+	Practice_Exit		= 3802;	// 退出练功房
+	Practice_Damage		= 3804;	// 一段时间打掉血量，结算经验
+	Practice_Kill		= 3805;	// 击杀木人
+	Practice_Hang		= 3806;	// 转挂机
+	Practice_ShareExp	= 3807;	// 收到盟友击杀木人的共享经验
+	Practice_HangExp	= 3808;	// 上线时收到挂机经验
+	Practice_Report		= 3809;	// 查看练功房战报
+	Practice_End		= 3899;
+	
+	Titan_Begin			= 3900;
+	Titan_Syn			= 3901;	// 魔将来袭数据同步
+	Titan_Fight			= 3902;	// 魔将来袭战斗开始
+	Titan_EndFight		= 3903;	// 魔将来袭战斗结束
+	Titan_Embattle		= 3904;	// 魔将来袭布阵
+	Titan_Finish		= 3905;	// 魔将来袭活动结束
+	Titan_End			= 3999;
+	
+	Demon_Begin			= 4000; 
+	Demon_Info			= 4001; // 妖师信息同步
+	Demon_Fight			= 4002;	// 妖师副本开始战斗
+	Demon_FightEnd		= 4003;	// 妖师副本结束战斗
+	Demon_Embattle		= 4004;	// 妖师副本布阵
+	Demon_ChangeTime	= 4005;	// 妖师副本开始时间改变
+	Demon_End			= 4999;
+	
+	Scene_Begin			= 4100; 
+	Scene_Info			= 4101; // 场景信息同步
+	Scene_End			= 4199;
+	
+	Friend_Begin		= 4200; 
+	Friend_Info			= 4201; // 好友信息同步
+	Friend_ApplyList	= 4202; // 好友请求列表
+	Friend_Operation	= 4203;	// 好友操作
+	Friend_End			= 4299;
+	
+	Trace_Begin			= 9800; 
+	Trace_Log			= 9801; // 记录日志 发往loggersvr
+	Trace_End			= 9899;
+	
+	System_Begin			= 9900;
+	System_Game_Update		= 9901;	// 更新逻辑服运行状态
+	System_Client_Operate	= 9902;	// 登陆服通知游戏服玩家操作
+	System_Player_MainHero	= 9903;	// 获取某账户在某区的角色主将信息[用于登录角色界面显示]
+	System_Create_Player	= 9904;	// 创建角色
+	System_End				= 9999;
+}
+
+// 服务器回复客户端操作的返回代码
+enum ERetCode {
+	OK					= 0;	// 操作成功
+	IDontKnownWhy		= 1;	// 未知原因失败
+	LackRes				= 2;	// 缺少资源
+	AccIdNotExisted		= 101;	// 账户ID不存在
+	AccNameDup			= 102;	// 帐户名与已有的重复
+	AccNameNotExisted	= 103;	// 帐户名不存在
+	WrongPwd			= 104;	// 帐户密码错误
+	PlayerNameDup		= 105;	// 角色名与已有的重复
+	PlayerNotExisted	= 106;	// 角色不存在
+	PlayerNotLogin		= 107;	// 角色未登录
+	PlayerInLogin		= 108;	// 角色已经登录
+	PlayerUnmatchAcc	= 109;	// 角色不属于该账号
+	OtherPlayerInLogin	= 110;	// 账户已经登录其他角色
+	NameTooLong			= 111;	// 名字超出长度
+	NameNotValid		= 112;	// 名字非法
+	RegionNotExisted	= 113;	// 服务器区不存在
+	PwdNotValid			= 114;	// 密码格式错误
+	HeroWrongID			= 115;	// 错误的英雄ID
+	PlayerDup			= 116;	// 该账户在该区已经创建有角色
+	PlayerIllegal		= 117;	// 角色非法[已封号]
+	NotGuestMacAddr		= 118;	// 该mac address已经绑定了正式账户 请客户端用正式账户登录
+	MaxLimit			= 119;	// 最大可操作次数限制
+	NotInScene			= 120;	// 不在某场景中
+	WrongInstanceId		= 121;	// 错误的副本ID
+	NotOpen				= 122;	// 功能未开放
+	InstanceNotPass		= 123;	// 副本未通关
+	AlreadyInScenes		= 124;	// 目前已经在活动场景中
+	NotTask				= 125;	// 无此任务
+	TaskNotFinish		= 126;	// 任务未完成
+	TaskHasFinish		= 127;	// 任务已完成过
+	TaskCannotAccept	= 128;	// 未达任务要求等级或者前置任务未完成
+	TaskInDoing			= 129;	// 任务已经进行中
+	NotEnoughItems		= 130;	// 物品不足
+	NotExistedItem		= 131;	// 物品不存在
+	ChatChanErr			= 132;	// 聊天频道错误，无此频道
+	TooMany				= 133;	// 超出上限
+	MainHero			= 134;	// 是主将
+	NotMainHero			= 135;	// 不是主将
+	UnknownHero			= 136;	// 不存在的武将
+	ReceivedYet			= 137;	// 奖励已领取
+	MailNotExisted		= 138;	// 信件不存在
+	ExistedYet			= 139;	// 已经存在
+	WrongSkillID		= 140;	// 错误的技能ID
+	SkillNumLimit		= 141;	// 超出技能数量限制
+	LevelLimit			= 142;	// 等级限制
+	WrongNum			= 143;	// 错误的数量
+	WrongID				= 144;	// 错误的ID
+	NotExisted			= 145;	// 不存在
+	InOtherYet			= 146;	// 已经在其他**中
+	AlreadyExisted		= 147;	// 已经存在了
+	NotPermitted		= 148;	// 没有权限
+	ObjNotExisted		= 149;	// 被操作对象不存在
+	WrongTime			= 150;	// 错误的时间
+	GuildNotExisted		= 151;	// 帮会不存在
+	NotValid			= 152;	// 操作不合法
+	NotInGuild			= 153;	// 不在帮会中
+	NotThisQuality		= 154;	// 物品品质错误
+	NotEnoughCoupons	= 155;	// 元宝不足
+	NotEnoughCoin		= 156;	// 金子不足
+	MessageCheckError	= 157;	// 消息数据校验错误
+	
+	LackCoin			= 501;	// 金币不足
+	LackCoupons			= 502;	// 点券不足
+	LackEnergy			= 503;	// 体力不足
+	LackExpPool			= 504;	// 经验池经验不足
+	LackVip				= 505;	// VIP等级不足
+	LackMat				= 506;	// 材料不足
+	LackStone			= 507;	// 灵石不足
+	LackWood			= 508;	// 神木不足
+	LackContribution	= 509;	// 帮会贡献值不足
+	LackFeat			= 510;	// 帮会功勋不足
+	CouponsFail			= 511;	// 充值购买失败
+	DemonIsFirstDay		= 512;	// 妖师首日入帮不能讨伐
+	NotGuildLeader		= 513;	// 不是帮主
+	DemonIsDeath		= 514;	// 妖师已死
+	PlayerInBlack		= 515;	// 玩家在你的黑名单中
+	PlayerIsFriend		= 516;	// 玩家已经是你的好友
+}
+
+// 角色属性枚举
+enum EProp {
+	Coin				= 0;	// 金币
+	Coupons				= 1;	// 点券
+	Energy				= 2;	// 体力
+	RechargeRmb			= 3;	// 累积充值人民币
+	VipLevel			= 4;	// vip等级
+	MainHeroID			= 5;	// 主将ID
+	ExpPool				= 6;	// 经验池
+	EnergyBuyTimes		= 7;	// 当日体力购买次数
+	Stone				= 8;	// 灵石
+	Wood				= 9;	// 神木
+	Contribution		= 10;	// 贡献
+	Feat				= 11;	// 功勋
+	// 以下是武将用属性
+	Level				= 20;	// 等级
+	Exp					= 21; 	// 经验
+	Star				= 22; 	// 星级
+	StarProgress		= 23; 	// 升星进度
+}
+
+// 将领装备部位枚举
+enum EPosEquip {
+	Weapon				= 0;	// 武器栏
+	Armor				= 1;	// 铠甲栏
+	Decoration			= 2;	// 饰品栏
+	Cloak				= 3;	// 披风栏
+	Shoes				= 4;	// 鞋具栏
+}
+
+// 副本难度
+enum EInsDiff {
+	InsDiffNormal		= 1;	// 普通
+	InsDiffDifficult	= 2;	// 精英
+	InsDiffTeam			= 3;	// 团队
+	InsDiffGuild		= 4;	// 帮派城战
+}
+
+// 副本类型
+enum EInsCategory {
+	InsCategoryNormal	= 1;	// 普通
+	InsCategoryMoba		= 2;	// moba对战
+}
+
+// 物品道具类型
+enum EItemType {
+	ItemEquip			= 1;	// 装备
+	ItemSkill			= 2;	// 技能书
+	ItemGem				= 3;	// 宝物
+	ItemOther			= 4;	// 其他
+	ItemCoin			= 5;	// 金币
+	ItemMainExp			= 6;	// 主角经验
+	ItemHeroExp			= 7;	// 武将经验
+	ItemExpPool			= 8;	// 经验池经验
+	ItemCoupons			= 9;	// 元宝
+	ItemSoul			= 10;	// 将魂
+	ItemEnergy			= 11;	// 体力
+	ItemStone			= 12;	// 灵石[帮派资源]
+	ItemWood			= 13;	// 神木[帮派资源]
+}
+
+// 星级品质
+enum EQuality {
+	UNKNOWN				= 0;	// 未知
+	WHITE				= 1;	// 白色
+	GREEN				= 2;	// 绿色
+	BLUE				= 3;	// 蓝色
+	YELLOW				= 4;	// 黄色
+	PURPLE				= 5;	// 紫色
+	RED					= 6;	// 红色
+	ORANGE				= 7;	// 橙色
+}
+
+// 物品效果分类
+enum EItemEffect {
+	ItemEffectStrenMaterial	= 1;	// 强化材料
+	ItemEffectSkillBook		= 2;	// 技能书
+	ItemEffectSoul			= 3;	// 将魂
+	ItemEffectBox			= 4;	// 宝箱
+}
+
+// 生物类型
+enum EClass {
+	ClassMainHero		= 0;	// 主角
+	ClassHero			= 1;	// 将领
+	ClassFriend			= 2;	// NPC友军
+	ClassEnemy			= 3;	// NPC敌军
+	ClassBOSS			= 4;	// BOSS
+	ClassTrap			= 5;	// 陷阱
+}
+
+// 帮会职位
+enum EGuildJob {
+	GuildJobUnknown		= 0;
+	GuildJobLeader		= 1;	// 帮主
+	GuildJobDeputy		= 2;	// 副帮主
+	GuildJobElder		= 3;	// 长老
+	GuildJobPeople		= 4;	// 帮众
+}
+
+// 帮会操作枚举
+enum EGuildOpt {
+	GuildOptUnknown		= 0;
+	GuildOptAgreeApply	= 1;	// 被同意入帮申请
+	GuildOptRefuseApply	= 2;	// 被拒绝入帮申请
+	GuildOptTransfer	= 3;	// 被转让帮主
+	GuildOptDismiss		= 4;	// 被撤职
+	GuildOptPromote		= 5;	// 被升职
+	GuildOptRemove		= 6;	// 被移除帮会
+}
+
+// 技能类型
+enum ESkillType {
+	SkillNormal			= 1;	// 普攻
+	SkillPhysics		= 2;	// 物理
+	SkillMagic			= 3;	// 法术
+	SkillProtect		= 4;	// 保护
+	SkillCure			= 5;	// 治疗
+	SkillAssist			= 6;	// 辅助
+	SkillSummon			= 7;	// 召唤
+	SkillPassive		= 8;	// 被动
+}
+
+// 系统功能枚举
+enum EFeature {
+	FeatureUnknown		= 0;	// 未定义功能
+	FeatureMainTask		= 1;	// 主线任务
+	FeatureInn			= 2;	// 客栈
+	FeatureMail			= 3;	// 邮箱
+	FeatureHeroSkep		= 4;	// 将领装备分页
+	FeatureBackpack		= 5;	// 背包
+	FeatureChat			= 6;	// 频道(聊天)
+	FeatureDailyTask	= 7;	// 日常任务
+	FeatureShop			= 8;	// 聚宝阁
+	FeatureGuild		= 9;	// 公会
+	FeaturePractice		= 10;	// 练功房
+	FeatureMystery		= 11;	// 神机殿
+	FeatureHeroSkill	= 12;	// 将领技能分页
+	FeatureFeat			= 13;	// 功勋殿
+	FeaturePassguard	= 14;	// 关卡守护神
+	FeaturePeerless		= 15;	// 无双战
+	FeatureAnimal		= 16;	// 帮会神兽
+	FeatureArena		= 17;	// 武斗会
+	FeatureAdmin		= 18;	// 军政殿
+	FeatureRank			= 19;	// 排行榜
+	FeatureTeamPass		= 20;	// 团队关卡
+	FeatureSign			= 21;	// 签到
+	FeatureOnlineGift	= 22;	// 在线礼包
+	FeatureCityWar		= 23;	// 帮派城战
+	FeatureHeros		= 24;	// 将领
+	FeatureInstance		= 25;	// 副本
+	FeatureTogether		= 26;	// 聚义厅
+	FeatureHall			= 27;	// 帮会大殿
+	FeatureTitan		= 28;	// 魔将来袭
+	FeatureDemon		= 29;	// 讨伐妖师
+	FeatureEnd			= 30;	// 
+}
+
+// 任务分类
+enum ETaskKind {
+	TaskMainLine		= 1;	// 主线
+	TaskDaily			= 2;	// 日常
+}
+
+// 任务目标
+enum ETaskTarget {
+	TaskLevel			= 1;	// 君主等级
+	TaskCollectHero		= 2;	// 将领收集
+	TaskEquipUpLev		= 3;	// 装备升级
+	TaskInsNum			= 4;	// 通关普通副本数量
+	TaskInsDiffNum		= 5;	// 通关精英副本数量
+	TaskRecruit			= 6;	// 招募
+	TaskOnline			= 7;	// 限时在线
+	TaskStar3Hero		= 8;	// 3星以上将领收集
+	TaskStar4Hero		= 9;	// 4星以上将领收集
+	TaskStar5Hero		= 10;	// 5星以上将领收集
+	TaskStar6Hero		= 11;	// 6星以上将领收集
+	TaskStar7Hero		= 12;	// 7星以上将领收集
+	TaskDress			= 13;	// 穿戴装备
+	TaskTalk			= 14;	// 频道发言
+	TaskJoinGuild		= 15;	// 加入帮会
+	TaskSkillUpLevel	= 16;	// 升级技能
+	TaskSkillLearn		= 17;	// 学习新技能
+	TaskTeamInsNum		= 18;	// 通关团队关卡数量
+	TaskArenaChallenge	= 19;	// 参加武斗会
+	TaskGuildBoss		= 20;	// 参加帮派BOSS战斗
+	TaskBuyMonthCard	= 21;	// 购买月卡
+	TaskInsPass			= 22;	// 通关指定副本
+	TaskStrengthenLevel	= 23;	// 强化任意装备到指定等级
+	TaskEmbattle		= 24;	// 使用布阵功能
+	TaskShop			= 25;	// 聚宝阁购买指定次数
+	TaskGuildDonate		= 26;	// 在帮会建筑累积捐献指定数量任意资源
+	TaskPracticeHang	= 27;	// 练功房离线练功指定次数
+	TaskMysteryInsight	= 28;	// 神机殿中领悟神机指定次数
+	TaskPassguard		= 29;	// 成为副本守护神
+	TaskPeerless		= 30;	// 参加无双战指定次数
+}
+
+// 金币购买包分类
+enum ECoinBuy {
+	CoinBuy1			= 1;	// 
+	CoinBuy2			= 2;	// 
+	CoinBuy3			= 3;	// 
+}
+
+// 点券购买包分类
+enum ECouponsBuy {
+	CouponsBuy1			= 1;	// 
+	CouponsBuy2			= 2;	// 
+	CouponsBuy3			= 3;	// 
+}
+
+// 排行榜分类
+enum ERank {
+	RankArena			= 1;	// 武斗会
+	RankGuild			= 2;	// 帮会
+	RankHero			= 3;	// 英雄
+}
+
+// 概率类型
+enum EProType {
+	ProType_One			= 1;	// 独立概率
+	ProType_Total		= 2;	// 总概率
+}
+
+// 跑马灯分类
+enum EMarquee {
+	MarqueeEmergencyNotice		= 1;	// 手动紧急公告
+	MarqueeTimingNotice			= 2;	// 系统定时公告
+	MarqueeInsFriend			= 3;	// 副本援军刷出
+	MarqueeInsBoss				= 4;	// 副本击杀boss
+	MarqueeMainHeroUpStar7		= 5;	// 主将升7星
+	MarqueeHeroUpStar7			= 6;	// 将领升7星
+	MarqueeStrengthenFull		= 7;	// 强化到30级[满级]
+	MarqueeGuildCreated			= 8;	// 创建帮会
+	MarqueeInsReward67			= 9;	// 副本获得红橙品
+	MarqueeMainHeroUpStar56		= 10;	// 主将升至5、6星
+	MarqueeHeroUpStar56			= 11;	// 武将升至5、6星
+	MarqueeStrengthen2029		= 12;	// 强化到20-29级
+	MarqueeReceiveHero5			= 13;	// 获得紫色武将
+	MarqueeBoxGoods				= 14;	// 宝箱开出紫色品质道具奖励或100元宝以上
+	MarqueeInsReward5			= 15;	// 副本获得紫装
+	MarqueeChapterReward		= 16;	// 获得精英章节奖励
+	MarqueeInnRecruitHero4		= 17;	// 客栈招募4星将领
+	MarqueeArenaRankReward		= 18;	// 武斗会排名奖励结算
+	MarqueeArenaRankNotice		= 19;	// 武斗会排名奖励结算前十分钟
+	MarqueeArenaChampion		= 20;	// 武斗会中争夺第一名
+	MarqueeArenaWin				= 21;	// 武斗会挑战成功抢夺奖励获得50元宝以上，或紫色装备
+	MarqueeArenaReward			= 22;	// 武斗会领取奖励获得50元宝以上，或紫色装备
+	MarqueePracticeKillWood		= 23;	// 练功房中有成员击杀木人
+	MarqueeGuildNewMember		= 24;	// 帮会有新人加入
+	MarqueeGuildLeave			= 25;	// 帮会人离开
+	MarqueeGuildJobChanged		= 26;	// 帮会有人职位变更
+	MarqueeGuildLeaderChanged	= 27;	// 帮会帮主变更
+	MarqueeCitySuccess			= 28;	// 帮派城战攻城成功
+	MarqueeCityFail				= 29;	// 帮派城战攻城失败
+	MarqueeTitanStart			= 30;	// 魔将来袭活动开始
+	MarqueeTitanNotify			= 31;	// 魔将来袭活动开始前通知
+	MarqueeTitanWin				= 32;	// 魔将来袭击败魔将
+	MarqueeItemCompose			= 33;	// 道具合成
+}
+
+// 物品或资源，获得来源分类
+enum EAddHow {
+	AddHowOther				= 1001;	// 其他
+	AddHowGM				= 1002;	// GM
+	AddHowInsFinish			= 1003;	// 完成副本
+	AddHowInsClean			= 1004;	// 扫荡副本
+	AddHowChapter			= 1005;	// 章节奖励
+	AddHowTask				= 1006;	// 任务奖励
+	AddHowMail				= 1007;	// 邮件收取
+	AddHowRecruit			= 1008;	// 客栈招募
+	AddHowExchange			= 1009;	// 将魂兑换武将
+	AddHowArena				= 1010;	// 武斗会
+	AddHowUse				= 1011;	// 通过使用一个物品获得[开箱子，开礼包等]
+	AddHowPassguard			= 1012;	// 关卡守护神
+	AddHowPeerless			= 1013;	// 无双战
+	AddHowItemStrengthen	= 1014;	// 物品强化
+	AddHowItemUpLevel		= 1015;	// 物品升级
+	AddHowPutOff			= 1016;	// 脱下装备
+	AddHowGuildShop			= 1017;	// 帮会商城购买
+	AddHowSell				= 1018;	// 出售
+	AddHowBuyRes			= 1019;	// 购买资源
+	AddHowSign				= 1020;	// 签到
+	AddHowOnlineGift		= 1021;	// 在线礼包
+	AddHowShop				= 1022;	// 聚宝阁购买
+	AddHowPractice			= 1023;	// 练功房
+	AddHowDonate			= 1024;	// 帮会捐献
+	AddHowAnimalTrain		= 1025;	// 神兽培养
+	AddHowRMB				= 1026;	// 充值
+	AddHowItemCompose		= 1027;	// 装备融合
+	AddHowItemDecompose		= 1028;	// 装备分解
+}
+
+// 物品或资源，减少的原因
+enum EDelHow {
+	DelHowOther				= 2001;	// 其他
+	DelHowGM				= 2002;	// GM
+	DelHowPlayerRename		= 2003;	// 角色重命名
+	DelHowStrengthen		= 2004;	// 强化
+	DelHowItemUpLev			= 2005;	// 物品升级
+	DelHowGuildCreate		= 2006;	// 创建帮会
+	DelHowGuildShop			= 2007;	// 帮会商城购买
+	DelHowSkill				= 2008;	// 学习技能
+	DelHowRecruit			= 2009;	// 客栈招募
+	DelHowGuildMystery		= 2010;	// 帮会神机领悟
+	DelHowGuildDonate		= 2011;	// 帮会捐献
+	DelHowGuildAnimalTrain	= 2012;	// 帮会神兽培养
+	DelHowShop				= 2013;	// 聚宝阁购买
+	DelHowShopRefresh		= 2014;	// 聚宝阁刷新
+	DelHowArenaChallenge	= 2015;	// 购买武斗会挑战次数
+	DelHowBuyCoin			= 2051;	// 购买金币
+	DelHowBuyEnergy			= 2052;	// 购买体力
+	DelHowBuyStone			= 2053;	// 购买灵石
+	DelHowBuyWood			= 2054;	// 购买神木
+	DelHowDemonCD			= 2055;	// 讨伐妖师进入cd消耗
+	DelHowTitanCD			= 2056;	// 魔将来袭取消CD
+	DelHowItemCompose		= 2057;	// 装备融合
+	DelHowItemDecompose		= 2058;	// 装备分解
+}
+
+// vip特权分类
+enum EVipPvg {
+	VipPvgChatSpecialUI		= 1;	// 频道聊天VIP特殊标示
+	VipPvgInsCleanTen		= 2;	// 副本连续扫荡10次功能是否开启
+	VipPvgEnergyMax			= 3;	// 体力上限
+	VipPvgArenaTimes		= 4;	// 武斗会每日挑战次数
+	VipPvgPracticeAutoHang	= 5;	// 离线自动练功挂机功能是否开启（需加入帮会）
+	VipPvgPeerlessTimes		= 6;	// 无双战每日挑战次数
+	VipPvgEnergyBuyTimes	= 7;	// 购买体力次数
+	VipPvgGuildResBuyTimes	= 8;	// 每日帮会资源购买次数
+	VipPvgTeamInsTimes		= 9;	// 团队副本每日挑战次数
+	VipPvgShopRefreshCD		= 10;	// 商店刷新缩短时间[小时]
+}
+
+// 帮会建筑分类
+enum EGuildBuilding {
+	GuildBuildingHall		= 0;	// 大殿
+	GuildBuildingFeat		= 1;	// 功勋殿
+	GuildBuildingMystery	= 2;	// 神机殿
+	GuildBuildingTogether	= 3;	// 聚义厅
+	GuildBuildingAnimal		= 4;	// 帮会神兽
+	GuildBuildingPractice	= 5;	// 练功房
+	GuildBuildingAdmin		= 6;	// 军政殿
+	GuildBuildingEnd		= 7;	//
+}
+
+// 帮会神机分类
+enum EGuildMystery {
+	GuildMysteryPA			= 0;	// 物攻强化
+	GuildMysteryMA			= 1;	// 法攻强化
+	GuildMysteryPD			= 2;	// 物防强化
+	GuildMysteryMD			= 3;	// 法防强化
+	GuildMysteryHP			= 4;	// 血量强化
+	GuildMysteryExp			= 5;	// 副本经验加成	[单人/团队]
+	GuildMysteryCoin		= 6;	// 副本铜钱加成	[单人/团队]
+	GuildMysteryPractice	= 7;	// 练功经验加成
+	GuildMysteryEnd			= 8;	//
+}
+
+// 商店分类
+enum EShop {
+	ShopGuild				= 1;	// 帮会商店 [功勋兑换]]
+}
+
+// 帮会神兽属性枚举
+enum EAniProp {
+	AniPropForce			= 0;	// 武力
+	AniPropIntelligence		= 1;	// 智力
+	AniPropAgile			= 2;	// 敏捷
+	AniPropDndurance		= 3;	// 耐力
+	AniPropEnd				= 4;	//
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////// 服务器状态枚举
+enum ESvrType {
+	SvrTypeLogin		= 1;	// 登陆服务器
+	SvrTypeGame			= 2;	// 逻辑服务器
+	SvrTypeDB			= 3;	// 数据库服务器
+}
+
+// 服务器状态枚举
+enum ESvrState {
+	SvrStateUnknown		= 0;	// 未知状态
+	SvrStateReady		= 1;	// 准备中
+	SvrStateRunning		= 2;	// 运行中
+	SvrStateClosing		= 3;	// 关闭中
+}
+
+// 同步给客户端的人物信息
+enum ESceneType {
+	SceneTypeLogin		= 1;	// 登陆大厅场景
+	SceneTypeGuild		= 2;	// 帮会场景
+}
+
+// 好友的操作类型
+enum EFriendOpType {
+	NoOpFriend		= 0;	// 默认无操作
+	ApplyFriend		= 1;	// 申请加好友
+	AgreeFriend		= 2;	// 同意加好友
+	RefuseFriend	= 3;	// 拒绝加好友
+	RemoveFriend	= 4;	// 删除好友
+	InBlack			= 5;	// 加入黑名单
+	OutBlack    	= 6;	// 移除黑名单
+}
+
+// 惊喜类型
+enum ESurpriseType {
+	DoubleCoin	= 1;		// 加倍金钱
+	DoubleExp	= 2;		// 加倍经验
+	Nothing		= 3;		// 没操作
+	DelEnergy   = 4;		// 减少体力
+	AddEnergy	= 5;		// 增加体力
+}
+
+

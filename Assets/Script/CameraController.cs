@@ -9,6 +9,13 @@ public class CameraController : MonoBehaviour {
     public float m_yawAngle = 0;
     public float m_height = 1;
 
+    //相机震动参数
+    public float verticalShake;
+    public float shakeAmount = 1.7f;
+    public static float shakeDis = 1.0f;
+    public float decreaseFactor = 1.0f;
+
+
     public Entity LookTarget = null;
 	// Use this for initialization
     void Awake()
@@ -68,5 +75,20 @@ public class CameraController : MonoBehaviour {
 
         Camera.main.transform.position = cameraPos;
         Camera.main.transform.LookAt(LookTarget.Pos);
+
+        if (verticalShake > 0)
+        {
+            Camera.main.transform.position += Vector3.up * Random.Range(0.0f, 0.5f) * shakeAmount * verticalShake * shakeDis;
+            verticalShake -= Time.deltaTime * decreaseFactor;
+        }
+        else
+        {
+            verticalShake = 0f;
+        }
+    }
+
+    public void Shake()
+    {
+        verticalShake = 0.5f;
     }
 }

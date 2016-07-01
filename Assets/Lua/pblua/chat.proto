@@ -1,0 +1,43 @@
+package CSoft.Proto;
+
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+
+////////////////////////////////////////////////////////////////////////////////
+// 聊天频道枚举
+enum ETalkChannel {
+	P2P					= 0;	// 私聊
+	World				= 1;	// 世界
+	Guild				= 2;	// 公会
+}
+////////////////////////////////////////////////////////////////////////////////
+// 聊天 C -> S
+message ChatTalkCS {
+	optional ETalkChannel	Channel		= 1	[default=P2P];	// 频道
+	optional int32			PlayerID	= 2;	// 对方角色ID
+	optional string			Content		= 3;	// 内容
+	optional string			PlayerName	= 4;	// 对方名称，用于搜索
+}
+
+// 聊天 S -> C
+message ChatTalkSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+}
+
+// 收到聊天信息 S -> C
+message ChatTalkRecvSC {
+	optional ETalkChannel	Channel		= 1	[default=P2P];	// 频道
+	optional string			Name		= 2;	// 对方名称
+	optional int32			PlayerID	= 3;	// 对方角色ID
+	optional int32			Level		= 4;	// 对方角色等级
+	optional int32			HeroID		= 5;	// 对方英雄ID
+	optional EQuality		Quality 	= 6	[default=WHITE];	// 对方英雄星级
+	optional string			Content		= 7;	// 内容
+	optional int32			VipLevel	= 8;	// vip等级
+}

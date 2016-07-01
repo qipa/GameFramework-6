@@ -8,10 +8,15 @@ public class AnimationModule : ModuleBase
     Animator m_animator = null;
 	public AnimationModule(Entity entity) : base(entity)
     {
-        m_animator = m_object.GetComponent<Animator>();
-        SyncAction("Idle_Sword");
+        Init();
     }
 
+    public override void Init()
+    {
+        if(m_animator == null)
+            m_animator = m_object.GetComponent<Animator>();
+        SyncAction("Idle_Sword");
+    }
      
     public AnimatorStateInfo GetCurAnimatorState()
     {
@@ -58,5 +63,17 @@ public class AnimationModule : ModuleBase
     {
         if (m_animator != null)
             m_animator.speed = 0f;
+    }
+
+    public override void OnEvent(eEntityEvent eventID, object args = null)
+    {
+        if (eventID == eEntityEvent.OnAlive)
+        {
+            Init();
+        }
+        else if (eventID == eEntityEvent.OnDead)
+        {
+            SyncAction("Die");
+        }
     }
 }

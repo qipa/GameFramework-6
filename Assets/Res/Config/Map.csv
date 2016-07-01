@@ -1,4 +1,4 @@
-��ͼ����,Ѱ·��Ϣ,���ǳ�����ͳ���(ǰ����������λ�ã����һ����������y��ĽǶ�)
+﻿地图名称,寻路信息,主角出生点和朝向(前三个数字是位置，最后一个数字是绕y轴的角度)
 name,pathInfo,bornPos
 string,string,string
 Main,PathInfo/main,54.46*0*96.9*0

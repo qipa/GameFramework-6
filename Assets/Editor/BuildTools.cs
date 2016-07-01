@@ -4,6 +4,8 @@ using UnityEditor;
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
+using System.Diagnostics;
+using Debug = UnityEngine.Debug;
 public class BuildTools 
 {
     static List<string> pathList = new List<string>();
@@ -239,5 +241,38 @@ public class BuildTools
             pathList.Add(dir.Replace('\\', '/'));
             Recursive(dir);
         }
+    }
+
+
+    [MenuItem("Build/Build Protobuf-lua-gen File")]
+    public static void BuildProtobufFile()
+    {
+       
+        string dir = Application.dataPath + "/Lua/pblua";
+        pathList.Clear(); fileList.Clear(); Recursive(dir);
+
+        string protoc = "d:/protobuf-2.4.1/src/protoc.exe";
+        string protoc_gen_dir = "\"d:/protoc-gen-lua/plugin/protoc-gen-lua.bat\"";
+
+        foreach (string f in fileList)
+        {
+            string name = Path.GetFileName(f);
+            string ext = Path.GetExtension(f);
+            if (!ext.Equals(".proto")) continue;
+
+            ProcessStartInfo info = new ProcessStartInfo();
+            info.FileName = protoc;
+            info.Arguments = " --lua_out=./ --plugin=protoc-gen-lua=" + protoc_gen_dir + " " + name;
+            info.WindowStyle = ProcessWindowStyle.Hidden;
+            info.UseShellExecute = true;
+            info.WorkingDirectory = dir;
+            info.ErrorDialog = true;
+            Debug.Log(info.FileName + " " + info.Arguments);
+
+            Process pro = Process.Start(info);
+            pro.WaitForExit();
+           
+        }
+        AssetDatabase.Refresh();
     }
 }

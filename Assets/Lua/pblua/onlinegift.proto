@@ -1,0 +1,30 @@
+package CSoft.Proto;
+
+import "base.proto";
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+////////////////////////////////////////////////////////////////////////////////
+// 同步在线礼包数据
+message SynOnlineGiftDataSC {
+	repeated int32			Gifts = 1 [packed=true];// 已领取礼包id
+	optional int32			PastSeconds = 2;		// 当前累计在线时间[秒]
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 领取在线礼包
+message OnlineGiftReceiveCS {
+	optional int32			ID = 1;
+}
+
+// 领取在线礼包反馈
+message OnlineGiftReceiveSC {
+	optional ERetCode			RetCode	= 1	[default=OK];
+	optional int32			ID = 2;
+	optional OneRewardMix	Reward = 3;		// 奖励
+}

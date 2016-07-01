@@ -1,0 +1,30 @@
+package CSoft.Proto;
+
+import "base.proto";
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+////////////////////////////////////////////////////////////////////////////////
+// 同步签到数据
+message SynSignDataSC {
+	optional int32		Month = 1;				// 当前月份
+	repeated int32		Days = 2 [packed=true];	// 已签到日期
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 签到
+message SignCheckInCS {
+}
+
+// 签到反馈
+message SignCheckInSC {
+	optional ERetCode			RetCode	= 1	[default=OK];
+	optional int32			Month = 2;		// 月份
+	optional int32			Day = 3;		// 日期
+	optional OneRewardMix	Reward = 4;		// 奖励
+}

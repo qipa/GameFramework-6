@@ -59,6 +59,7 @@ public class SceneManager : MonoBehaviour {
 
         GameManager.MainPlayer = EntityManager.Instance.Get(10, 1);
         GameManager.MainPlayer.Camp = eCamp.Hero;
+        GameManager.MainPlayer.invincible = true;
         GameManager.MainPlayer.Pos = new Vector3(x, y, z);
         GameManager.MainPlayer.SetRot(angle);
 

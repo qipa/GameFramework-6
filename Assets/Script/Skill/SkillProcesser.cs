@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using UnityEngine;
 //用来模拟服务器，接收处理技能的请求，并返回结果
 public class SkillProcesser
 {
@@ -75,8 +75,9 @@ public class SkillProcesser
         while (e.MoveNext())
         {
             ent = e.Current.Value;
-            if (ent.Camp == eCamp.Hero || ent.Camp == eCamp.Friend)
+            if (caster.IsEnemy(ent) == false || ent.IsDead)
                 continue;
+                
             if ((ent.Pos - caster.Pos).sqrMagnitude <= skillInfo.attackDistance * skillInfo.attackDistance)
             {
                 return ent;
@@ -85,8 +86,32 @@ public class SkillProcesser
         return null;
     }
 
+    //得到以ent为中心，在distance范围内的敌人
+    public static Entity GetTargetInDistance(Entity ent,float distance)
+    {
+        Entity ret = null;
+        var e = EntityManager.Instance.m_dicObject.GetEnumerator();
+        while (e.MoveNext())
+        {
+            ret = e.Current.Value;
+            if (ret.IsDead )
+                continue;
+            if (ent.IsEnemy(ret) == false)
+                continue;
+            if ((ret.Pos - ent.Pos).sqrMagnitude <= distance * distance)
+            {
+                return ret;
+            }
+        }
+        return null;
+
+    }
+
     public static void BulletHit(Entity caster, Entity target, CSVSkill skillInfo)
     {
+        if (target.IsDead || target.invincible)
+            return;
+
         //受击动作
         if (!string.IsNullOrEmpty(skillInfo.beattackAction))
         {
@@ -103,5 +128,66 @@ public class SkillProcesser
             effect.Forward = target.Forward;
         }
 
+        CalcBlood(caster, target, skillInfo);
+    }
+
+    //计算伤害
+    public static void CalcBlood(Entity caster,Entity target,CSVSkill skillInfo)
+    {
+        if (target == null) return;
+        //target.Buff.AddBuff((int)skillInfo.attackBuff);
+        bool isCrit = false;
+        int damage = GetDamage(caster, target, skillInfo, out isCrit);
+
+        if(damage != 0)
+        {
+            target.Property.HP -= damage;
+            if (target.IsDead)
+                target.Die();
+        }
+    }
+
+    static int GetDamage(Entity caster,Entity target,CSVSkill skillInfo,out bool isCrit)
+    {
+        float damage = 0;
+        int randomValue = UnityEngine.Random.Range(20, 40);
+
+        float realCritRate = Mathf.Min(caster.Property.CritRate - target.Property.AvoidCritRate, 0.8f);
+        isCrit = GetProResult(realCritRate);
+        switch(skillInfo.type)
+        {
+            case 1:      //普攻
+                damage = Mathf.RoundToInt((Mathf.Max(caster.Property.PhysicDamage + 
+                    caster.Property.MagicDamage - target.Property.PhysicDefence - target.Property.MagicDefence, 0)) + randomValue );
+                break;
+            case 2:     //物攻
+                damage = Mathf.RoundToInt(Mathf.Max(caster.Property.PhysicDamage - target.Property.PhysicDefence, 0) + randomValue );
+                break;
+            case 3:     //法攻
+                damage = Mathf.RoundToInt(Mathf.Max(caster.Property.MagicDamage - target.Property.MagicDefence, 0) + randomValue);
+                break;
+            default: break;
+        }
+        if(isCrit)
+        {
+            float f = UnityEngine.Random.Range(1.5f, 2);
+            damage *= 2;
+            if(caster.IsMainPlayer)
+            {
+                CameraController.Instance.Shake();
+            }
+        }
+        return Mathf.RoundToInt(damage);
+    }
+    public static bool GetProResult(float pro)
+    {
+        if (pro >= 1)
+            return true;
+        else if (pro <= 0)
+            return false;
+        //取小数后四位
+        int probability = Mathf.RoundToInt((float)Math.Round(pro, 4) * 10000);
+        int value = UnityEngine.Random.Range(0, 10000);
+        return value > probability ? false : true;
     }
 }

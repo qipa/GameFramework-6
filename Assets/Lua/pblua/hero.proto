@@ -1,0 +1,75 @@
+package CSoft.Proto;
+
+import "base.proto";
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+////////////////////////////////////////////////////////////////////////////////
+// 同步武将数据 C -> S
+message SynHerosDataSC {
+	repeated OneHero		Heros = 1;		// 武将列表
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 同步武将属性
+message SynHeroPropSC {
+	optional int32		HeroID = 1;		// 武将ID
+	optional int32		Prop = 2;		// 属性枚举
+	optional int32		Value = 3;		// 属性最新值
+}
+
+// 同步武将装备栏
+message SynHeroEquipSC {
+	optional int32		HeroID = 1;		// 武将ID
+	optional int32		EquipPos = 2;	// 栏位
+	optional OneItem	Equip = 3;		// 武器最新数据
+}
+
+// 得到一个新将领 S -> C
+message HeroNewSC {
+	optional OneHero	Hero	= 1;	// 武将数据
+}
+
+// 将领升级 C -> S
+message HeroUpLevelCS {
+	optional int32		HeroID	= 1;	// 英雄ID
+}
+
+// 将领升级 S -> C
+message HeroUpLevelSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		HeroID	= 2;	// 英雄ID
+	optional int32		Exp	= 3;		// 实际增加经验
+}
+
+// 将领学习技能 C -> S
+message HeroLearnSkillCS {
+	optional int32		HeroID	= 1;	// 英雄ID
+	optional int32		SkillID	= 2;	// 技能ID
+}
+
+// 将领学习技能 S -> C
+message HeroLearnSkillSC {
+	optional ERetCode	RetCode		= 1		[default=OK];
+	optional int32		HeroID		= 2;	// 英雄ID
+	optional int32		SkillID		= 3;	// 技能ID
+	optional int32		OldSkillID	= 4;	// 旧技能ID
+}
+
+// 将领遗忘技能 C -> S
+message HeroForgetSkillCS {
+	optional int32		HeroID	= 1;	// 英雄ID
+	optional int32		SkillID	= 2;	// 技能ID
+}
+
+// 将领遗忘技能 S -> C
+message HeroForgetSkillSC {
+	optional ERetCode	RetCode		= 1		[default=OK];
+	optional int32		HeroID		= 2;	// 英雄ID
+	optional int32		SkillID		= 3;	// 技能ID
+}

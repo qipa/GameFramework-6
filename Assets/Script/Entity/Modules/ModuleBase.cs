@@ -14,4 +14,6 @@ public class ModuleBase  {
 
     //entity的事件，如果模块需要关注某个事件，需要重载此虚函数
     public virtual void OnEvent(eEntityEvent eventID, object args = null) { }
+
+    public virtual void Init() { }
 }

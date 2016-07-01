@@ -1,0 +1,174 @@
+package CSoft.Proto;
+
+import "base.proto";
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+////////////////////////////////////////////////////////////////////////////////
+// 同步背包数据
+message SynBackpackDataSC {
+	repeated OneItem		Items = 1;	// 物品列表
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 物品出售 C -> S
+message ItemSellCS {
+	optional int32		UID = 1;		// 物品uid
+	optional int32		Num = 2;		// 数量
+	optional int32		HeroID = 3;		// 装备所属英雄ID
+	optional int32		PosEquip = 4;	// 装备部位
+}
+
+// 物品出售 S -> C
+message ItemSellSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32		UID = 2;		// 物品uid
+	optional int32		Num = 3;		// 数量
+	optional int32		HeroID = 4;		// 装备所属英雄ID
+	optional int32		PosEquip = 5;	// 装备部位
+}
+
+// 物品强化 C -> S
+message ItemStrengthenCS {
+	optional int32		UID = 1;		// 物品uid
+	optional int32		HeroID = 2;		// 装备所属英雄ID
+	optional int32		PosEquip = 3;	// 装备部位
+}
+
+// 物品强化 S -> C
+message ItemStrengthenSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32		UID = 2;		// 物品uid
+	optional int32		HeroID = 3;		// 装备所属英雄ID
+	optional int32		PosEquip = 4;	// 装备部位
+	optional int32		Level = 5;		// 最新强化等级
+	optional int32		NewUID = 6;		// 物品新uid
+}
+
+// 物品合成 C -> S
+message ItemComposeCS {
+	repeated int32		ComposeEquipIDs = 1 ; //熔炼ID列表
+	optional bool		IsSpecialPart   = 2 ; //就否指定位置
+	optional int32		PosEquip		= 3 ; //位置
+ 	optional int32 		Quality			= 4 ; //品质
+}
+
+// 物品合成 S -> C
+message ItemComposeSC {
+	optional ERetCode		RetCode		= 1	[default=OK];
+	optional int32			NewEquipUID	= 2 ;
+	optional int32 			Quality		= 3 ; //品质
+}
+
+// 物品分解 C -> S
+message ItemDecomposeCS {
+	optional int32		UID 		= 1;		// 物品uid
+	optional int32		Num 		= 2;		// 数量
+	optional int32		HeroID 		= 3;		// 装备所属英雄ID
+	optional int32		PosEquip 	= 4;		// 装备部位
+	optional int32 		Quality		= 5 ; 		//品质
+	
+}
+
+message ItemDecomposeObtain {
+	optional int32		UID = 1;		//物品UID
+	optional int32		Num = 2;		//数量
+
+}
+
+// 物品分解 S -> C
+message ItemDecomposeSC {
+	optional ERetCode				RetCode		= 1	[default=OK];
+	repeated ItemDecomposeObtain 	Obtains   	= 2 ;
+}
+
+// 物品镶嵌 C -> S
+message ItemInlayCS {
+}
+
+// 物品镶嵌 S -> C
+message ItemInlaySC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+}
+
+// 物品使用 C -> S
+message ItemUseCS {
+	optional int32		UID = 1;		// 物品uid
+	optional int32		Num	= 2;
+}
+
+// 物品使用 S -> C
+message ItemUseSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32		UID = 2;		// 物品uid
+	optional int32		Num	= 3;
+}
+
+// 物品升级 C -> S
+message ItemUpLevelCS {
+	optional int32		UID = 1;		// 物品uid
+	optional bool		BUpMaxLev = 2;	// 是否升至最高等级
+	optional int32		HeroID = 3;		// 装备所属英雄ID
+	optional int32		PosEquip = 4;	// 装备部位
+}
+
+// 物品升级 S -> C
+message ItemUpLevelSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32		UID = 2;		// 物品uid
+	optional bool		BUpMaxLev = 3;	// 是否升至最高等级
+	optional int32		Level = 4;		// 物品新等级
+	optional int32		NewUID = 5;		// 物品新uid
+	optional int32		HeroID = 6;		// 装备所属英雄ID
+	optional int32		PosEquip = 7;	// 装备部位
+}
+
+// 添加物品 C -> S
+message ItemAddCS {
+	optional int32		ItemID = 1;			// 物品ID
+	optional int32		Num = 2;			// 数量
+	optional int32		Level = 3;			// 等级
+	optional int32		StrenthenLevel = 4;	// 强化等级
+}
+
+// 添加物品 S -> C
+message ItemAddSC {
+	repeated OneItem	Items = 1;
+	optional int32		SrcType = 2;		// 物品获得来源
+}
+
+// 删除物品 S -> C
+message ItemDelSC {
+	repeated OneItem	Items = 1;
+}
+
+// 穿上装备 C -> S
+message ItemPutOnCS {
+	optional OneItem	Equip = 1;			// 要穿的装备
+	optional int32		Hero = 2;			// 将领ID
+}
+
+// 穿上装备 S -> C
+message ItemPutOnSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32		Hero = 2;			// 将领ID
+	optional OneItem	Equip = 3;			// 要穿的装备
+}
+
+// 脱下装备 C -> S
+message ItemPutOffCS {
+	optional int32		Hero = 1;			// 将领ID
+	optional int32		PosEquip = 2;		// 装备部位
+}
+
+// 脱下装备 S -> C
+message ItemPutOffSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32		Hero = 2;			// 将领ID
+	optional int32		PosEquip = 3;		// 装备部位
+}

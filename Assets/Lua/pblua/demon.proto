@@ -1,0 +1,94 @@
+package CSoft.Proto;
+
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+////////////////////////////////////////////////////////////////////////////////
+// 同步讨伐妖师数据
+message SynDemonDataSC{
+	optional int32			HurtRecord = 1;			// 伤害纪录
+	optional int64			HurtTime = 2;			// 伤害纪录时间
+	repeated int32			Heros = 3 [packed=true];// 出阵英雄列表
+	optional int64			enterTime = 4;			// 挑战进入时间
+	optional int32			costTimes = 5;			// 花费进入的次数
+	optional int32			changeTimes = 6;		// 修改开始时间的次数
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//妖师信息同步
+message DemonRankInfo{
+	optional int32		Rank = 1;		// 排行榜
+	optional string		name = 2;		// 名称
+	optional int32		value = 3;		// 排行榜的值
+}
+
+message DemonInfoCS{
+}
+
+message DemonInfoSC{
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32			StartTime = 2;		// 妖师开始时间
+	optional int32			EnterCD = 3;		// 妖师进入时间
+	optional int32			Hurt	  = 4;		// 我的伤害,boss和小怪的总伤害
+	optional int32			Rank	  = 5;		// 我的排行
+	repeated DemonRankInfo  GuildRank = 6;		// 帮会斩杀等级排行
+	repeated DemonRankInfo  HurtRank = 7;		// 伤害输出等级排行
+	repeated DemonRankInfo  GuildHurtRank = 8;	// 帮会伤害输出等级排行
+	optional int32			GuildRecord = 9;	// 帮会纪录
+	optional int32			ChangeTimes = 10;	// 帮会改变开始时间的次数
+	optional int32			BossLevel = 11;		// 妖师的等级
+	optional int32			CostTimes = 12;		// 消除CD的次数
+	optional int32			JionGuildDays = 13;	// 加入帮会的天数
+	optional int32			BossLife = 14;		// boss血量
+	optional int32			BossCurLife = 15;	// boss当前血量
+	optional int32			NextStartTime = 16;	// 妖师明天开始时间
+	optional int32			LeftStartTime = 17;	// 妖师开始时间剩余秒数
+	optional int32			LeftFightTime = 18;	// 妖师战斗结束剩余秒数
+	optional int32			BossHurt = 19;		// 我对的伤害
+	
+}
+
+//妖师战斗开始
+message DemonFightCS{
+}
+
+message DemonFightSC{
+	optional ERetCode		RetCode	= 1	[default=OK];
+}
+
+//妖师战斗结束
+message DemonFightEndCS{
+	optional int32			BossHurt = 1;			// 对妖师的输出伤害
+	optional int32			MonsterHurt = 2;		// 对小怪的输出伤害
+}
+
+message DemonFightEndSC{
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32			BossDead = 2;			// boss是否死亡，1是死亡
+}
+
+//妖师战斗布阵
+message DemonEmbattleCS{
+	repeated int32		Heros = 1 [packed=true];	// 武将列表
+}
+
+message DemonEmbattleSC{
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		Hero = 2;					// 不存在的武将ID
+	optional int32		Force = 3;					// 新阵容战力
+	repeated int32		Heros = 4 [packed=true];	// 武将列表
+}
+
+//妖师设置开始时间
+message DemonChangeTimeCS{
+	optional int32			StartTime = 1;		// 妖师开始时间
+}
+
+message DemonChangeTimeSC{
+	optional ERetCode		RetCode	= 1	[default=OK];
+}

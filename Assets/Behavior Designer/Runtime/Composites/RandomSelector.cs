@@ -3,17 +3,18 @@ using System.Collections.Generic;
 
 namespace BehaviorDesigner.Runtime.Tasks
 {
-    // Similar to the selector task, the random selector task will return success as soon as a child task returns success. The difference is that the random selector class will run its
-    // children in a random order. The selector task is deterministic in that it will always run the tasks from left to right within the tree. The random selector task shuffles the child
-    // tasks up and then begins execution in a random order. Other than that the random selector class is the same as the selector class. It will continue running tasks until
-    // a task completes successfully. If no child tasks return success then it will return failure.
+    [TaskDescription("Similar to the selector task, the random selector task will return success as soon as a child task returns success.  " +
+                     "The difference is that the random selector class will run its children in a random order. The selector task is deterministic " +
+                     "in that it will always run the tasks from left to right within the tree. The random selector task shuffles the child tasks up and then begins " +
+                     "execution in a random order. Other than that the random selector class is the same as the selector class. It will continue running tasks " +
+                     "until a task completes successfully. If no child tasks return success then it will return failure.")]
     [HelpURL("http://www.opsive.com/assets/BehaviorDesigner/documentation.php?id=30")]
     [TaskIcon("{SkinColor}RandomSelectorIcon.png")]
     public class RandomSelector : Composite
     {
-        // Seed the random number generator to make things easier to debug.
+        [Tooltip("Seed the random number generator to make things easier to debug")]
         public int seed = 0;
-        // Do we want to use the seed?
+        [Tooltip("Do we want to use the seed?")]
         public bool useSeed = false;
 
         // A list of indexes of every child task. This list is used by the Fischer-Yates shuffle algorithm.
@@ -39,14 +40,8 @@ namespace BehaviorDesigner.Runtime.Tasks
 
         public override void OnStart()
         {
-            // Use Fischer-Yates shuffle to randomize the child index order.
-            for (int i = childIndexList.Count; i > 0; --i) {
-                int j = Random.Range(0, i);
-                int index = childIndexList[j];
-                childrenExecutionOrder.Push(index);
-                childIndexList[j] = childIndexList[i - 1];
-                childIndexList[i - 1] = index;
-            }
+            // Randomize the indecies
+            ShuffleChilden();
         }
 
         public override int CurrentChildIndex()
@@ -64,8 +59,18 @@ namespace BehaviorDesigner.Runtime.Tasks
         public override void OnChildExecuted(TaskStatus childStatus)
         {
             // Pop the top index from the stack and set the execution status.
-            childrenExecutionOrder.Pop();
+            if (childrenExecutionOrder.Count > 0) {
+                childrenExecutionOrder.Pop();
+            }
             executionStatus = childStatus;
+        }
+
+        public override void OnConditionalAbort(int childIndex)
+        {
+            // Start from the beginning on an abort
+            childrenExecutionOrder.Clear();
+            executionStatus = TaskStatus.Inactive;
+            ShuffleChilden();
         }
 
         public override void OnEnd()
@@ -80,6 +85,18 @@ namespace BehaviorDesigner.Runtime.Tasks
             // Reset the public properties back to their original values
             seed = 0;
             useSeed = false;
+        }
+
+        private void ShuffleChilden()
+        {
+            // Use Fischer-Yates shuffle to randomize the child index order.
+            for (int i = childIndexList.Count; i > 0; --i) {
+                int j = Random.Range(0, i);
+                int index = childIndexList[j];
+                childrenExecutionOrder.Push(index);
+                childIndexList[j] = childIndexList[i - 1];
+                childIndexList[i - 1] = index;
+            }
         }
     }
 }

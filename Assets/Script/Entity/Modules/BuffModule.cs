@@ -10,10 +10,21 @@ public class BuffModule : ModuleBase
     public BuffModule(Entity entity)
         : base(entity)
     {
-        m_dicBuff = new Dictionary<int, BuffBase>();
-        m_removeBuffList = new List<int>();
+        Init();
     }
 
+    public override void Init()
+    {
+        if (m_dicBuff == null)
+            m_dicBuff = new Dictionary<int, BuffBase>();
+        else
+            m_dicBuff.Clear();
+
+        if (m_removeBuffList == null)
+            m_removeBuffList = new List<int>();
+        else
+            m_removeBuffList.Clear();
+    }
 
     public override void Update()
     {
@@ -96,5 +107,17 @@ public class BuffModule : ModuleBase
         BuffBase ret = null;
         m_dicBuff.TryGetValue(buffID, out ret);
         return ret;
+    }
+
+    public override void OnEvent(eEntityEvent eventID, object args = null)
+    {
+        if (eventID == eEntityEvent.OnAlive)
+        {
+            Init();
+        }
+        else if (eventID == eEntityEvent.OnDead)
+        {
+            RemoveAllBuff();
+        }
     }
 }

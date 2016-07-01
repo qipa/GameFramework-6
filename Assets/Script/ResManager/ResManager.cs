@@ -9,7 +9,7 @@ public class ResManager : MonoBehaviour
 {
     static string[] m_variants = { };
     static AssetBundleManifest manifest;
-    static AssetBundle shared, assetbundle;
+    static AssetBundle assetbundle;
     static Dictionary<string, AssetBundle> bundles;
     static StringBuilder sb = new StringBuilder();
     public static T Load<T>(string assetName,string ext = ".prefab",string abName = "") where T : UnityEngine.Object
@@ -22,23 +22,20 @@ public class ResManager : MonoBehaviour
         {
             //如果是多个文件打包成一个Assetbundle  如多个配置表打成了一个Assetbundle 
             //则，除了要指定AssetName，还要指定Assetbundle name
+            
+            string bundleName = string.IsNullOrEmpty(abName) ? assetName.ToLower() : abName.ToLower();
 
-            if(string.IsNullOrEmpty(abName))
+            AssetBundle bundle = LoadAssetBundle(bundleName);                  
+            if(bundle == null)
             {
-                AssetBundle bundle = LoadAssetBundle(assetName.ToLower());   
-                int startIndex = assetName.LastIndexOf('/');
-                if(startIndex > 0)
-                    assetName = assetName.Substring(startIndex + 1);
-                return bundle.LoadAsset<T>(assetName.ToLower());
+                Log.Error("加载AssetBundle失败：" + bundleName);
+                return default(T);
             }
-            else
-            {
-                AssetBundle bundle = LoadAssetBundle(abName.ToLower());         
-                int startIndex = assetName.LastIndexOf('/');
-                if(startIndex > 0)
-                    assetName = assetName.Substring(startIndex + 1);
-                return bundle.LoadAsset<T>(assetName.ToLower());
-            }
+
+            int startIndex = assetName.LastIndexOf('/');
+            if (startIndex > 0)
+                assetName = assetName.Substring(startIndex + 1);
+            return bundle.LoadAsset<T>(assetName.ToLower());
         }
         else
         {

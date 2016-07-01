@@ -1,0 +1,83 @@
+package CSoft.Proto;
+
+import "base.proto";
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+////////////////////////////////////////////////////////////////////////////////
+// 同步无双战数据
+message SynPeerlessDataSC {
+	optional int32			FightTimes = 1;			// 本日挑战次数
+	repeated int32			Heros = 2 [packed=true];// 出阵英雄列表
+	optional int32			Waves = 3;				// 历史最好波数
+	optional int32			FightTimesTotal = 4;	// 历史挑战次数
+}
+
+// 一条无双战排行榜记录
+message OnePeerlessRank {
+	optional int32		PlayerID = 1;		// 角色ID
+	optional string		Name = 2;			// 角色名称
+	optional EQuality	Quality = 3	[default=WHITE];	// 角色星级
+	optional int32		Score = 4;			// 积分
+	optional int32		General = 5;		// 斩将
+	optional int32		Soldier = 6;		// 灭兵
+	optional int32		Rank = 7;			// 排名
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 无双战信息同步 C -> S
+message PeerlessSynCS {
+}
+
+// 无双战信息同步 S -> C
+message PeerlessSynSC {
+	optional ERetCode				RetCode	= 1	[default=OK];
+	repeated OnePeerlessRank 	Players = 2;	// 无双战排行榜
+}
+
+// 发起无双战 C -> S
+message PeerlessFightCS {
+}
+
+// 发起无双战 S -> C
+message PeerlessFightSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32		General = 2;	// 斩将数
+	optional int32		Soldier = 3;	// 灭兵数
+	optional int32		Wave = 4;		// 从第几波开始
+}
+
+// 无双战结束 C -> S
+message PeerlessEndFightCS {
+	optional int32		General = 1;	// 斩将数
+	optional int32		Soldier = 2;	// 灭兵数
+	optional int32		Waves = 3;		// 打到多少波
+}
+
+// 无双战结束 C <- S
+message PeerlessEndFightSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32		General = 2;	// 斩将数
+	optional int32		Soldier = 3;	// 灭兵数
+	optional OneRewardMix	Reward = 4;	// 获得无双战奖励
+	optional int32		Waves = 5;		// 打到多少波
+}
+
+// 无双战布阵 C -> S
+message PeerlessEmbattleCS {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	repeated int32		Heros = 2 [packed=true];	// 武将列表
+}
+
+// 无双战布阵 C <- S
+message PeerlessEmbattleSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32		Hero = 2;					// 不存在的武将ID
+	optional int32		Force = 3;					// 新阵容战力
+	repeated int32		Heros = 4 [packed=true];	// 武将列表
+}

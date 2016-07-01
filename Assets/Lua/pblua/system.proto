@@ -1,0 +1,124 @@
+package CSoft.Proto;
+
+import "base.proto";
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+
+////////////////////////////////////////////////////////////////////////////////
+// 客户端操作枚举
+enum ECliOpt {
+	Unknown				= 0;	// 未知操作
+	Session				= 1;	// 创建连接会话
+	LoginAccount		= 2;	// 登入账户
+	LogoutAccount		= 3;	// 登出账户
+	LoginPlayer			= 4;	// 登入角色
+	LogoutPlayer		= 5;	// 登出角色
+	BindAccount			= 6;	// 绑定账户
+}
+////////////////////////////////////////////////////////////////////////////////
+// 通知游戏服保存某玩家数据
+message SystemPlayerSaveGS {
+	optional int32		PlayerID	= 1;	// 角色ID
+}
+
+// 通知游戏服保存某玩家数据
+message SystemPlayerSaveSG {
+	optional int32		PlayerID	= 1;	// 角色ID
+}
+
+// 更新逻辑服运行状态
+message SystemGameUpdateGS {
+	optional int32		Region		= 1;	// 服务器区ID
+	optional ESvrState	StateID		= 2 [default=SvrStateUnknown];	// 状态枚举
+	optional int32		OnlineNum	= 3;	// 该服当前在线人数
+	optional int32		RegisterNum	= 4;	// 该服注册角色数量
+}
+
+// 更新逻辑服运行状态
+message SystemGameUpdateSG {
+	optional ERetCode	RetCode		= 1		[default=OK];
+}
+
+// 登陆服通知游戏服玩家操作
+message SystemClientOperateSG {
+	optional int32		AccID		= 1;	// 账户ID
+	optional int32		PlayerID	= 2;	// 角色ID
+	optional ECliOpt	Operate		= 3	[default=Unknown];	// 操作类型
+	optional uint64		SessionID	= 4;	// 会话ID
+}
+
+// 登陆服通知游戏服玩家操作
+message SystemClientOperateGS {
+	optional ERetCode	RetCode		= 1		[default=OK];
+}
+
+// 获取某账户在某区的角色主将信息[用于登录角色界面显示]
+message SystemPlayerMainHeroSG {
+	optional int32		AccID		= 1;	// 账户ID
+}
+
+// 获取某账户在某区的角色主将信息[用于登录角色界面显示]
+message SystemPlayerMainHeroGS {
+	optional ERetCode	RetCode		= 1		[default=OK];
+	optional int32		PlayerID	= 2;	// 角色ID
+	optional OneHero	Hero		= 3;	// 主将数据
+	optional int64		LastOnline	= 4;	// 最近在线时间
+}
+
+// 创建角色
+message SystemCreatePlayerSG {
+	optional int32		AccID		= 1;	// 账户ID
+	optional string		Name		= 2;	// 角色名
+	optional int32		Hero		= 3;	// 主将ID
+}
+
+// 创建角色
+message SystemCreatePlayerGS {
+	optional ERetCode	RetCode		= 1		[default=OK];
+	optional int32		PlayerID	= 2;	// 角色ID
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+enum EDBOpt{
+	DBOptUnknown			= 0;
+	DBOptSaveGame			= 1;	// 保存游戏服数据到mongo
+	DBOptSaveLogin			= 2;	// 保存登陆服数据到mongo
+	DBOptClearMongo			= 3;	// 清空mango
+	DBOptInitGameDB			= 4;	// 重置游戏服mongodb
+	DBOptInitLoginDB		= 5;	// 重置登陆服mongodb
+	DBOptWriteGameTestData 	= 6;	// 写入游戏服mongo的测试数据
+	DBOptWriteLoginTestData = 7;	// 写入登录服mongo的测试数据
+}
+
+// 角色代理数据 游戏服向DB服获取
+message OneAgent {
+	optional int32		ID = 1;						// 角色ID
+	optional string		Name = 2;					// 角色名
+	optional int32		Level = 3;					// 等级
+	optional int32		MainHeroID = 4;				// 主将ID
+	optional int32		Contribution = 5;			// 帮会贡献
+	optional int32		GuildID = 6;				// 帮会ID
+	optional string		GuildName = 7;				// 帮会名称
+	optional int32		GuildLevel = 8;				// 帮会等级
+	optional EGuildJob	GuildJob = 9 [default=GuildJobUnknown];	// 帮会职位
+	repeated OneHero	Embattle = 10;				// 出阵列表
+}
+
+message RedisMongoConfig {
+	optional string		RedisIP 	= 1;
+	optional int32		RedisPort	= 2;
+	optional string		RedisAuth	= 3;
+	optional int32		RedisDBIdx	= 4;
+	optional string		MongoIP 	= 5;
+	optional int32		MongoPort 	= 6;
+	optional string		MongoUser	= 7;
+	optional string		MongoPwd 	= 8;
+	optional string		MongoDB 	= 9;	// mongo数据库名
+	optional int32		Region		= 10;	// 服务器区ID[gamesvr用]
+}

@@ -1,0 +1,194 @@
+package CSoft.Proto;
+
+import "base.proto";
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+////////////////////////////////////////////////////////////////////////////////
+// 一条副本数据
+message OneInstance {
+	optional int32		ID = 1;		// 副本ID
+	optional int32		Star = 2;	// 通关星级
+}
+
+// 一条副本章节数据
+message OneChapter {
+	optional int32		ChapterID = 1;		// 章节ID
+	optional EInsDiff	Difficulty = 2	[default=InsDiffNormal];		// 难度
+}
+
+// 同步副本数据
+message SynInsDataSC {
+	repeated OneInstance	Pass = 1;				// 已通关副本列表
+	repeated int32			Hero = 2 [packed=true];	// 出阵英雄列表
+	repeated OneChapter		RewardChapter = 3;		// 已经领取过奖励的章节
+	optional int64			EnRecStamp = 4;			// 上一次体力恢复时间戳
+	optional int32			EnRecCD = 5;			// 距离下一次体力恢复CD时间【秒】
+	repeated int32			TeamPasses = 6	[packed=true];	// 团队副本本日已通关的关卡
+	repeated int32			TeamTimes = 7 	[packed=true];	// 团队副本本日通关次数
+	repeated int32			TeamMembers = 8	[packed=true];	// 团队副本本日已邀请过的成员
+	optional int32			SurpriseTimes = 9;		// 惊喜次数
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 进入副本 C -> S
+message InstanceEnterCS {
+	optional int32		InsID = 1;			// 副本ID
+}
+
+// 进入副本 C <- S
+message InstanceEnterSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32		InsID = 2;			// 副本ID
+	optional int32		EventId = 3;		// 惊喜事件ID
+	optional int32		SurpriseId = 4;		// 惊喜ID
+}
+
+// 离开副本 C -> S
+message InstanceExitCS {
+}
+
+// 离开副本 C <- S
+message InstanceExitSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32		InsID = 2;			// 副本ID
+}
+
+// 完成副本 C -> S
+message InstanceFinishCS {
+	optional bool			FinishSurprise = 1;	// 完成惊喜
+}
+
+// 完成副本 C <- S
+message InstanceFinishSC {
+	optional ERetCode			RetCode	= 1	[default=OK];
+	optional int32			InsID = 2;			// 副本ID
+	optional int32			Exp = 3;			// 经验奖励
+	optional int32			Coin = 4;			// 金币奖励
+	optional int32			Coupons = 5;		// 点券奖励
+	repeated OneRewardItem	Items = 6;			// 物品奖励
+}
+
+// 扫荡副本 C -> S
+message InstanceCleanCS {
+	optional int32		InsID = 1;			// 副本ID
+}
+
+// 扫荡副本 C <- S
+message InstanceCleanSC {
+	optional ERetCode			RetCode	= 1	[default=OK];
+	optional int32			InsID = 2;			// 副本ID
+	optional OneRewardMix	Reward = 3;			// 奖励
+	//optional int32			Exp = 3;			// 经验奖励
+	//optional int32			Coin = 4;			// 金币奖励
+	//repeated OneRewardItem	Items = 5;			// 物品奖励
+}
+
+// 扫荡副本十次 C -> S
+message InstanceCleanTenCS {
+	optional int32		InsID = 1;			// 副本ID
+}
+
+// 扫荡副本十次 C <- S
+message InstanceCleanTenSC {
+	optional ERetCode			RetCode	= 1	[default=OK];
+	optional int32			InsID = 2;			// 副本ID
+	repeated OneRewardMix	Rewards = 3;		// 奖励
+}
+
+// 副本布阵 C -> S
+message InstanceEmbattleCS {
+	repeated int32		Heros = 1 [packed=true];	// 武将列表
+}
+
+// 副本布阵 C <- S
+message InstanceEmbattleSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		Hero = 2;			// 不存在的武将ID
+}
+
+// 领取副本章节奖励 C -> S
+message InstanceChapterCS {
+	optional int32		Chapter = 1;		// 章节ID
+	optional EInsDiff	Difficulty = 2	[default=InsDiffNormal];		// 难度
+}
+
+// 领取副本章节奖励 C <- S
+message InstanceChapterSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		Chapter = 2;		// 章节ID
+	optional EInsDiff	Difficulty = 3	[default=InsDiffNormal];		// 难度
+}
+
+// 副本再来一次 C -> S
+message InstanceRetryCS {
+}
+
+// 副本再来一次 C <- S
+message InstanceRetrySC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+}
+
+// 请求帮派助阵中帮派成员列表 C -> S
+message InstanceTeamMembersCS {
+}
+
+// 请求帮派助阵中帮派成员列表 C <- S
+message InstanceTeamMembersSC {
+	optional ERetCode			RetCode	= 1	[default=OK];
+	repeated OneDBPlayer	Helpers = 2;		// 助阵帮会成员
+}
+
+// 请求帮派助阵成员阵容 C -> S
+message InstanceTeamEmbattleCS {
+	optional int32 		Helper = 1;		// 协助角色id
+}
+
+// 请求帮派助阵成员阵容 C <- S
+message InstanceTeamEmbattleSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32 		Helper = 2;		// 协助角色id
+	repeated OneHero	Heros = 3;		// 上阵英雄
+}
+
+// 挑战团队副本 C -> S
+message InstanceTeamEnterCS {
+	optional int32		InsID = 1;		// 副本ID
+	optional int32		Helper = 2;		// 协助角色id
+}
+
+// 挑战团队副本 C <- S
+message InstanceTeamEnterSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32		InsID = 2;		// 副本ID
+	optional int32		Helper = 3;		// 协助角色id
+}
+
+// 离开团队副本 C -> S
+message InstanceTeamExitCS {
+}
+
+// 离开团队副本 C <- S
+message InstanceTeamExitSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32		InsID = 2;			// 副本ID
+}
+
+// 完成团队副本 C -> S
+message InstanceTeamFinishCS {
+}
+
+// 完成团队副本 C <- S
+message InstanceTeamFinishSC {
+	optional ERetCode			RetCode	= 1	[default=OK];
+	optional int32			InsID = 2;			// 副本ID
+	optional int32			Exp = 3;			// 经验奖励
+	optional int32			Coin = 4;			// 金币奖励
+	optional int32			Coupons = 5;		// 点券奖励
+	repeated OneRewardItem	Items = 6;			// 物品奖励
+}

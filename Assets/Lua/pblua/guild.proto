@@ -1,0 +1,348 @@
+package CSoft.Proto;
+
+import "base.proto";
+import "action.proto";
+import "practice.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+////////////////////////////////////////////////////////////////////////////////
+// 一条帮会信息
+message OneGuildInfo {
+	optional int32		GuildID = 1;		// 帮会ID
+	optional string		Name = 2;			// 帮会名
+	optional int32		Level = 3;			// 帮会等级
+	optional int32		LevelLimit = 4;		// 入帮限制等级
+	optional int32		MemberSize = 5;		// 成员数量
+	optional int32		Capacity = 6;		// 成员上限
+	optional int32		Badge = 7;			// 帮会徽章
+	optional string		Declaration = 8;	// 帮会宣言
+	optional string		Notice = 9;			// 帮会公告
+	optional int32		Rank = 10;			// 帮会排名
+	optional int32		Leader = 11;		// 帮主ID
+	optional EQuality	LeaderStar = 12	[default=WHITE];	// 帮主品质
+	optional string		LeaderName = 100;	// 帮主名
+	optional int32		Force = 101;		// 总战力
+}
+
+// 一条帮会DB数据
+message OneGuildDBData {
+	optional int32				ID = 1;						// 帮会ID
+	optional string				Name = 2;					// 帮会名
+	optional int32				Level = 3;					// 等级
+	optional int32 				LevelRequire = 4;			// 入会等级要求
+	optional int32 				Badge = 5;					// 徽章
+	optional string				Declaration = 6;			// 宣言
+	optional string				Notice = 7;					// 公告
+	optional int32				Leader = 8;					// 帮主
+	repeated int32				Deputy = 9 [packed=true];	// 副帮主
+	repeated int32				Elder = 10 [packed=true];	// 长老
+	repeated int32				People = 11 [packed=true];	// 帮众
+	repeated int32				Apply = 12 [packed=true];	// 入帮申请列表
+	optional int32				Force = 13;					// 总战力
+	repeated int32				BuildingLevel = 14 [packed=true];	// 建筑等级 	[建筑枚举值 = 下标]
+	repeated int32				BuildingStone = 15 [packed=true];	// 建筑累积灵石 [建筑枚举值 = 下标]
+	repeated int32				BuildingWood = 16 [packed=true];	// 建筑累积神木 [建筑枚举值 = 下标]
+	repeated int32				AnimalAttrs = 17 [packed=true];		// 神兽属性 	[属性枚举值 = 下标]
+	repeated int32				AnimalStone = 18 [packed=true];		// 神兽累积灵石 [属性枚举值 = 下标]
+	repeated int32				AnimalWood = 19 [packed=true];		// 神兽累积神木 [属性枚举值 = 下标]
+	repeated OnePracticer		Practicers = 20;			// 练功房里的玩家
+	repeated OnePracticeReport	PracticeReports = 21;		// 练功房记录
+	optional int32				TitanDamageMax = 22;		// 魔将来袭历史最高伤害
+	optional int32				TitanDamageToday = 23;		// 魔将来袭今日累计伤害
+	optional int32				DemonStartTime = 24;		// 讨伐妖师开始时间
+	optional int32 				DemonRecord = 25;			// 讨伐妖师最高纪录
+	optional int64 				DemonRecordTime = 26;		// 讨伐妖师最高纪录时间
+	optional int32 				DemonBossLevel = 27;		// 讨伐妖师最高等级纪录
+	optional int32				DemonNextStartTime = 28;			// 讨伐妖师明天的开始时间
+}
+
+// 帮会模块数据
+message GuildSvrDBData {
+	repeated OneGuildDBData	Guilds = 1;		// 公会列表
+}
+
+// 同步帮会数据
+message SynGuildDataSC {
+	optional int32			Contribution = 1;	// 帮会贡献
+	optional EGuildJob		Job = 2 [default=GuildJobUnknown];		// 帮会职位
+	optional int32			Level = 3;			// 帮会等级
+	optional string			Name = 4;			// 帮会名称
+	optional int32			ID = 5;				// 帮会ID
+	repeated int32			Mysterys = 6 [packed=true];	// 帮会神机等级[神机枚举值 = 下标]
+	optional int32			StoneBuyTimes = 7;	// 本日灵石购买次数
+	optional int32			WoodBuyTimes = 8;	// 本日神木购买次数
+	optional int64			JoinGuildTime = 9;	// 加入帮会的时间
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 同步角色帮会数据 S -> C
+message GuildSynSC {
+	optional int32		GuildID = 2;	// 帮会ID
+	optional EGuildJob	Job = 3 [default=GuildJobUnknown];		// 职位
+}
+
+// 创建帮会 C -> S
+message GuildCreateCS {
+	optional string		Name	= 1;	// 帮会名
+}
+
+// 创建帮会 S -> C
+message GuildCreateSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		GuildID = 2;	// 帮会ID
+	optional string		Name = 3;		// 帮会名
+}
+
+// 申请加入帮会 C -> S
+message GuildApplyCS {
+	optional int32		GuildID	= 1;	// 帮会ID
+}
+
+// 申请加入帮会 S -> C
+message GuildApplySC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		GuildID	= 2;	// 帮会ID
+}
+
+// 请求帮会列表 C -> S
+message GuildListCS {
+}
+
+// 请求帮会列表 S -> C
+message GuildListSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	repeated OneGuildInfo	Guilds	= 2;
+}
+
+// 帮会查找 C -> S
+message GuildSearchCS {
+	optional string		Name	= 1;	// 帮会名
+}
+
+// 帮会查找 S -> C
+message GuildSearchSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional OneGuildInfo	Guild	= 2;
+}
+
+// 编辑帮会信息 C -> S
+message GuildEditCS {
+	optional int32		Badge		= 1;	// 徽章
+	optional string		Declaration	= 2;	// 宣言
+	optional string		Notice		= 3;	// 公告
+}
+
+// 编辑帮会信息 S -> C
+message GuildEditSC {
+	optional ERetCode	RetCode		= 1		[default=OK];
+	optional int32		Badge		= 2;	// 徽章
+	optional string		Declaration	= 3;	// 宣言
+	optional string		Notice		= 4;	// 公告
+}
+
+// 显示帮会入帮申请列表 C -> S
+message GuildApplyListCS {
+}
+
+// 显示帮会入帮申请列表 S -> C
+message GuildApplyListSC {
+	optional ERetCode			RetCode	= 1	[default=OK];
+	repeated OneDBPlayer 		Applys 	= 2;	// 申请列表
+}
+
+// 显示帮会成员列表 C -> S
+message GuildMemberListCS {
+}
+
+// 显示帮会成员列表 S -> C
+message GuildMemberListSC {
+	optional ERetCode			RetCode	= 1	[default=OK];
+	repeated OneDBPlayer 		Members = 2;	// 成员列表
+}
+
+// 转让帮主职位 C -> S
+message GuildTransferCS {
+	optional int32		PlayerID = 1;	// 受让角色ID
+}
+
+// 转让帮主职位 S -> C
+message GuildTransferSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		PlayerID = 2;	// 受让角色ID
+}
+
+// 撤职 C -> S
+message GuildDismissCS {
+	optional int32		PlayerID = 1;	// 撤职角色ID
+}
+
+// 撤职 S -> C
+message GuildDismissSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		PlayerID = 2;	// 撤职角色ID
+	optional EGuildJob	Job = 3 [default=GuildJobUnknown];		// 最新职位
+}
+
+// 升职 C -> S
+message GuildPromoteCS {
+	optional int32		PlayerID = 1;	// 升职角色ID
+}
+
+// 升职 S -> C
+message GuildPromoteSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		PlayerID = 2;	// 升职角色ID
+	optional EGuildJob	Job = 3 [default=GuildJobUnknown];		// 最新职位
+}
+
+// 移除 C -> S
+message GuildRemoveCS {
+	optional int32		PlayerID = 1;	// 移除角色ID
+}
+
+// 移除 S -> C
+message GuildRemoveSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		PlayerID = 2;	// 移除角色ID
+}
+
+// 退出帮会 C -> S
+message GuildQuitCS {
+}
+
+// 退出帮会 S -> C
+message GuildQuitSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+}
+
+// 同意入帮申请 C -> S
+message GuildAgreeCS {
+	optional int32		PlayerID = 1;	// 申请者角色ID
+}
+
+// 同意入帮申请 S -> C
+message GuildAgreeSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		PlayerID = 2;	// 申请者角色ID
+}
+
+// 拒绝入帮申请 C -> S
+message GuildRefuseCS {
+	optional int32		PlayerID = 1;	// 申请者角色ID
+}
+
+// 拒绝入帮申请 S -> C
+message GuildRefuseSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		PlayerID = 2;	// 申请者角色ID
+}
+
+// 修改入帮条件 C -> S
+message GuildRequireCS {
+	optional int32		Level = 1;		// 入帮最低等级
+}
+
+// 修改入帮条件 S -> C
+message GuildRequireSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		Level = 2;		// 入帮最低等级
+}
+
+// 通知客户端帮会操作结果 S -> C
+message GuildOptResultSC {
+	optional int32		GuildID = 1;	// 帮会ID
+	optional string		GuildName = 2;	// 帮会名
+	optional EGuildOpt	Opt = 3 [default=GuildOptUnknown];		// 操作枚举
+}
+
+// 请求帮会基本信息 C -> S
+message GuildInfoCS {
+}
+
+// 请求帮会基本信息 S -> C
+message GuildInfoSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional OneGuildInfo	Info = 2;
+}
+
+// 请求帮会某建筑当前资源
+message GuildBuildResCS {
+	optional EGuildBuilding	Building = 1 [default=GuildBuildingHall];	// 建筑类型
+}
+
+// 请求帮会某建筑当前资源
+message GuildBuildResSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional EGuildBuilding	Building = 2 [default=GuildBuildingHall];	// 建筑类型
+	optional int32			Stone = 3;		// 灵石
+	optional int32			Wood = 4;		// 神木
+	optional int32			Level = 5;		// 等级
+}
+
+// 帮会捐献
+message GuildDonateCS {
+	optional EGuildBuilding	Building = 1 [default=GuildBuildingHall];	// 建筑类型
+	optional int32			Res = 2;		// 资源类型
+	optional int32			Num = 3;		// 资源数量
+}
+
+// 帮会捐献
+message GuildDonateSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional EGuildBuilding	Building = 2 [default=GuildBuildingHall];	// 建筑类型
+	optional int32			Res = 3;		// 资源类型
+	optional int32			Num = 4;		// 资源数量
+}
+
+// 帮会资源购买
+message GuildBuyResCS {
+	optional int32		Res = 1;		// 资源类型
+}
+
+// 帮会资源购买
+message GuildBuyResSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		Res = 2;		// 资源类型
+}
+
+// 帮会商店兑换
+message GuildShopExchangeCS {
+	optional int32		ID = 1;			// 兑换商品ID
+}
+
+// 帮会商店兑换
+message GuildShopExchangeSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		ID = 2;			// 兑换商品ID
+}
+
+// 帮会神机殿领悟
+message GuildMysteryInsightCS {
+	optional EGuildMystery	Type = 1 [default=GuildMysteryPA];		// 领悟神机分类
+}
+
+// 帮会神机殿领悟
+message GuildMysteryInsightSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional EGuildMystery	Type = 2 [default=GuildMysteryPA];		// 领悟神机分类
+}
+
+// 帮会神兽培养
+message GuildAnimalTrainCS {
+	optional EAniProp	Attr = 1 [default=AniPropForce];	// 培养属性类型
+	optional int32		Res = 2;		// 资源类型
+	optional int32		Num = 3;		// 资源数量
+}
+
+// 帮会神兽培养
+message GuildAnimalTrainSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional EAniProp	Attr = 2 [default=AniPropForce];	// 培养属性类型
+	optional int32		Res = 3;		// 资源类型
+	optional int32		Num = 4;		// 资源数量
+}

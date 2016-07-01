@@ -1,8 +1,9 @@
 namespace BehaviorDesigner.Runtime.Tasks
 {
-    // Similar to the selector task, the parallel selector task will return success as soon as a child task returns success. The difference is that the parallel task will run all of its children
-    // tasks simultaneously versus running each task one at a time. If one tasks returns success the parallel selector task will end all of the child tasks and return success. If every child
-    // task returns failure then the parallel selector task will return failure.
+    [TaskDescription("Similar to the selector task, the parallel selector task will return success as soon as a child task returns success. " +
+                     "The difference is that the parallel task will run all of its children tasks simultaneously versus running each task one at a time. " +
+                     "If one tasks returns success the parallel selector task will end all of the child tasks and return success. " +
+                     "If every child task returns failure then the parallel selector task will return failure.")]
     [HelpURL("http://www.opsive.com/assets/BehaviorDesigner/documentation.php?id=28")]
     [TaskIcon("{SkinColor}ParallelSelectorIcon.png")]
     public class ParallelSelector : Composite
@@ -18,7 +19,7 @@ namespace BehaviorDesigner.Runtime.Tasks
             executionStatus = new TaskStatus[children.Count];
         }
 
-        public override void OnChildRunning(int childIndex)
+        public override void OnChildStarted(int childIndex)
         {
             // One of the children has started to run. Increment the child index and set the current task status of that child to running.
             currentChildIndex++;
@@ -46,6 +47,15 @@ namespace BehaviorDesigner.Runtime.Tasks
         {
             // One of the children has finished running. Set the task status.
             executionStatus[childIndex] = childStatus;
+        }
+
+        public override void OnConditionalAbort(int childIndex)
+        {
+            // Start from the beginning on an abort
+            currentChildIndex = 0;
+            for (int i = 0; i < executionStatus.Length; ++i) {
+                executionStatus[i] = TaskStatus.Inactive;
+            }
         }
 
         public override TaskStatus OverrideStatus(TaskStatus status)

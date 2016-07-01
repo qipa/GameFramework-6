@@ -1,6 +1,7 @@
+using UnityEngine;
 namespace BehaviorDesigner.Runtime.Tasks
 {
-    // The return success task will always return success except when the child task is running.
+    [TaskDescription("The return failure task will always return failure except when the child task is running.")]
     [HelpURL("http://www.opsive.com/assets/BehaviorDesigner/documentation.php?id=38")]
     [TaskIcon("{SkinColor}ReturnFailureIcon.png")]
     public class ReturnFailure : Decorator

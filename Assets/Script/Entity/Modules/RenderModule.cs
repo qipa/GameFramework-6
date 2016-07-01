@@ -16,10 +16,15 @@ public class RenderModule : ModuleBase {
 
 	public RenderModule(Entity entity) : base(entity)
     {
-        m_renders = m_object.GetComponentsInChildren<SkinnedMeshRenderer>();
-        ChangeWeapon("am_Sword");
+        Init();
     }
 
+    public override void Init()
+    {
+        if(m_renders == null)
+            m_renders = m_object.GetComponentsInChildren<SkinnedMeshRenderer>();
+        ChangeWeapon("am_Bow");
+    }
     public void ChangeShader(string shaderName)
     {
         Shader s = Shader.Find(shaderName);
@@ -66,5 +71,17 @@ public class RenderModule : ModuleBase {
         m_index++;
         string name = m_sWeaponName[m_index % m_sWeaponName.Length];
         ChangeWeapon(name);
+    }
+
+    public override void OnEvent(eEntityEvent eventID, object args = null)
+    {
+        if (eventID == eEntityEvent.OnAlive)
+        {
+            Init();
+        }
+        else if (eventID == eEntityEvent.OnDead)
+        {
+
+        }
     }
 }

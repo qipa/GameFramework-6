@@ -64,6 +64,15 @@ public class GameManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+//         if (BehaviorDesigner.Runtime.BehaviorManager.instance != null)
+//         {
+//             BehaviorDesigner.Runtime.BehaviorManager.instance.UpdateInterval = BehaviorDesigner.Runtime.UpdateIntervalType.SpecifySeconds;
+//             BehaviorDesigner.Runtime.BehaviorManager.instance.ExecutionsPerTick = BehaviorDesigner.Runtime.BehaviorManager.ExecutionsPerTickType.Count;
+//             BehaviorDesigner.Runtime.BehaviorManager.instance.UpdateIntervalSeconds = 0.2f;
+//             BehaviorDesigner.Runtime.BehaviorManager.instance.MaxTaskExecutionsPerTick = int.MaxValue;
+//             BehaviorDesigner.Runtime.BehaviorManager.instance.Tick();
+//         }
+
         EntityManager.Instance.Update();
         EffectManager.Instance.Update();
         BulletManager.Instance.Update();

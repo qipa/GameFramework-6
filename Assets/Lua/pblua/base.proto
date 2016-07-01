@@ -1,0 +1,113 @@
+package CSoft.Proto;
+
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+
+// 时间信息
+message Time {
+	optional int32	Year	= 1;
+	optional int32	Month	= 2;
+	optional int32	Day		= 3;
+	optional int32	Hour	= 4;
+	optional int32	Minute	= 5;
+	optional int32	Second	= 6;
+	optional int64	Unix	= 7;	// 格林治时间 秒
+}
+
+// 认证信息 客户端发往服务器的任何消息都包含此结构用于服务器认证
+message IdentifyInfo {
+	optional uint64	SessionID	= 1;	// 一条客户端回话唯一ID
+}
+
+// 空消息 当客户端往服务器发一个action 不带任何参数时用
+message Empty {
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 一条物品数据
+message OneItem {
+	optional int32		UID = 1;			// UID		该uid不存数据库 发客户端时用到 uid由服务器程序生成
+	optional int32		ItemID = 2;			// 物品ID
+	optional int32		Num = 3;			// 数量
+	optional int32		Level = 4;			// 等级
+	optional int32		StrenthenLevel = 5;	// 强化等级
+}
+
+// 一条奖励物品数据
+message OneRewardItem {
+	optional int32		ID = 1;				// 物品ID
+	optional int32		Num = 2;			// 数量
+}
+
+// 一条混合奖励数据
+message OneRewardMix {
+	optional int32			Coin = 1;			// 金币奖励
+	optional int32			Exp = 2;			// 经验奖励
+	optional int32			ExpPool = 3;		// 经验池奖励
+	optional int32			Energy = 4;			// 体力奖励
+	optional int32			Coupons = 5;		// 点券奖励
+	optional int32			ExpMajor = 6;		// 主角经验奖励
+	repeated OneRewardItem	Items = 7;			// 物品奖励
+	repeated OneSoul		Souls = 8;			// 将魂奖励
+	repeated int32			Heros = 9 [packed=true]; // 英雄奖励
+	optional int32			Stone = 10;			// 灵石
+	optional int32			Wood = 11;			// 神木
+	optional int32			Feat = 12;			// 功勋
+	optional int32			Contribution = 13;	// 贡献
+}
+
+// 一条英雄数据
+message OneHero {
+	optional int32		ID = 1;			// 英雄ID
+	optional int32		Level = 2;		// 等级
+	optional int32		Exp = 3;		// 经验
+	optional int32		Star = 4;		// 星级
+	optional int32		StarProgress = 5;	// 升星进度
+	optional OneItem	WeaponBar = 6;	// 武器栏 装备ID
+	optional OneItem	ArmorBar = 7;	// 铠甲栏 装备ID
+	optional OneItem	DecorationBar = 8;	// 饰品栏 装备ID
+	optional OneItem	CloakBar = 9;	// 披风栏 装备ID
+	optional OneItem	ShoesBar = 10;	// 鞋具栏 装备ID
+	repeated int32		Skills = 11 [packed=true];	// 已学习技能列表
+	optional string		Name = 12;		// 名字
+	optional int32		HP = 100;		// 当前血量 帮派城战用
+}
+
+// 一个主将英雄数据
+message OneMainHero {
+	optional int32		ID = 1;
+	optional OneHero	Hero = 2;		// 主将英雄
+}
+
+// 一条将魂数据
+message OneSoul {
+	optional int32		ID = 1;		// 将魂ID
+	optional int32		Num = 2;	// 数量
+}
+
+// 一条离线玩家数据
+message OneDBPlayer {
+	optional int32		PlayerID = 1;		// 角色ID
+	optional string		Name = 2;			// 角色名
+	optional int32		Hero = 3;			// 角色主将id
+	optional int32		Level = 4;			// 角色等级
+	optional EQuality	Quality = 5	[default=WHITE];	// 角色主将品质
+	optional int32		Force = 6;			// 战斗力[主将战力]
+	optional int32		Contribution = 101;	// 帮会贡献
+	optional EGuildJob	Job = 102 [default=GuildJobUnknown];		// 帮会职位
+	optional int32		Rank = 103;			// 排名【作为排行榜数据时用到】
+	optional string		GuildName = 104;	// 帮会名称
+	optional int32		GuildLevel = 105;	// 帮会等级
+}
+
+// 一个文本参数
+message OneStrParam {
+	optional string		Text = 1;			// 文本内容
+	optional EQuality	Quality = 2	[default=UNKNOWN];		// 品质色 [0代表无品质属性]
+}

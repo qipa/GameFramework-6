@@ -1,0 +1,68 @@
+package CSoft.Proto;
+
+import "base.proto";
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+////////////////////////////////////////////////////////////////////////////////
+// 同步客栈数据
+message SynInnDataSC {
+	optional int64			FreeStamp = 1;		// 上一次免费抽将时间戳
+	optional int32			FreeCD = 2;			// 免费招募剩余CD[秒]
+	repeated OneSoul		Soul = 3;			// 拥有的将魂数据
+	optional int32			Recruit1Times = 4;	// 使用元宝做一次招募的次数
+}
+
+// 一次招募获得奖励
+message OneRecruit {
+	optional int32		ID = 1;				// 获得物ID 要么将领 要么将魂
+	optional int32		Num = 2;			// 数量
+	optional bool		IsHero = 3;			// true:将领 false:将魂
+	optional int32		Common = 4;			// 转为通用将魂的数量 如果=0:没有转化为通用将魂
+	optional EQuality	Quality = 5	[default=WHITE];	// 英雄星级
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 客栈招募一次 C -> S
+message InnRecruitCS {
+}
+
+// 客栈招募一次 S -> C
+message InnRecruitSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional OneRecruit Reward = 2;			// 招募获得
+}
+
+// 客栈招募十次 C -> S
+message InnRecruitTenCS {
+}
+
+// 客栈招募十次 S -> C
+message InnRecruitTenSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	repeated OneRecruit Rewards = 2;		// 招募获得
+}
+
+// 英雄升星 C -> S
+message InnHeroUpStarCS {
+	optional int32		HeroID = 1;			// 要升星的武将
+	optional int32		Soul = 2;			// 使用将魂数量
+}
+
+// 英雄升星 S -> C
+message InnHeroUpStarSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32		HeroID = 2;			// 要升星的武将
+	optional int32		Soul = 3;			// 实际使用将魂数量
+}
+
+// 同步将魂 S -> C
+message InnSynSoulSC {
+	optional int32		SoulID = 1;			// 将魂ID
+	optional int32		Num = 2;			// 最新数量
+}

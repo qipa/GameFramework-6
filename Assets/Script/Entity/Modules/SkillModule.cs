@@ -34,6 +34,7 @@ class SKillEvent
 }
 
 public class SkillModule : ModuleBase {
+    public float AttackDistance = 2f;
     public int normalAttackStep = 0;
  
     private List<SkillBase> m_normalAttackList = new List<SkillBase>();
@@ -49,9 +50,15 @@ public class SkillModule : ModuleBase {
     public uint ComboCount = 0;
 	public SkillModule(Entity entity) : base(entity)
     {
+        Init();
+    }
 
-        SetSpecialSkills(entity.EntityCfg.Skill);
-       
+    public override void Init()
+    {
+        m_normalAttackList.Clear();
+        m_skillEventList.Clear();
+        m_skillList.Clear();
+        SetSpecialSkills(m_entity.EntityCfg.Skill);    
     }
 
     public void SetNormalSkills(string str)
@@ -69,6 +76,8 @@ public class SkillModule : ModuleBase {
             }
             m_normalAttackList.Add(new SkillBase(sk, m_entity));
         }
+        //攻击距离以普攻的攻击距离为准 
+        AttackDistance = m_normalAttackList[0].m_skillInfo.attackDistance;
     }
     public void SetSpecialSkills(string str)
     {
@@ -144,6 +153,11 @@ public class SkillModule : ModuleBase {
 
     }
 
+    public SkillBase GetSkillByIndex(int index)
+    {
+        return m_skillList[index - 1];
+    }
+
     public  bool CastSkill(int index)
     {
         SkillBase skill = null;
@@ -169,6 +183,8 @@ public class SkillModule : ModuleBase {
         }
         else     //技能
         {
+            if(index > m_skillList.Count)
+                return false;
             skill = m_skillList[index - 1];
         }
         return CastSkill(skill);       
@@ -278,6 +294,9 @@ public class SkillModule : ModuleBase {
             for (int i = 0; i < targets.Count; i++)
             {
                 Entity target = targets[i];
+                if (target.IsDead || target.invincible)
+                    continue;
+
                 //受击动作
                 if (!string.IsNullOrEmpty(skillInfo.beattackAction))
                 {
@@ -293,6 +312,8 @@ public class SkillModule : ModuleBase {
                     effect.Pos = target.Pos;
                     effect.Forward = target.Forward;
                 }
+
+                SkillProcesser.CalcBlood(m_entity, target, skillInfo);
             }
         }
         else if(skillInfo.type <= 6)
@@ -367,6 +388,16 @@ public class SkillModule : ModuleBase {
         if (eventID == eEntityEvent.OnSkillResult)
         {
 
+        }
+        else if(eventID == eEntityEvent.OnAlive)
+        {
+            Init();
+        }
+        else if(eventID == eEntityEvent.OnDead)
+        {
+            m_normalAttackList.Clear();
+            m_skillEventList.Clear();
+            m_skillList.Clear();
         }
     }
     

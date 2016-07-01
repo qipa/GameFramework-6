@@ -2,35 +2,55 @@ using UnityEngine;
 
 namespace BehaviorDesigner.Runtime.Tasks
 {
-    // Pause or disable a behavior tree and return success after it has been stopped.
+    [TaskDescription("Pause or disable a behavior tree and return success after it has been stopped.")]
     [HelpURL("http://www.opsive.com/assets/BehaviorDesigner/documentation.php?id=21")]
     [TaskIcon("{SkinColor}StopBehaviorTreeIcon.png")]
     public class StopBehaviorTree : Action
     {
-        // The behavior tree that we want to stop. If null use the current behavior.
-        public Behavior behavior;
-        // Should the behavior be paused or completely disabled.
-        public bool pauseBehavior = false;
+        [Tooltip("The GameObject of the behavior tree that should be stopped. If null use the current behavior")]
+        public SharedGameObject behaviorGameObject;
+        [Tooltip("The group of the behavior tree that should be stopped")]
+        public SharedInt group;
+        [Tooltip("Should the behavior be paused or completely disabled")]
+        public SharedBool pauseBehavior = false;
 
-        public override void OnAwake()
+        private Behavior behavior;
+
+        public override void OnStart()
         {
-            // If behavior is null use the behavior that this task is attached to.
-            if (behavior == null) {
-                behavior = Owner;
+            var behaviorTrees = GetDefaultGameObject(behaviorGameObject.Value).GetComponents<Behavior>();
+            if (behaviorTrees.Length == 1) {
+                behavior = behaviorTrees[0];
+            } else if (behaviorTrees.Length > 1) {
+                for (int i = 0; i < behaviorTrees.Length; ++i) {
+                    if (behaviorTrees[i].Group == group.Value) {
+                        behavior = behaviorTrees[i];
+                        break;
+                    }
+                }
+                // If the group can't be found then use the first behavior tree
+                if (behavior == null) {
+                    behavior = behaviorTrees[0];
+                }
             }
         }
 
         public override TaskStatus OnUpdate()
         {
+            if (behavior == null) {
+                return TaskStatus.Failure;
+            }
+
             // Start the behavior and return success.
-            behavior.disableBehavior(pauseBehavior);
+            behavior.DisableBehavior(pauseBehavior.Value);
             return TaskStatus.Success;
         }
 
         public override void OnReset()
         {
             // Reset the properties back to their original values
-            behavior = null;
+            behaviorGameObject = null;
+            group = 0;
             pauseBehavior = false;
         }
     }

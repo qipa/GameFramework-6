@@ -1,6 +1,6 @@
 namespace BehaviorDesigner.Runtime.Tasks
 {
-    // The return success task will always return success except when the child task is running.
+    [TaskDescription("The return success task will always return success except when the child task is running.")]
     [HelpURL("http://www.opsive.com/assets/BehaviorDesigner/documentation.php?id=39")]
     [TaskIcon("{SkinColor}ReturnSuccessIcon.png")]
     public class ReturnSuccess : Decorator

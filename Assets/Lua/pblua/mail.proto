@@ -1,0 +1,89 @@
+package CSoft.Proto;
+
+import "base.proto";
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+////////////////////////////////////////////////////////////////////////////////
+// 邮件分类
+enum EMailType {
+	MailTypeUnknown				= 0;
+	MailTypeGuildRemove			= 1;	// 被移除帮会
+	MailTypeSkepWillFull		= 2;	// 宝库空间将满
+	MailTypeSkepFull			= 3;	// 宝库已满
+	MailTypeGuardReward			= 4;	// 守护神奖励
+	MailTypeTeamInvitedReward	= 5;	// 团队副本邀请奖励
+	MailTypeArenaRankReward		= 6;	// 天下武斗会排名奖励
+	MailTypePassguardReward		= 7;	// 关卡守护神奖励
+	MailTypeVipLevelGift		= 8;	// vip等级礼包
+	MailTypeCityAttack			= 9;	// 帮派城战攻城邮件
+	MailTypeCityRes				= 10;	// 帮派城战资源产出
+	MailTypeCityEndWar			= 11;	// 帮派城战战役结束
+	MailTypeTitanReward			= 12;	// 魔将来袭奖励
+	MailTypeDemonReward			= 13;   // 讨伐妖师奖励
+	MailTypeDemonTime			= 14;   // 讨伐妖师修改时间通知
+	MailTypeDIY					= 100;	// 自定义邮件
+}
+
+// 一条信件
+message OneMail {
+	optional int32			UID = 1;			// 信件UID
+	optional EMailType		Type = 2 [default=MailTypeUnknown];		// 信件类型
+	optional string			Title = 3;			// 标题
+	optional string			Content = 4;		// 正文
+	optional OneRewardMix 	Reward = 5;			// 附件内容
+	optional bool			BRead = 6;			// 信件是否已读
+	optional bool			BReceived = 7;		// 附件是否已领取
+	optional Time			Stamp = 8;			// 时间戳
+	repeated OneStrParam	Params = 9;			// 正文的不定字符串参数
+	repeated OneStrParam	TitleParams = 10;	// 标题的不定字符串参数
+}
+
+// 同步邮箱数据
+message SynMailDataSC {
+	repeated OneMail		Mails = 1;		// 所有信件
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 收到新信件 S -> C
+message MailNewSC {
+	optional OneMail	Mail	= 1;
+}
+
+// 查看未看过的信件 C -> S
+message MailReadCS {
+	optional int32		UID		= 1;	// 
+}
+
+// 查看未看过的信件 S -> C
+message MailReadSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		UID	= 2;		//
+}
+
+// 领取信件附件 C -> S
+message MailReceiveCS {
+	optional int32		UID		= 1;	// 
+}
+
+// 领取信件附件 S -> C
+message MailReceiveSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		UID	= 2;		//
+}
+
+// 删除信件 C -> S
+message MailDelCS {
+	repeated int32		UIDs	= 1 [packed=true];	// 
+}
+
+// 删除信件 S -> C
+message MailDelSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	repeated int32		UIDs	= 2 [packed=true];	// 
+}

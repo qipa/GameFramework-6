@@ -10,7 +10,7 @@ public class EntityManager : Singleton<EntityManager>
     // key : configID   
     public Dictionary<uint, HashSet<Entity>> m_dicObjectPool = new Dictionary<uint, HashSet<Entity>>();
 
-    
+    public List<Entity> m_deavtiveList = new List<Entity>();
 
     GameObject root = null;
     public Transform EntityRoot
@@ -27,6 +27,7 @@ public class EntityManager : Singleton<EntityManager>
         if(!m_dicObject.ContainsKey(uID))
         {
             Entity ent = GetFromPool(configID, uID);
+            ent.IsActive = true;
             m_dicObject.Add(uID, ent);
             return ent;
         }
@@ -46,6 +47,8 @@ public class EntityManager : Singleton<EntityManager>
         if(e.MoveNext())
         {
             ent = e.Current;
+            ent.UID = uID;
+            ent.Alive();
             hash.Remove(ent);
         }
         else
@@ -61,15 +64,6 @@ public class EntityManager : Singleton<EntityManager>
         return ent;
     }
 
-    public void Deactive(ulong uID)
-    {
-        Entity ent = Find(uID);
-        if (ent != null)
-        {
-            m_dicObject.Remove(uID);
-            PushToPool(ent);
-        }
-    }
 
     private void PushToPool(Entity ent)
     {
@@ -90,7 +84,26 @@ public class EntityManager : Singleton<EntityManager>
         var e = m_dicObject.GetEnumerator();
         while(e.MoveNext())
         {
-            e.Current.Value.Update();
+            Entity ent = e.Current.Value;
+            if (ent.IsDead)
+            {
+                if (Time.time - ent.DeadTime > 2f)
+                    m_deavtiveList.Add(ent);            
+                continue;
+            }
+
+            ent.Update();
+        }
+
+        if (m_deavtiveList.Count > 0)
+        {
+            for (int i = 0; i < m_deavtiveList.Count; i++)
+            {
+                m_deavtiveList[i].IsActive = false;
+                m_dicObject.Remove(m_deavtiveList[i].UID);
+                PushToPool(m_deavtiveList[i]);
+            }
+            m_deavtiveList.Clear();
         }
     }
 

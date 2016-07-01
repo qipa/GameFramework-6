@@ -1,0 +1,115 @@
+package CSoft.Proto;
+
+import "base.proto";
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+////////////////////////////////////////////////////////////////////////////////
+// 一条武斗会战报数据
+message OneWarReport {
+	optional int32			FighterID = 1;	// 对手角色ID
+	optional string			Name = 2;		// 对手角色名
+	optional EQuality		Quality = 3	[default=WHITE];		// 对手星级
+	optional int32			OldRank = 4;	// 战斗前排名
+	optional int32			Rank = 5;		// 最新排名
+	optional OneRewardItem	RapeReward = 6;	// 获得抢夺奖励
+	optional bool			IsWin = 7;		// 是否打赢
+	optional bool			IsAttack = 8;	// 是否主动攻击
+	optional int64			Stamp = 9;		// 时间戳
+}
+
+// 同步武斗会数据
+message SynArenaDataSC {
+	repeated int32			Heros = 1 [packed=true];// 出阵英雄列表
+	optional int32			ChallengeTimes = 2;		// 本日挑战次数
+	repeated OneWarReport	Reports = 3;			// 战报
+	optional int64			RapeStamp = 4;			// 抢夺奖励生成时间戳
+	optional int32			RapeRewardID = 5;		// 抢夺奖励物品ID
+	optional int32			RankRewardID = 6;		// 排名奖励物品ID
+}
+
+// 一条武斗会对手数据
+message OneArenaPlayer {
+	optional int32			PlayerID = 1;		// 角色ID
+	optional string			Name = 2;			// 角色名
+	optional int32			Hero = 3;			// 角色主将id
+	optional int32			Level = 4;			// 角色等级
+	optional EQuality		Quality = 5	[default=WHITE];		// 角色主将品质
+	optional int32			Force = 6;			// 战斗力[竞技场阵容战力之和]
+	optional int32			Rank = 7;			// 排名
+	optional OneRewardItem	RapeReward = 8;		// 抢夺奖励
+	optional int32			RapeRewardCD = 9;	// 抢夺奖励剩余CD[秒]
+	optional bool			IsLock = 10;		// 是否被锁【锁住表示被其他玩家挑战,当前不可挑战该位置】
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 武斗会数据同步 C -> S
+message ArenaSynCS {
+}
+
+// 武斗会数据同步 S -> C
+message ArenaSynSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	repeated OneArenaPlayer	Players = 2;		// 对手列表
+	optional int32			Rank = 3;			// 排名
+	optional int32			Force = 4;			// 战力
+	optional int32			ChallengeTimes = 5;	// 本日挑战次数
+	optional int32			RapeRewardCD = 6;	// 抢夺奖励领取CD
+	optional OneRewardItem	RapeReward = 7;		// 抢夺奖励
+	optional OneRewardItem	RankReward = 8;		// 排名奖励
+}
+
+// 武斗会布阵 C -> S
+message ArenaEmbattleCS {
+	repeated int32		Heros = 1 [packed=true];	// 武将列表
+}
+
+// 武斗会布阵 C <- S
+message ArenaEmbattleSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		Hero = 2;					// 不存在的武将ID
+	optional int32		Force = 3;					// 新阵容战力
+	repeated int32		Heros = 4 [packed=true];	// 武将列表
+}
+
+// 武斗会领取抢夺奖励 C -> S
+message ArenaRapeRewardCS {
+}
+
+// 武斗会领取抢夺奖励 C <- S
+message ArenaRapeRewardSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+}
+
+// 武斗会同步一条战报 C <- S
+message ArenaWarReportSC {
+	optional OneWarReport	Report = 1;
+}
+
+// 武斗会发起挑战 C -> S
+message ArenaChallengeCS {
+	optional int32		PlayerID = 1;	// 挑战的对手
+}
+
+// 武斗会发起挑战 C <- S
+message ArenaChallengeSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		PlayerID = 2;	// 挑战的对手
+	repeated OneHero	Heros = 3;		// 英雄数据
+}
+
+// 武斗会战斗结束 C -> S
+message ArenaEndFightCS {
+	optional bool		IsWin = 1;	// 是否赢了
+}
+
+// 武斗会战斗结束 C <- S
+message ArenaEndFightSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional OneRewardItem	Reward = 2;	// 获得抢夺奖励
+}

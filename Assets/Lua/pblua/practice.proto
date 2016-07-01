@@ -1,0 +1,111 @@
+package CSoft.Proto;
+
+import "base.proto";
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+////////////////////////////////////////////////////////////////////////////////
+// 一条帮会练功房里的玩家数据
+message OnePracticer {
+	optional int32		PlayerID = 1;		// 
+	optional int64		HangStamp = 2;		// 离线挂机开始时间戳
+	optional int32		Exp = 3;			// 累积的经验，上线时候加到主将身上去
+	optional int32		Level = 4;			// 木人等级
+}
+
+// 一条帮会练功房记录数据
+message OnePracticeReport {
+	optional int64		Stamp = 1;			// 击杀木人时间戳
+	optional int32		PlayerID = 2;		// 玩家ID
+	optional EQuality	Quality = 3	[default=WHITE];	// 角色星级
+	optional string		Name = 4;			// 角色名
+	optional int32		Level = 5;			// 木人等级
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 进入练功房
+message PracticeEnterCS {
+}
+
+// 进入练功房
+message PracticeEnterSC {
+	optional ERetCode			RetCode	= 1	[default=OK];
+	repeated OneMainHero 	Players	= 2;	// 当前练功房中的帮会成员
+}
+
+// 退出练功房
+message PracticeExitCS {
+}
+
+// 退出练功房
+message PracticeExitSC {
+	optional ERetCode			RetCode	= 1	[default=OK];
+}
+
+// 一段时间打掉血量，结算经验
+message PracticeDamageCS {
+	optional int32			HP = 1;		// 打掉的血量
+}
+
+// 一段时间打掉血量，结算经验
+message PracticeDamageSC {
+	optional ERetCode			RetCode	= 1	[default=OK];
+	optional int32			HP = 2;		// 累积打掉的血量
+	optional int32			Exp = 3;	// 结算的经验
+}
+
+// 击杀木人
+message PracticeKillCS {
+	optional int32			Level = 1;	// 木人等级
+	optional int32			HP = 2;		// 累积打掉的血量
+}
+
+// 击杀木人
+message PracticeKillSC {
+	optional ERetCode			RetCode	= 1	[default=OK];
+	optional int32			Level = 2;	// 木人等级
+	optional int32			HP = 3;		// 累积打掉的血量
+	optional int32			Exp = 4;	// 结算的经验
+}
+
+// 转挂机
+message PracticeHangCS {
+	optional int32			HP = 1;		// 累积打掉的血量
+}
+
+// 转挂机
+message PracticeHangSC {
+	optional ERetCode			RetCode	= 1	[default=OK];
+	optional int32			HP = 2;		// 累积打掉的血量
+	optional int32			Exp = 3;	// 结算的经验
+}
+
+// 收到共享经验
+message PracticeShareExpSC {
+	optional int32			PlayerID = 1;	// 击杀木人的玩家ID
+	optional string			Name = 2;		// 击杀木人玩家名字
+	optional EQuality		Quality = 3	[default=WHITE];	// 击杀木人玩家品质
+	optional int32			Level = 4;		// 击杀的木人等级
+	optional int32			Exp = 5;		// 获得的共享经验
+}
+
+// 上线时收到挂机经验
+message PracticeHangExpSC {
+	optional int64			Stamp = 1;		// 离线挂机开始时间戳
+	optional int32			Exp = 2;		// 获得的共享经验
+}
+
+// 查看练功房战报
+message PracticeReportCS {
+}
+
+// 查看练功房战报
+message PracticeReportSC {
+	optional ERetCode				RetCode	= 1	[default=OK];
+	repeated OnePracticeReport	Reports = 2;	// 战报列表
+}

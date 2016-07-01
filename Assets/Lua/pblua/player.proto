@@ -1,0 +1,160 @@
+package CSoft.Proto;
+
+import "base.proto";
+import "action.proto";
+import "item.proto";
+import "inn.proto";
+import "features.proto";
+import "sign.proto";
+import "instance.proto";
+import "task.proto";
+import "guild.proto";
+import "mail.proto";
+import "hero.proto";
+import "arena.proto";
+import "passguard.proto";
+import "peerless.proto";
+import "onlinegift.proto";
+import "shop.proto";
+import "city.proto";
+import "titan.proto";
+import "demon.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+////////////////////////////////////////////////////////////////////////////////
+// 同步角色数据 C <- S
+message SynPlayerDataSC {
+	optional int32		ID = 1;						// 角色ID
+	optional string		Name = 2;					// 角色名
+	optional int32		AccID = 3;					// 账户ID
+	optional int32		Coin = 4;					// 金币
+	optional int32		Coupons = 5;				// 点券
+	optional int32		Energy = 6;					// 体力值
+	optional int32		Level = 7;					// 等级
+	optional int32		VipLevel = 8;				// VIP等级
+	optional int32		MainHeroID = 9;				// 主武将ID
+	optional int32		ExpPool = 10;				// 经验池中经验
+	optional int32		EnergyBuyTimes = 11;		// 当日体力购买次数
+	optional int32		RenameTimes = 12;			// 重命名次数
+	optional int32		RechargeRmb = 13;			// 累积充值人民币
+	optional int32		Stone = 14;					// 灵石
+	optional int32		Wood = 15;					// 神木
+	optional int32		Contribution = 16;			// 贡献
+	optional int32		Feat = 17;					// 功勋
+	optional int64		CreateTime = 18;			// 创建时间
+	optional int64		LastLoginTime = 19;			// 最近一次登录时间
+	optional int64		LastOnlineTime = 20;		// 最后在线时间
+	
+	optional SynBackpackDataSC		Backpack = 100;		// 背包数据
+	optional SynInnDataSC			Inn = 101;			// 客栈数据
+	optional SynFeaturesDataSC		Features = 102;		// 功能开放数据
+	optional SynSignDataSC			Sign = 103;			// 签到数据
+	optional SynInsDataSC			Instance = 104;		// 副本数据
+	optional SynTaskDataSC			Task = 105;			// 任务数据
+	optional SynGuildDataSC			Guild = 106;		// 公会数据
+	optional SynMailDataSC			Mail = 107;			// 邮箱数据
+	optional SynHerosDataSC			Heros = 108;		// 武将数据
+	optional SynArenaDataSC			Arena = 109;		// 竞技场数据
+	optional SynPassguardDataSC		Passguard = 110;	// 关卡守护神数据
+	optional SynPeerlessDataSC		Peerless = 111;		// 无双战数据
+	optional SynOnlineGiftDataSC	OnlineGift = 112;	// 在线礼包数据
+	optional SynShopDataSC			Shop = 113;			// 聚宝阁数据
+	optional SynCityDataSC			City = 114;			// 帮派城战数据
+	optional SynAccountSC			Account = 115;		// 账号杂项数据
+	optional SynTitanDataSC			Titan = 116;		// 魔将来袭数据
+	optional SynDemonDataSC			Demon = 117;		// 讨伐妖师数据
+}
+
+// 同步账号杂项数据
+message SynAccountSC {
+	repeated int32			CouponsBuyTimes = 1;	// 商品列表
+	optional int64			CardTime = 2;		    // 购买月卡的时间戳[秒]
+	optional int32			CardId = 3;				// 月卡ID
+}
+
+// 同步角色单个属性
+message SynPropSC {
+	optional int32		Prop = 1;		// 属性枚举
+	optional int32		Value = 2;		// 属性最新值
+}
+
+// 购买金币 C -> S
+message AccountBuyCoinCS {
+	optional ECoinBuy		ID	= 1 [default=CoinBuy1];		// 购买金币礼包枚举
+}
+
+// 购买金币 S -> C
+message AccountBuyCoinSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional ECoinBuy		ID	= 2 [default=CoinBuy1];		// 购买金币礼包枚举
+}
+
+// 充值点券 C -> S
+message AccountBuyCouponsCS {
+	optional ECouponsBuy	ID	= 1 [default=CouponsBuy1];		// 充值点券礼包枚举
+}
+
+// 充值点券 S -> C
+message AccountBuyCouponsSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional ECouponsBuy	ID	= 2 [default=CouponsBuy1];		// 充值点券礼包枚举
+}
+
+// 购买体力 C -> S
+message AccountBuyEnergyCS {
+	optional int32			Times = 1;		// 第几次购买
+}
+
+// 购买体力 S -> C
+message AccountBuyEnergySC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32			Times = 2;		// 第几次购买
+	optional int32			Cost = 3;		// 实际花费点券
+}
+
+// 跑马灯 S -> C
+message MarqueeSC {
+	optional int32				Type = 1;		// 跑马灯类型
+	repeated OneStrParam		Params = 2;		// 不定数量字符串参数
+	optional string				Content = 3;	// 提示内容[服务器下发的具体文本]		
+}
+
+// 购买月卡 C -> S
+message AccountBuyCardCS {
+	optional int32			ID = 1;		// 第几次购买
+}
+
+// 购买月卡 S -> C
+message AccountBuyCardSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32			ID = 2;		// 第几次购买
+	optional int64			cardTime = 3;		// 购买月卡的时间戳[秒]
+}
+
+// 通过角色名查找角色 C -> S
+message AccountFindPlayerByNameCS {
+	optional string			Name = 1;	// 角色名
+}
+
+// 通过角色名查找角色 S -> C
+message AccountFindPlayerByNameSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional string			Name = 2;	// 角色名
+	optional int32			PlayerID = 3;		// 角色ID
+}
+
+
+
+
+
+
+
+
+
+
+

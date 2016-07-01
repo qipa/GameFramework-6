@@ -1,23 +1,29 @@
 ﻿using UnityEngine;
-using System.Collections;
 using BehaviorDesigner.Runtime.Tasks;
-public class MoveToTarget : Action{
 
-    public Transform target = null;
-    public float speed = 0;
-
+public class MoveToTarget : Action
+{
+    Entity owner;
+    public override void OnAwake()
+    {
+        owner = GetComponent<EntityAI>().entity;
+    }
     public override TaskStatus OnUpdate()
     {
-        if (Vector3.SqrMagnitude(transform.position - target.position) < 0.1f)
-            return TaskStatus.Success;
+        if (owner.AICmd != eAICmd.Move)
+            return TaskStatus.Failure;
 
-        transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+        if (owner.SelectTarget != null)
+        {
+            if ((owner.Pos - owner.SelectTarget.Pos).sqrMagnitude <= owner.Skill.AttackDistance * owner.Skill.AttackDistance)
+            {
+                return TaskStatus.Success;
+            }
+            owner.Move.MoveTo(owner.SelectTarget.Pos);
+        }
+        else
+            return TaskStatus.Failure;
+
         return TaskStatus.Running;
-    }
-
-    public override void OnReset()
-    {
-        target = null;
-        speed = 0;
     }
 }

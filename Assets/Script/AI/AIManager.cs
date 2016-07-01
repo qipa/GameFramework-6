@@ -1,15 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using BehaviorDesigner.Runtime;
 public class AIManager : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public BehaviorTree[] bts = null;
 }

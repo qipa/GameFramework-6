@@ -1,0 +1,51 @@
+package CSoft.Proto;
+
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+////////////////////////////////////////////////////////////////////////////////
+// 一条进行中任务数据
+message OneTaskDoing {
+	optional int32		TaskID = 1;			// 任务ID
+	optional int32		Goal = 2;			// 任务进度
+}
+
+// 同步任务数据
+message SynTaskDataSC {
+	repeated int32			Dones = 1 [packed=true];	// 已完成任务列表
+	repeated OneTaskDoing	Doings = 2;		// 进行中任务列表
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 接取任务 C -> S
+message TaskAcceptCS {
+	optional int32		TaskID = 1;			// 任务ID
+}
+
+// 接取任务 C <- S
+message TaskAcceptSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		TaskID = 2;			// 任务ID
+}
+
+// 领取任务奖励 C -> S
+message TaskRewardCS {
+	optional int32		TaskID = 1;			// 任务ID
+}
+
+// 领取任务奖励 C <- S
+message TaskRewardSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		TaskID = 2;			// 任务ID
+}
+
+// 更新任务状态 C <- S
+message TaskUpdateSC {
+	optional int32		TaskID = 1;			// 任务ID
+	optional int32		Goal = 2;			// 任务进度
+}

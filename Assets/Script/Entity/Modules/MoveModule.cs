@@ -73,6 +73,7 @@ public class MoveModule : ModuleBase {
         }
         else
         {
+            InitNavMeshComponent();
             //计算路径
             if (m_navPath == null)
                 m_navPath = new NavMeshPath();
@@ -107,6 +108,8 @@ public class MoveModule : ModuleBase {
     {
        
         float delta = m_entity.Property.MoveSpeed * Time.deltaTime;
+        if (m_curStep >= m_pathList.Count)
+            StopMove();
         Vector3 dist = m_entity.Pos - m_pathList[m_curStep];
         //m_entity.Anim.SyncAction("Run");
         //如果移动到了当前的目标点，进入下个目标点
@@ -131,7 +134,6 @@ public class MoveModule : ModuleBase {
 
     public override void Update()
     {
-        InitNavMeshComponent();
         if(m_isMoving)
         {
             Util.DrawPathLine(m_pathList);
@@ -147,6 +149,18 @@ public class MoveModule : ModuleBase {
         m_isMoving = false;
         if (PlayIdle)
             m_entity.Anim.SyncAction("Idle_Sword");
+    }
+
+    public override void OnEvent(eEntityEvent eventID, object args = null)
+    {
+        if (eventID == eEntityEvent.OnAlive)
+        {
+
+        }
+        else if (eventID == eEntityEvent.OnDead)
+        {
+            StopMove();
+        }
     }
     
 }

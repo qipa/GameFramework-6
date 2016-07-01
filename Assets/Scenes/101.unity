@@ -145,7 +145,7 @@ NavMeshSettings:
     minRegionArea: 2
     cellSize: .166666657
     manualCellSize: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 1f931bdc89eb84b4bbd669168152192f, type: 2}
 --- !u!1 &77405221
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,6 +442,9 @@ MonoBehaviour:
   m_pitchAngle: 45
   m_yawAngle: 0
   m_height: 1
+  verticalShake: 0
+  shakeAmount: 1.70000005
+  decreaseFactor: 1
 --- !u!4 &165172117 stripped
 Transform:
   m_PrefabParentObject: {fileID: 492894, guid: 02144a95f1229034b85f8ae3afd94166, type: 2}
@@ -1591,6 +1594,10 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: e93b63bd4cd4f934da186d720c6b7eff, type: 2}
+    - target: {fileID: 192906, guid: 02144a95f1229034b85f8ae3afd94166, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 41
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 02144a95f1229034b85f8ae3afd94166, type: 2}
   m_IsPrefabParent: 0

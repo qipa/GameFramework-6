@@ -117,7 +117,7 @@ public class Bullet
             while (e.MoveNext())
             {
                 Entity ent = e.Current.Value;
-                if (ent.Camp == eCamp.Hero || ent.Camp == eCamp.Friend)
+                if (m_caster.IsEnemy(ent) == false)
                     continue;
 
                 if ((m_effect.Pos - ent.Pos).sqrMagnitude < 0.5f)

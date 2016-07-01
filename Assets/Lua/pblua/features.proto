@@ -1,0 +1,31 @@
+package CSoft.Proto;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+////////////////////////////////////////////////////////////////////////////////
+// 同步功能开放数据
+message SynFeaturesDataSC {
+	repeated int32		Opens = 1 [packed=true];	// 已开放功能列表
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 开放系统功能	用于客户端记录一下自定义的功能开放
+message FeaturesOpenCS {
+	optional int32		FeatureID = 1;	// 功能ID
+}
+
+// 开放系统功能
+message FeaturesOpenSC {
+	optional int32		FeatureID = 1;	// 功能ID
+	optional bool		IsFirst	= 2;	// 是否首次打开
+}
+
+// 关闭系统功能
+message FeaturesCloseSC {
+	optional int32		FeatureID = 1;	// 功能ID
+}

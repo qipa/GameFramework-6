@@ -1,0 +1,46 @@
+package CSoft.Proto;
+
+import "base.proto";
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+////////////////////////////////////////////////////////////////////////////////
+// 一条聚宝阁商品
+message OneShopGoods {
+	optional OneRewardItem	Item = 1;		// 物品
+	optional bool			Sold = 2;		// 是否已出售
+}
+
+// 同步商店数据
+message SynShopDataSC {
+	repeated OneShopGoods	Goods = 1;				// 商品列表
+	optional int64			RefreshStamp = 2;		// 上一次刷新时间戳[秒]
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 购买聚宝阁商品
+message ShopBuyCS {
+	optional int32			Index = 1;		// 商品下标 [从0开始]
+}
+
+// 购买聚宝阁商品
+message ShopBuySC {
+	optional ERetCode			RetCode	= 1	[default=OK];
+	optional int32			Index = 2;
+	optional OneRewardItem	Item = 3;		// 所购买商品
+}
+
+// 刷新聚宝阁商品
+message ShopRefreshCS {
+}
+
+// 刷新聚宝阁商品
+message ShopRefreshSC {
+	optional ERetCode			RetCode	= 1	[default=OK];
+	repeated OneShopGoods	Goods = 2;		// 商品列表
+}

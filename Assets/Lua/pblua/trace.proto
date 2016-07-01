@@ -1,0 +1,35 @@
+package CSoft.Proto;
+
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+
+// 操作类型
+enum ETraceType {
+	TraceTypeUnknown	= 0;
+}
+
+//一个用户行为日志
+message OneTrace {
+	optional int32		Region = 1;
+	optional int32		ID = 2;
+	optional int32		Type = 3;			// 操作类型
+	optional EAddHow	Way = 4 [default=AddHowOther];	// 来源 或者 去路
+	optional int32		InNum = 5;			// 来源数量
+	optional EDelHow	OutWay = 6 [default=DelHowOther];	// 去路
+	optional int32		OutNum = 7;			// 去路数量
+	optional int64		Time = 8;			// 时间
+	optional int32		Num1 = 9;			// 预留数量1
+	optional int32		Num2 = 10;			// 预留数量2
+	optional string		Str = 11;			// 预留字符
+}
+
+// 记录日志 L,S -> T
+message TraceLogT {
+	repeated OneTrace	Logs	= 1;		// 日志列表	
+}

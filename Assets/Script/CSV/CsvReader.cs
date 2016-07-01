@@ -19,17 +19,17 @@ public static class CSVReader
                 return ret;
             }
 
-            Encoding gb2312 = Encoding.GetEncoding("gb2312");
-            byte[] Bytes = Encoding.Convert(gb2312, Encoding.UTF8, CSVAsset.bytes);
-
+//             Encoding gb2312 = Encoding.GetEncoding("gb2312");
+//             byte[] Bytes = Encoding.Convert(gb2312, Encoding.UTF8, CSVAsset.bytes);
+            byte[] Bytes = Encoding.UTF8.GetBytes(CSVAsset.text);
             MemoryStream ByteStream = new MemoryStream(Bytes);
             
             StreamReader reader = new StreamReader(ByteStream);
 
-            /*string desc = */reader.ReadLine();    //跳过第1行   第1行是说明
+            string desc = reader.ReadLine();    //跳过第1行   第1行是说明
             string fieldNames = reader.ReadLine();  //第2行是字段名
             
-            /*string fieldTypes = */reader.ReadLine();    //跳过第3行，第三行是字段类型    
+            string fieldTypes = reader.ReadLine();    //跳过第3行，第三行是字段类型    
             
             char[] sp = { ',' };
             string[] fields = fieldNames.Split(sp, System.StringSplitOptions.RemoveEmptyEntries);

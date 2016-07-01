@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-
+using BehaviorDesigner.Runtime;
 public enum eEntityEvent
 {
     OnAlive,
@@ -12,10 +12,18 @@ public enum eEntityEvent
 
 public enum eCamp
 {
-    Hero,
-    Friend,
-    Enemy,
-    Boss,
+    Hero = 0,
+    Friend = 1,
+    Enemy = 10,
+    Boss = 11,
+}
+
+public enum eAICmd
+{
+    Null,
+    Idle,
+    Move,
+    Attack,
 }
 
 public class Entity : EntityBase
@@ -35,7 +43,7 @@ public class Entity : EntityBase
 
     public Entity SelectTarget = null;
 
-    public ulong UID { get; private set; }
+    public ulong UID { get;  set; }
 
     public CSVEntity EntityCfg { get; private set; }
 
@@ -45,6 +53,10 @@ public class Entity : EntityBase
     {
         get { return Camp == eCamp.Hero; }
     }
+
+    public bool invincible = false;
+    public eAICmd AICmd = eAICmd.Idle;
+    public bool IsDead { get { return Property.HP <= 0; } }
 
     //此构造函数主要用于加载角色
     //param : 角色配置表的key值
@@ -133,6 +145,55 @@ public class Entity : EntityBase
             _moduleList[i].OnEvent(eventID, args);
     }
     
+    public void Alive()
+    {
+        OnEvent(eEntityEvent.OnAlive);
+    }
 
+    public void Die()
+    {
+        OnEvent(eEntityEvent.OnDead);
+        DeadTime = Time.time;
+    }
+    public float DeadTime = 0f;
+    private BehaviorTree bt = null;
+    public void SetAI(string aiName)
+    {
+
+         ExternalBehavior behaviour = ResManager.Load<BehaviorDesigner.Runtime.ExternalBehavior>("AI/" + aiName, ".asset");
+         if (behaviour != null)
+        {
+            EntityAI ai = m_object.GetComponent<EntityAI>();
+             if(ai == null)
+                ai = m_object.AddComponent<EntityAI>();
+            ai.entity = this;
+            bt = m_object.GetComponent<BehaviorTree>();
+             if(bt == null)
+                bt = m_object.AddComponent<BehaviorTree>();
+            bt.ExternalBehavior = behaviour;
+            bt.RestartWhenComplete = true;
+            AICmd = eAICmd.Idle;
+        }
+        else
+        {
+            Log.Error("加载AI失败 ： " + aiName);
+        }
+    }
+
+    public void EnableAI(bool enable = true)
+    {
+        bt.enabled = enable;
+    }
+
+    public bool IsEnemy(Entity ent)
+    {
+        int myCamp = (int)Camp;
+        int entCamp = (int)ent.Camp;
+
+        if (Mathf.Abs(myCamp - entCamp) <= 1)
+            return false;
+        else
+            return true;
+    }
 }
 

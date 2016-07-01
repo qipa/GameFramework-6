@@ -1,19 +1,7 @@
 fileFormatVersion: 2
 guid: e62515fa6915f0d4f88b808e2e77d3ff
-labels:
-- behaviourtree
-- behaviour
-- behavior
-- behaviortree
-- AI
-- PlayMaker
-- uScript
-- visualeditor
 MonoImporter:
   serializedVersion: 2
   defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
-  userData: 
-  assetBundleName: 
-  assetBundleVariant: 

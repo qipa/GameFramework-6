@@ -39,7 +39,8 @@ public class FightPanel : MonoBehaviour {
     void LoadEnemy()
     {
         Entity enemy = EntityManager.Instance.Get(11, enemyID++);
-        enemy.Pos = GameManager.MainPlayer.Pos + GameManager.MainPlayer.Forward;
+        enemy.Pos = GameManager.MainPlayer.Pos + GameManager.MainPlayer.Forward*5;
+        enemy.SetAI("Monster");
     }
 
     void ChangeScene()

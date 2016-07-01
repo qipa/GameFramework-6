@@ -1,0 +1,209 @@
+package CSoft.Proto;
+
+import "base.proto";
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+////////////////////////////////////////////////////////////////////////////////
+// 一条服务器区信息
+message OneRegionInfo {
+	optional int32	ID			= 1;	// 服务器区ID
+	optional string	Name		= 2;	// 区名
+	optional Time	CreateTime	= 3;	// 创建时间
+	optional bool	IsRunning	= 4;	// 该服务器区是否运行中
+	optional string	IP			= 5;	// 服务器区IP
+	optional int32	Port		= 6;	// 服务器区端口
+}
+
+// 一条账户数据
+message OneAccount {
+	optional int32	ID			= 1;
+	optional string	Name		= 2;
+	optional string	Pwd			= 3;
+	optional string	Mac			= 4;
+	optional string	Guest		= 5;
+	optional int64	CreateTime	= 6;
+	optional int32	LastRegion	= 7;	// 最近登录过的区ID
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 请求游客账户 C -> S
+message AccountGuestCS {
+	optional string		MacAddr	= 1;	// 设备物理地址
+}
+
+// 响应游客账户请求 S -> C
+message AccountGuestSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		ID		= 2;	// 账户ID
+	optional string		Guest	= 3;	// 游客名
+}
+
+// 绑定账户 C -> S
+message AccountBindCS {
+	optional int32	ID		= 1;	// 账户ID
+	optional string	Name	= 2;	// 帐户名
+	optional string	Pwd		= 3;	// 账户密码
+}
+
+// 绑定账户 C <- S
+message AccountBindSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		ID		= 2;	// 账户ID
+	optional string		Name	= 3;	// 帐户名
+}
+
+// 创建账户 C -> S
+message AccountCreateCS {
+	optional string	Name	= 1;
+	optional string	Pwd		= 2;
+}
+
+// 创建账户 C <- S
+message AccountCreateSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32	ID		= 2;	// 账户ID
+	optional string	Name	= 3;	// 帐户名
+}
+
+// 登录账户 C -> S
+message AccountLoginCS {
+	optional string	Name		= 1;
+	optional string	Pwd			= 2;
+}
+
+// 登录账户 C <- S
+message AccountLoginSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32			ID		= 2;	// 账户ID
+	optional string			Name	= 3;	// 帐户名
+}
+
+// 同步服务器区列表 C -> S
+message SynRegionCS {
+	optional int32			ID		= 1;	// 账户ID
+}
+
+// 同步服务器区列表 C <- S
+message SynRegionSC {
+	repeated OneRegionInfo	Regions	= 1;	// 服务器区列表
+	optional int32			LastRegion = 2;	// 最近登录过的区ID
+}
+
+// 创建角色 C -> S
+message PlayerCreateCS {
+	optional int32	ID			= 1;	// 账户ID
+	optional string	Name		= 2;	// 角色名
+	optional int32	Region		= 3;	// 服务器区ID
+	optional int32	HeroID		= 4;	// 英雄ID
+}
+
+// 创建角色 C <- S
+message PlayerCreateSC {
+	optional ERetCode	RetCode		= 1		[default=OK];
+	optional int32		ID			= 2;	// 账户ID
+	optional int32		Region		= 3;	// 服务器区ID
+	optional int32		PlayerID	= 4;	// 角色ID
+	optional string		Name		= 5;	// 角色名
+	optional int32		HeroID		= 6;	// 英雄ID
+}
+
+// 登录角色 C -> S
+message PlayerLoginCS {
+	optional int32	AccID		= 1;	// 账户
+	optional int32	PlayerID	= 2;	// 角色ID
+}
+
+// 登录角色 C <- S
+message PlayerLoginSC {
+	optional ERetCode	RetCode		= 1		[default=OK];
+	optional int32		AccID		= 2;	// 账户
+	optional int32		PlayerID	= 3;	// 角色ID
+	optional int32		RegionID	= 4;	// 服务器区ID
+}
+
+// 重命名角色 C -> S
+message PlayerRenameCS {
+	optional string	Name		= 1;	// 新名字
+}
+
+// 重命名角色 C <- S
+message PlayerRenameSC {
+	optional ERetCode	RetCode		= 1		[default=OK];
+	optional string		Name		= 2;	// 新名字
+	optional int32		RenameTimes = 3;	// 改名次数
+}
+
+// 登出角色 C -> S
+message PlayerLogoutCS {
+}
+
+// 登出角色 C <- S
+message PlayerLogoutSC {
+	optional ERetCode	RetCode		= 1		[default=OK];
+	optional int32		PlayerID	= 2;	// 角色ID
+}
+
+// 删除角色 C -> S
+message PlayerDelCS {
+	optional int32		PlayerID	= 1;	// 角色ID
+}
+
+// 删除角色 C <- S
+message PlayerDelSC {
+	optional ERetCode	RetCode		= 1		[default=OK];
+}
+
+// 断线重连 C -> S
+message AccountReconnectCS {
+	optional int32		PlayerID	= 1;
+}
+
+// 断线重连 S -> C
+message AccountReconnectSC {
+	optional ERetCode	RetCode		= 1		[default=OK];
+	optional int32		PlayerID	= 2;
+}
+
+// 请求账户在某区的主将信息 C -> S
+message AccountMainHeroCS {
+	optional int32		AccID		= 1;
+	optional int32		RegionID	= 2;	// 服务器区ID
+}
+
+// 请求账户在某区的主将信息 C <- S
+message AccountMainHeroSC {
+	optional ERetCode	RetCode		= 1		[default=OK];
+	optional int32		AccID		= 2;
+	optional int32		Region		= 3;	// 服务器区ID
+	optional int32		PlayerID	= 4;	// 角色ID
+	optional OneHero	Hero		= 5;	// 主将数据
+	optional int64		LastOnline	= 6;	// 最近在线时间
+}
+
+// 客户端发登陆服准备登录游戏服 C -> S
+message PlayerPreLoginCS {
+	optional int32		AccID		= 1;
+	optional int32		PlayerID	= 2;	// 角色ID
+	optional int32		Region		= 3;	// 服务器区ID
+}
+
+// 客户端发登陆服准备登录游戏服 C <- S
+message PlayerPreLoginSC {
+	optional ERetCode	RetCode		= 1		[default=OK];
+	optional int32		AccID		= 2;
+	optional int32		PlayerID	= 3;	// 角色ID
+	optional int32		Region		= 4;	// 服务器区ID
+	optional uint64		SessionID	= 5;	// session id
+}
+
+// 服务器需要关闭 S -> C
+message ServerCloseSC {
+	optional int32		Reason		= 1;	// 关闭原因
+	optional int32		Minutes		= 2;	// 多少分钟后关闭
+}

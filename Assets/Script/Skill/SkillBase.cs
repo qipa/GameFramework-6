@@ -74,21 +74,34 @@ public class SkillBase
     {
         m_targets.Clear();
         if(IsNormalAttackSkill)      //普攻
-        {
-            m_caster.SelectTarget = SkillProcesser.GetTargetInSkillDistance(m_caster, m_skillInfo);
-            if (m_caster.SelectTarget != null)
+        {          
+            if (m_caster.SelectTarget != null && !m_caster.SelectTarget.IsDead)
             {
                 m_targets.Add(m_caster.SelectTarget);
                 m_caster.Forward = (m_caster.SelectTarget.Pos - m_caster.Pos).normalized;
+            }
+            else
+            {
+                m_caster.SelectTarget = SkillProcesser.GetTargetInSkillDistance(m_caster, m_skillInfo);
+                if (m_caster.SelectTarget != null)
+                {
+                    m_targets.Add(m_caster.SelectTarget);
+                    m_caster.Forward = (m_caster.SelectTarget.Pos - m_caster.Pos).normalized;
+                }
             }
         }
         else    //技能
         {
             if (m_skillInfo.attackType == 1)        //单个目标
             {
-                m_caster.SelectTarget = SkillProcesser.GetTargetInSkillDistance(m_caster, m_skillInfo);
-                if (m_caster.SelectTarget != null)
+                if (m_caster.SelectTarget != null && !m_caster.SelectTarget.IsDead)
                 {
+                    m_targets.Add(m_caster.SelectTarget);
+                    m_caster.Forward = (m_caster.SelectTarget.Pos - m_caster.Pos).normalized;
+                }
+                else
+                {
+                    m_caster.SelectTarget = SkillProcesser.GetTargetInSkillDistance(m_caster, m_skillInfo);
                     m_targets.Add(m_caster.SelectTarget);
                     m_caster.Forward = (m_caster.SelectTarget.Pos - m_caster.Pos).normalized;
                 }
@@ -103,7 +116,8 @@ public class SkillBase
                 while(e.MoveNext())
                 {
                     Entity ent = e.Current.Value;
-                    if (ent.Camp == eCamp.Hero || ent.Camp == eCamp.Friend)
+
+                    if (m_caster.IsEnemy(ent) == false)
                         continue;
 
                     //自己在纸上画一下就知道啦
@@ -136,9 +150,8 @@ public class SkillBase
                  while (e.MoveNext())
                  {
                      Entity ent = e.Current.Value;
-                     if (ent.Camp == eCamp.Hero || ent.Camp == eCamp.Friend)
+                     if (m_caster.IsEnemy(ent) == false)
                          continue;
-
                      Vector3 v1 = m_caster.Forward;
                      Vector3 v2 = ent.Pos - m_caster.Pos;
 
@@ -163,12 +176,12 @@ public class SkillBase
 
                     if (IsAttackSkill)   //如果是攻击性技能，作用对象是敌人
                     {
-                        if (ent.Camp == eCamp.Hero || ent.Camp == eCamp.Friend)
+                        if (m_caster.IsEnemy(ent) == false)
                             continue;
                     }
                     else if(IsAssistSkill)  //如果是辅助性技能
                     { //作用对象是自己人
-                        if (ent.Camp == eCamp.Enemy || ent.Camp == eCamp.Boss)
+                        if (m_caster.IsEnemy(ent) == true)
                             continue;
                     }
 

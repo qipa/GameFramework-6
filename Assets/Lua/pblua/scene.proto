@@ -1,0 +1,29 @@
+package CSoft.Proto;
+
+import "base.proto";
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+////////////////////////////////////////////////////////////////////////////////
+//具体信息看客户端需求
+message SceneInfo {
+	optional int32		PlayerId		= 1;	// 玩家ID
+	optional int32		VipLevel		= 2;	// vip等级
+	optional OneHero	OneHero			= 3;	// 玩家等级 
+}
+
+// 同步的场景信息 S <- C
+message SceneInfoCS {
+	optional ESceneType		type		= 1[default=SceneTypeLogin];	// 场景枚举	
+}
+
+// 同步的场景信息 S -> C
+message SceneInfoSC {
+	optional ERetCode	RetCode			= 1	[default=OK];
+	repeated SceneInfo 	SceneInfos		= 2;	// 场景信息
+}

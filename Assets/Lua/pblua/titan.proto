@@ -1,0 +1,109 @@
+package CSoft.Proto;
+
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+////////////////////////////////////////////////////////////////////////////////
+// 魔将来袭数据
+message TitanSvrDBData {
+	optional int32		Level = 1;		// 魔将等级
+}
+
+// 同步魔将来袭数据
+message SynTitanDataSC {
+	optional int32			CDTimes = 1;			// 本日消除冷却CD的次数
+	optional int64			FightStamp = 2;			// 上一次挑战时间戳
+	repeated int32			Heros = 3 [packed=true];// 出阵英雄列表
+	optional int32			DamageMax = 4;			// 历史最高伤害输出
+	optional int32			DamageToday = 5;		// 本日累积伤害输出
+}
+
+// 一条帮会分数信息
+message OneGuildScore {
+	optional int32		ID = 1;			// 帮会ID
+	optional string		Name = 2;		// 帮会名
+	optional int32		Level = 3;		// 帮会等级
+	optional int32		Score = 4;		// 帮会分数
+}
+
+// 一条英雄分数
+message OneHeroScore {
+	optional int32		ID = 1;			// 角色ID
+	optional string		Name = 2;		// 角色名
+	optional EQuality	Quality = 3	[default=WHITE];	// 角色品质
+	optional int32		Score = 4;		// 角色分数
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 同步魔将来袭界面数据
+message TitanSynCS {
+}
+
+// 同步魔将来袭界面数据
+message TitanSynSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional bool			IsFighting = 2;		// 魔将来袭战斗是否进行中
+	repeated OneGuildScore	GuildScores = 3;	// 帮会排行榜
+	repeated OneHeroScore	HeroScores = 4;		// 英雄排行榜
+	optional int32			MyGuildScore = 5;	// 本帮会伤害
+	optional int32			MyGuildRank = 6;	// 本帮会排名
+	optional int32			MyHeroScore = 7;	// 我的伤害
+	optional int32			MyHeroRank = 8;		// 我的排名
+	optional int32			CD = 9;				// 挑战冷却剩余秒数
+	optional int32			NextSecs = 10;		// 距离下一场活动开始剩余秒数
+	optional int32			LeftSecs = 11;		// 本日活动距离结束剩余秒数
+	optional int32			TitanLevel = 12;	// 魔将等级
+	optional int32			TitanLife = 13;		// 魔将剩余生命值
+	optional int32			TitanLiftMax = 14;	// 魔将满血值
+	optional int32			TimeStart = 15;		// 活动开启时间 从0点开始的分钟数
+	optional int32			TimeDuration = 16;	// 活动持续分钟数
+	optional int32			CDCost = 17;		// 本次消除冷却CD元宝花费
+}
+
+// 魔将来袭战斗开始 C -> S
+message TitanFightCS {
+}
+
+// 魔将来袭战斗开始 S -> C
+message TitanFightSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		HP = 2;					// 魔将当前血量
+	optional int32		Level = 3;				// 魔将等级
+}
+
+// 魔将来袭战斗结束 C -> S
+message TitanEndFightCS {
+	optional int32		Damage = 1;			// 伤害
+	optional bool		IsTitanDead = 2;	// 魔将是否死亡
+}
+
+// 魔将来袭战斗结束 C <- S
+message TitanEndFightSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		Damage = 2;			// 伤害
+	optional bool		IsTitanDead = 3;	// 魔将是否死亡
+}
+
+// 魔将来袭活动结束 C <- S
+message TitanFinishSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+}
+
+// 魔将来袭布阵 C -> S
+message TitanEmbattleCS {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	repeated int32		Heros = 2 [packed=true];	// 武将列表
+}
+
+// 魔将来袭布阵 C <- S
+message TitanEmbattleSC {
+	optional ERetCode	RetCode	= 1	[default=OK];
+	optional int32		Hero = 2;					// 不存在的武将ID
+	optional int32		Force = 3;					// 新阵容战力
+	repeated int32		Heros = 4 [packed=true];	// 武将列表
+}

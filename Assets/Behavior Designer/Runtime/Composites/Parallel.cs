@@ -1,8 +1,9 @@
 namespace BehaviorDesigner.Runtime.Tasks
 {
-    // Similar to the sequence task, the parallel task will run each child task until a child task returns failure. The difference is that the parallel task will run all of its children
-    // tasks simultaneously versus running each task one at a time. Like the sequence class, the parallel task will return success once all of its children tasks have return success.
-    // If one tasks returns failure the parallel task will end all of the child tasks and return failure.
+    [TaskDescription("Similar to the sequence task, the parallel task will run each child task until a child task returns failure. " +
+                     "The difference is that the parallel task will run all of its children tasks simultaneously versus running each task one at a time. " +
+                     "Like the sequence class, the parallel task will return success once all of its children tasks have return success. " +
+                     "If one tasks returns failure the parallel task will end all of the child tasks and return failure.")]
     [HelpURL("http://www.opsive.com/assets/BehaviorDesigner/documentation.php?id=27")]
     [TaskIcon("{SkinColor}ParallelIcon.png")]
     public class Parallel : Composite
@@ -18,7 +19,7 @@ namespace BehaviorDesigner.Runtime.Tasks
             executionStatus = new TaskStatus[children.Count];
         }
 
-        public override void OnChildRunning(int childIndex)
+        public override void OnChildStarted(int childIndex)
         {
             // One of the children has started to run. Increment the child index and set the current task status of that child to running.
             currentChildIndex++;
@@ -63,6 +64,15 @@ namespace BehaviorDesigner.Runtime.Tasks
                 }
             }
             return (childrenComplete ? TaskStatus.Success : TaskStatus.Running);
+        }
+
+        public override void OnConditionalAbort(int childIndex)
+        {
+            // Start from the beginning on an abort
+            currentChildIndex = 0;
+            for (int i = 0; i < executionStatus.Length; ++i) {
+                executionStatus[i] = TaskStatus.Inactive;
+            }
         }
 
         public override void OnEnd()

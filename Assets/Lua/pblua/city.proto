@@ -1,0 +1,221 @@
+package CSoft.Proto;
+
+import "base.proto";
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+////////////////////////////////////////////////////////////////////////////////
+// 一条城池信息
+message OneCity {
+	optional int32		ID = 1;				// 城池ID
+	optional string		GuildName = 2;		// 占领该城的帮会名称
+	optional bool		Fighting = 3;		// 是否处于战斗中
+}
+
+// 一条帮派攻城英雄数据
+message OneCityHero {
+	optional int32		ID = 1;		// 英雄ID
+	optional int32		HP = 2;		// 当前血量
+}
+
+// 一条帮派城战角色数据
+message OneCityPlayer {
+	optional int32		ID = 1;		// 角色ID
+	optional OneHero	Hero = 2;	// 主将数据
+	optional string		Name = 3;	// 角色名
+	optional int32		Level = 4;	// 等级
+	optional EQuality	Quality = 5	[default=WHITE];	// 星级
+	optional EGuildJob	Job = 6 [default=GuildJobUnknown];	// 帮会职位
+}
+
+// 一条攻城帮派数据
+message OneCityGuild {
+	optional int32		ID = 1;				// 帮会ID
+	optional string		Name = 2;			// 帮会名
+	optional int32		Level = 3;			// 等级
+	optional int32		Force = 4;			// 总战力
+	optional int32 		Badge = 5;			// 徽章
+	optional int32		MemberSize = 6;		// 成员总数
+}
+
+// 同步帮派城战数据
+message SynCityDataSC {
+}
+
+// 一条帮会城战英雄战报
+message OneCityHeroReport {
+	optional int32			AttackerID = 1;		// 攻城角色ID
+	optional string			AttackerName = 2;	// 攻城角色名称
+	optional int32			DefenderID = 3;		// 守城角色ID
+	optional string			DefenderName = 4;	// 守城角色名称
+	optional int32			AttackFeat = 5;		// 进攻方获得功勋
+	optional int32			DefendFeat = 6;		// 守城方获得功勋
+	optional bool			IsWin = 7;			// 是否进攻方胜利
+}
+
+// 一条帮会城战帮会战报
+message OneCityGuildReport {
+	optional int32				AttackerID = 1;		// 攻城帮会ID
+	optional string				AttackerName = 2;	// 攻城帮会名称
+	optional int32				DefenderID = 3;		// 守城帮会ID
+	optional string				DefenderName = 4;	// 守城帮会名称
+	optional int64				Stamp = 5;			// 时间戳
+	optional bool				IsCapture = 6;		// 是否攻陷
+	repeated OneCityHeroReport	HeroReports = 7;		// 英雄详细战报[这个字段用于存库时用，同步客户端时不同步，数据量太大]
+}
+
+// 一条帮派城战城池存库数据【只存库用】
+message OneCityDB {
+	optional int32				ID = 1;				// 城池ID
+	optional int32				DefenderID = 2;		// 防守方帮会ID
+	repeated int32				AttackerIDs = 3;	// 攻击方帮会ID列表
+	repeated OneCityGuildReport	Reports = 4;		// 战报列表
+}
+
+// 帮派城战数据
+message CitySvrDBData {
+	repeated OneCityDB	Citys = 1;		// 城池列表
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 帮派城战信息同步
+message CitySynCS {
+}
+
+// 帮派城战信息同步
+message CitySynSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32			TargetCity = 2;	// 本帮会当前目标城池
+	optional bool			Fighting = 3;	// 本帮会是否在攻城中
+	repeated OneCity		Citys = 4;		// 城池信息列表
+	optional int32			GuildPos = 5;	// 玩家帮会在攻城队列位置
+}
+
+// 帮派城战同步一条城池数据
+message CitySynCityCS {
+	optional int32			CityID = 1;		// 城池ID
+}
+
+// 帮派城战同步一条城池数据
+message CitySynCitySC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32			CityID = 2;		// 城池ID
+	optional string			Defender = 3;	// 守城帮会名
+	optional int32			Troops = 4;		// 守城成员数量
+	repeated OneCityGuild	Attackers = 5;	// 攻城帮会列表
+	optional int32			DefenderID = 6;	// 守城帮会ID
+}
+
+// 加入攻城
+message CityJoinCS {
+	optional int32			CityID = 1;		// 城池ID
+}
+
+// 加入攻城
+message CityJoinSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32			CityID = 2;		// 城池ID
+}
+
+// 查看某城池战报
+message CityReportCS {
+	optional int32			CityID = 1;		// 城池ID
+}
+
+// 查看某城池战报
+message CityReportSC {
+	optional ERetCode			RetCode	= 1	[default=OK];
+	optional int32				CityID = 2;		// 城池ID
+	repeated OneCityGuildReport Reports = 3;	// 战报列表
+}
+
+// 查看某条详细战报
+message CityReportDetailCS {
+	optional int32			CityID = 1;		// 城池ID
+	optional int32			Index = 2;		// 战报索引
+}
+
+// 查看某条详细战报
+message CityReportDetailSC {
+	optional ERetCode			RetCode	= 1	[default=OK];
+	optional int32				CityID = 2;		// 城池ID
+	optional int32				Index = 3;		// 战报索引
+	repeated OneCityHeroReport	Reports = 4;	// 战报列表
+}
+
+// 查看战场
+message CityWarFieldCS {
+	optional int32			CityID = 1;		// 城池ID
+}
+
+// 查看战场
+message CityWarFieldSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32			CityID = 2;			// 城池ID
+	repeated OneCityPlayer	Defenders = 3;		// 防守方英雄列表
+	repeated OneCityHero	Attackers = 4;		// 进攻方英雄列表
+	optional int32			AttackLeft = 5;		// 进攻方剩余角色
+	optional int32			DefendLeft = 6;		// 防守方剩余角色
+	optional int32			Kills = 7;			// 杀敌数
+	optional int32			Feat = 8;			// 获得功勋
+	optional string			DefendName = 9;		// 守城帮会名
+	optional int32			DefendLevel = 10;	// 守城帮会等级
+}
+
+// 查看防守方英雄数据
+message CityChkDefenderCS {
+	optional int32			CityID = 1;		// 城池ID
+	optional int32			PlayerID = 2;	// 角色ID
+}
+
+// 查看防守方英雄数据
+message CityChkDefenderSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32			CityID = 2;		// 城池ID
+	optional int32			PlayerID = 3;	// 角色ID
+	repeated OneHero		Heros = 4;		// 英雄列表
+}
+
+// 进攻某个英雄
+message CityEnterCS {
+	optional int32			CityID = 1;		// 城池ID
+	optional int32			PlayerID = 2;	// 角色ID
+}
+
+// 进攻某个英雄
+message CityEnterSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32			CityID = 2;		// 城池ID
+	optional int32			PlayerID = 3;	// 角色ID
+	repeated OneHero		Heros = 4;		// 对方英雄列表
+	optional int32			MainHeroID = 5;	// 对方主将ID
+}
+
+// 结束与某个英雄的战斗
+message CityFinishCS {
+	optional int32			CityID = 1;		// 城池ID
+	optional int32			DefenderID = 2;	// 防守方角色ID
+	repeated OneCityHero	Attackers = 3;
+	repeated OneCityHero	Defenders = 4;
+}
+
+// 结束与某个英雄的战斗
+message CityFinishSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32			CityID = 2;		// 城池ID
+	optional int32			DefenderID = 3;	// 角色ID
+	optional bool			IsWin = 4;		// 是否胜利
+	optional int32			Feat = 5;		// 获得的功勋
+}
+
+// 广播帮会成员攻城战结束
+message CityWarEndSC {
+	optional int32			CityID = 1;		// 城池ID
+	optional int32			Defender = 2;	// 防守方帮会ID
+	optional bool			IsWin = 3;		// 是否胜利
+}

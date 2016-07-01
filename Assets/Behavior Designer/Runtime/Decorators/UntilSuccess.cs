@@ -1,6 +1,6 @@
 namespace BehaviorDesigner.Runtime.Tasks
 {
-    // The until fail task will keep executing its child task until the child task returns success.
+    [TaskDescription("The until success task will keep executing its child task until the child task returns success.")]
     [HelpURL("http://www.opsive.com/assets/BehaviorDesigner/documentation.php?id=42")]
     [TaskIcon("{SkinColor}UntilSuccessIcon.png")]
     public class UntilSuccess : Decorator

@@ -1,0 +1,68 @@
+package CSoft.Proto;
+
+import "base.proto";
+import "action.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+option (gogoproto.populate_all) = true;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+////////////////////////////////////////////////////////////////////////////////
+// 一条关卡守护者数据
+message OnePassguard {
+	optional int32		InsID = 1;			// 副本ID
+	optional int32		PlayerID = 2;		// 角色ID
+}
+
+// 关卡守护神模块数据
+message PassguardSvrDBData {
+	repeated OnePassguard	Guarders = 1;	// 副本守护者列表
+}
+
+// 同步关卡保护神数据
+message SynPassguardDataSC {
+	optional int64			FightStamp = 1;		// 上一次抢夺战时间戳
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// 关卡守护信息同步 C -> S
+message PassguardSynCS {
+	optional int32		InsID = 1;
+}
+
+// 关卡守护信息同步 S -> C
+message PassguardSynSC {
+	optional int32			InsID = 1;
+	optional OneDBPlayer	Player = 2;
+	optional bool			IsLock = 3;
+	repeated OneHero		Heros = 4;		// 英雄数据
+}
+
+// 发起抢夺守护 C -> S
+message PassguardFightCS {
+	optional int32		InsID = 1;
+}
+
+// 发起抢夺守护 S -> C
+message PassguardFightSC {
+	optional ERetCode		RetCode	= 1	[default=OK];
+	optional int32		InsID = 2;
+	optional int32		PlayerID = 3;	// 挑战的对手
+	repeated OneHero	Heros = 4;		// 英雄数据
+}
+
+// 抢夺战斗结束 C -> S
+message PassguardEndFightCS {
+	optional int32		InsID = 1;
+	optional bool		IsWin = 2;	// 是否赢了
+}
+
+// 抢夺战斗结束 C <- S
+message PassguardEndFightSC {
+	optional ERetCode			RetCode	= 1	[default=OK];
+	optional int32			InsID = 2;
+	optional bool			IsWin = 3;	// 是否赢了
+	optional OneRewardMix	Reward = 4;	// 获得抢夺奖励
+}

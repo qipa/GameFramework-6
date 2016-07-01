@@ -13,4 +13,16 @@ public class HUDModule : ModuleBase {
     {
         
     }
+
+    public override void OnEvent(eEntityEvent eventID, object args = null)
+    {
+        if (eventID == eEntityEvent.OnAlive)
+        {
+
+        }
+        else if (eventID == eEntityEvent.OnDead)
+        {
+
+        }
+    }
 }
